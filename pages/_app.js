@@ -1,10 +1,13 @@
 import { ChakraProvider } from '@chakra-ui/react'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 function MyApp({ Component, pageProps }) {
   return (
-  <ChakraProvider>
-    <Component {...pageProps}/>
-  </ChakraProvider>
+    <ErrorBoundary>
+      <ChakraProvider>
+        <Component {...pageProps}/>
+      </ChakraProvider>
+    </ErrorBoundary>
   )
 }
 
