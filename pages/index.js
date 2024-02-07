@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Image from 'next/image'
+// import Image from 'next/image'
 import homeStyles from '../styles/Home.module.css'
 import Signin from '../components/Authentication/Signin.js'
 import Signup from '../components/Authentication/Signup.js'
@@ -8,8 +8,23 @@ import { Container } from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
 import { Stack, HStack, VStack } from '@chakra-ui/react'
+import { chatState } from '../context/ChatProvider';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react'
 
-export default function Home() {
+const Home = () => {
+  const router = useRouter();
+  /* @dev:: below doesn't work when put inside useEffect(), actually later 
+  realized I should keep it outside useEffect() and it works then but then 
+  realized why not to handle it in ChatProvider.js */
+
+  // useEffect(() => {
+  //   const { user } = chatState();
+  //   if(user) {
+  //     router.push('/chats');
+  //   }
+  // }, [router]);
+
   return (
     <div className={homeStyles.container}>
       <Head>
@@ -48,7 +63,7 @@ export default function Home() {
       </main>
 
       {/* default vercel footer */}
-      <footer className={homeStyles.footer}>
+      {/* <footer className={homeStyles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
@@ -59,7 +74,9 @@ export default function Home() {
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
-      </footer>
+      </footer> */}
     </div>
   )
 }
+
+export default Home;

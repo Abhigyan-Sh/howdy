@@ -13,7 +13,7 @@ const AuthMiddleware = (handler) => {
         token = req.headers.authorization.split(' ')[1]
         // eslint-disable-next-line no-undef
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-        // console.log(decodedToken.payload)
+        // console.log("decodeToken: " + decodedToken.payload);
         req.user = await User.findById(decodedToken.payload).select('-password')
         return handler(req, res)
       } catch (err) {
@@ -21,6 +21,7 @@ const AuthMiddleware = (handler) => {
         throw new Error('not Authorized, token failed!')
       }
     }
+    // @dev:: seems to be issue below, maybe below line shouldn't be there
     return handler (req, res)
   }
 }
