@@ -1,10 +1,10 @@
 import withProtect from '../../../middlewares/withProtect.js'
-import User from '../../../models/user.js'
+import User from '../../../models/users.js'
 import generateToken from '../../../utils/generateToken.js'
 import connectToMongoDB from '../../../utils/connectMongo.js'
 
 const signup =  async (req, res) => {
-  connectToMongoDB()
+  // connectToMongoDB()
   const { method, body } = req
   if (method === 'POST') {
     try {

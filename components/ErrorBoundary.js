@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component {
         </div>
       )
     }
-    // otherwise return children component
+    /* otherwise return children component */
     return this.props.children
   }
 }

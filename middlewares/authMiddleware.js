@@ -1,10 +1,10 @@
 import connectToMongoDB from '../utils/connectMongo.js'
 import jwt from 'jsonwebtoken'
-import User from '../models/user.js'
+import User from '../models/users.js'
 
 const AuthMiddleware = (handler) => {
   return async (req, res) => {
-    connectToMongoDB()
+    // connectToMongoDB()
     // code goes here..
     let token
     if (req.headers.authorization && 
@@ -13,6 +13,7 @@ const AuthMiddleware = (handler) => {
         token = req.headers.authorization.split(' ')[1]
         // eslint-disable-next-line no-undef
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        // console.log(decodedToken.payload)
         req.user = await User.findById(decodedToken.payload).select('-password')
         return handler(req, res)
       } catch (err) {

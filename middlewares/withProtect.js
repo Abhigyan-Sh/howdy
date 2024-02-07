@@ -2,7 +2,7 @@ import connectToMongoDB from '../utils/connectMongo.js'
 
 const withProtect = (handler) => {
   return async (req, res) => {
-    connectToMongoDB()
+    // connectToMongoDB()
     const { username, email, password } = req.body
     if (!username || !email || !password) {
       res.status(400)

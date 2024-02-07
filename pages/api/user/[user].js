@@ -1,5 +1,5 @@
-import User from '../../../models/user.js'
-import AuthMiddleware from '../../../middlewares/authMiddleware.js'
+import User from '../../../models/users'
+import AuthMiddleware from '../../../middlewares/authMiddleware'
 
 const allUsers = async (req, res) => {
   const keyword = req.query
@@ -9,7 +9,7 @@ const allUsers = async (req, res) => {
         { email: { $regex: req.query.user, $options: 'i'} },
       ]
     } : {}
-  // return all users but not the one who is logged-in
+  /* return all users but not the one who is logged-in */
   const users = await User.find(keyword).find({_id: {$ne: req.user._id}})
   res.send(users)
 }

@@ -11,13 +11,13 @@ import {
   useToast } from '@chakra-ui/react'
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input'
 import { Button } from '@chakra-ui/button'
-import axios from 'axios'
+// import axios from 'axios'
 
 const Signup = () => {
   const [ show, setShow ] = useState(false)
   const handleShow = () => setShow(!show)
   const toast = useToast()
-  const [ loading, setLoading ] = useState(false)
+  // const [ loading, setLoading ] = useState(false)
   const [ picLoading, setPicLoading ] = useState(false)
   const [pic, setPic] = useState()
   const { register, handleSubmit, watch, formState: {errors} } = useForm()
@@ -48,7 +48,6 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data)=> {
           setPic(data.url.toString())
-          console.log(data.url.toString())
           setPicLoading(false)
         })
         .catch((err) => {
@@ -67,7 +66,6 @@ const Signup = () => {
     }
   }
   const onSubmit = async (data) => {
-    // console.log(data)
     setPicLoading(true)
     if (!data.username || !data.emailId || !data.password || !data.confirmPassword){
       toast ({
@@ -78,6 +76,7 @@ const Signup = () => {
         position: 'bottom',
       })
       setPicLoading(false)
+      return
     }
     if (data.password !== data.confirmPassword) {
       toast ({
@@ -88,8 +87,8 @@ const Signup = () => {
         position: 'bottom',
       })
       setPicLoading(false)
+      return
     }
-    /* substitute code commented at end for below one */
     try {
       fetch('/api/user/signup', {
         method: 'POST',
@@ -105,7 +104,6 @@ const Signup = () => {
       })
         .then(data => data.json())
         .then(response => {
-          // console.log(response)
           toast ({
             title: 'Registration is successful !',
             status: 'success',
@@ -119,7 +117,6 @@ const Signup = () => {
         })
       setPicLoading(false)
     } catch (err) {
-      console.log('error occurred here 2')
       toast ({
         title: 'Error Occurred !',
         description: err.response.data.message,
@@ -131,7 +128,6 @@ const Signup = () => {
       setPicLoading(false)
     }
   }
-  console.log(pic)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing="10px">
@@ -205,43 +201,3 @@ const Signup = () => {
   )
 }
 export default Signup
-
-
-// try {
-//   // const config = {
-//   //   headers: {
-//   //     "Content-Type": "application/json",
-//   //   }
-//   // }
-//   // const { data2 } = 
-//   await axios.post(
-//     '/api/user/signup', 
-//     {
-//       username: data.username, 
-//       email:data.emailId, 
-//       password: data.password, 
-//       pic,
-//     }
-//     // config
-//     )
-//     toast ({
-//       title: "Registration is successful !",
-//       status: "success",
-//       duration: 3000,
-//       isClosable: true,
-//     })
-//     // localStorage.setItem('userInfo', JSON.stringify(data2))
-//     setPicLoading(false)
-//     // history.push('/chats')
-// } catch (err) {
-//   console.log('error occurred here 2')
-//   toast ({
-//     title: "Error Occurred !",
-//     description: err.response.data.message,
-//     status: "error",
-//     duration: 3000,
-//     isClosable: true,
-//     // position: "bottom",
-//   })
-//   setPicLoading(false)
-// }

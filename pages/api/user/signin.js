@@ -1,4 +1,4 @@
-import User from '../../../models/user.js'
+import User from '../../../models/users.js'
 import generateToken from '../../../utils/generateToken.js'
 import connectToMongoDB from '../../../utils/connectMongo.js'
 
