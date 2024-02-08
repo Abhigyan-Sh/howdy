@@ -6,12 +6,17 @@ import {
   FormControl, 
   InputLabel, 
   Input, 
-  FormHelperText 
+  FormHelperText, 
+  Stack, 
+  Button 
 } from '@mui/material';
-import SnackbarToast from '../../utils/SnackbarToast.js';
+import SnackbarToast, { setToastVisible } from '../../utils/SnackbarToast.js';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Signup = () => {
-  const [ show, setShow ] = useState(false);
+  const [ showPass, setShowPass ] = useState(false);
+  const [ showConfirmPass, setShowConfirmPass ] = useState(false);
   const [ open, onOpen ] = useState(false);
   const [ message, setMessage ] = useState("");
   const [ severity, setSeverity ] = useState("");
@@ -20,21 +25,19 @@ const Signup = () => {
   const [pic, setPic] = useState();
   const { register, handleSubmit, watch, formState: {errors} } = useForm();
   
-  const handleShow = () => setShow(!show);
+  const handleShowPass = () => setShowPass(!showPass);
+  const handleShowConfirmPass = () => setShowConfirmPass(!showConfirmPass);
   const handleClose = () => onOpen(false);
-  const handleClick = () => onOpen(true);
-  const setToastVisible = ({_message, _severity}) => {
-    setMessage(_message);
-    setSeverity(_severity);
-    handleClick();
-  }
 
   const postDetails = (pics) => {
     setLoader(true)
     if (pics === undefined) {
       setToastVisible({
         _message: "Please Select an Image !", 
-        _severity: "warning"
+        _severity: "warning", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onOpen
       });
       setLoader(false);
       return;
@@ -59,7 +62,10 @@ const Signup = () => {
     } else {
       setToastVisible({
         _message: "Please Select an Image (jpg, jpeg, png) !", 
-        _severity: "warning"
+        _severity: "warning", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onOpen
       });
       setLoader(false)
       return
@@ -70,7 +76,10 @@ const Signup = () => {
     if (!data.username || !data.emailId || !data.password || !data.confirmPassword) {
       setToastVisible({
         _message: "Please fill all the required fields !", 
-        _severity: "error"
+        _severity: "error", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onOpen
       });
       setLoader(false);
       return;
@@ -78,7 +87,10 @@ const Signup = () => {
     if (data.password !== data.confirmPassword) {
       setToastVisible({
         _message: "Passwords do not match !", 
-        _severity: "error"
+        _severity: "error", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onOpen
       });
       setLoader(false);
       return;
@@ -100,23 +112,30 @@ const Signup = () => {
         .then(response => {
           setToastVisible({
             _message: "Registration is successful !", 
-            _severity: "success"
+            _severity: "success", 
+            setMessage: setMessage, 
+            setSeverity: setSeverity, 
+            onOpen: onOpen
           });
           localStorage.setItem('userInfo', JSON.stringify(response));
           Router.push('/chats');
           setLoader(false);
         })
-    } catch (err) {
+    } catch (err) {      
       setToastVisible({
         _message: "Error Occurred !", 
-        _severity: "error"
+        _severity: "error", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onOpen
       });
       setLoader(false);
     }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='flex'>
+      {/* <div className='flex flex-col bg-rose-10 justify-between gap-6'> */}
+      <Stack spacing={2}>
         {/* -------username------- */}
         <FormControl>
           <InputLabel htmlFor="username-id">Username</InputLabel>
@@ -139,33 +158,37 @@ const Signup = () => {
           <FormHelperText id="helper-text-email">We'll never share your email.</FormHelperText>
         </FormControl>
         {/* -------password ------- */}
-        <FormControl>
-          <InputLabel htmlFor="password-id">password</InputLabel>
-          <div className='flex justify-between'>
+        <div className='flex flex-row justify-between'>
+          <FormControl>
+            <InputLabel htmlFor="password-id">password</InputLabel>
             <Input 
               {...register('password')}
-              type= {show ? 'text' : 'password'}
+              type= {showPass ? 'text' : 'password'}
               id="password-id"
               autoComplete="true" />
-            <button pr='1.5rem' onClick={handleShow}>
-              {show ? 'Hide' : 'Show'}
-            </button>
-          </div>
-        </FormControl>
+          </FormControl>
+          <Button variant="outlined" onClick={handleShowPass}>
+            {showPass 
+            ? <VisibilityOffIcon className="text-black" color="" titleAccess="hide"/> 
+            : <VisibilityIcon className="text-black" titleAccess="look"/>}
+          </Button>
+        </div>
         {/* -------confirm password------- */}
-        <FormControl>
-          <InputLabel htmlFor="confirmPassword-id">confirm password</InputLabel>
-          <div className='flex justify-between'>
+        <div className='flex flex-row justify-between'>
+          <FormControl>
+            <InputLabel htmlFor="confirmPassword-id">confirm password</InputLabel>
             <Input 
               {...register('confirmPassword')}
-              type= {show ? 'text' : 'password'}
+              type= {showConfirmPass ? 'text' : 'password'}
               id="confirmPassword-id" 
               autoComplete="true" />
-            <button pr='1.5rem' onClick={handleShow}>
-              {show ? 'Hide' : 'Show'}
-            </button>
-          </div>
-        </FormControl>
+          </FormControl>
+          <Button variant="outlined" onClick={handleShowConfirmPass}>
+            {showConfirmPass 
+            ? <VisibilityOffIcon className="text-black" color="" titleAccess="hide"/> 
+            : <VisibilityIcon className="text-black" titleAccess="look"/>}
+          </Button>
+        </div>
         {/* DISCARDED INPUT CODE BELOW ⚰️ */}
         {/* upload your picture */}
         {/* <FormControl>
@@ -177,20 +200,22 @@ const Signup = () => {
           </FormControl> */}
         {/* -------upload your picture------- */}
         <FormControl>
-          <InputLabel htmlFor="picture-id">upload your picture</InputLabel>
+          <InputLabel htmlFor="picture-id"></InputLabel>
           <Input 
             type='file'
+            id="picture-id"
             accept= 'image/*'
             onChange = {e => postDetails(e.target.files[0])}
-            id="picture-id"
+            className='bg-rose-10 '
             autoComplete="true" />
         </FormControl>
         {/* -------submit button------- */}
+        <div className='mb-4'></div>
         {loader ? (
           <LoadingButton
             type='submit' 
             variant="contained"
-            className='mt-2 text-black font-bold'
+            className='mt-2 text-black font-bold hover:text-white'
             loading>
               Sign-up
           </LoadingButton>
@@ -198,7 +223,7 @@ const Signup = () => {
           <LoadingButton
             type='submit' 
             variant="contained"
-            className='mt-2 text-black font-bold'>
+            className='mt-2 text-black font-bold hover:text-white'>
               Sign-up
           </LoadingButton>
         )}
@@ -217,7 +242,8 @@ const Signup = () => {
           sx={{ width: '100%' }} 
           actionNumber={1} 
         />
-      </div>
+      </Stack>
+      {/* </div> */}
     </form>
   )
 }

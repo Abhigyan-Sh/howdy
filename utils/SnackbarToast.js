@@ -53,4 +53,11 @@ const SnackbarToast = ( {
   )
 }
 
+const setToastVisible = ({_message, _severity, setMessage, setSeverity, onOpen}) => {
+  setMessage(_message);
+  setSeverity(_severity);
+  onOpen(true);
+}
+
+export { setToastVisible };
 export default SnackbarToast;
