@@ -4,7 +4,7 @@ import generateToken from '../../../utils/generateToken.js'
 import connectToMongoDB from '../../../utils/connectMongo.js'
 
 const signup =  async (req, res) => {
-  // connectToMongoDB()
+  connectToMongoDB()
   const { method, body } = req
   if (method === 'POST') {
     try {
@@ -31,4 +31,4 @@ const signup =  async (req, res) => {
   }
 }
 
-export default withProtect(signup)
+export default withProtect(signup);

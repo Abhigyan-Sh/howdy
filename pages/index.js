@@ -3,11 +3,6 @@ import Head from 'next/head'
 import homeStyles from '../styles/Home.module.css'
 import Signin from '../components/Authentication/Signin.js'
 import Signup from '../components/Authentication/Signup.js'
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import { Container } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
-import { Text } from '@chakra-ui/react'
-import { Stack, HStack, VStack } from '@chakra-ui/react'
 import { chatState } from '../context/ChatProvider';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react'
@@ -34,21 +29,22 @@ const Home = () => {
       </Head>
       
       <main className={homeStyles.main}>
-        <Container>
+      <Signup/>   
+        {/* <Container>
           <Box>
             <Stack spacing={3}>
               <Text fontSize='5xl'>Authorize user !</Text>
             </Stack>
           </Box>
           <Box>
-            <Tabs>
+            <Tabs> */}
               {/* TabList */}
-              <TabList>
+              {/* <TabList>
                 <Tab>Sign-up</Tab>
                 <Tab>Sign-in</Tab>
-              </TabList>
+              </TabList> */}
               {/* TabPanels */}
-              <TabPanels>
+              {/* <TabPanels>
                 <TabPanel>
                   <Signup/>                
                 </TabPanel>
@@ -59,7 +55,7 @@ const Home = () => {
               </TabPanels>
             </Tabs>
           </Box>
-        </Container>
+        </Container> */}
       </main>
 
       {/* default vercel footer */}

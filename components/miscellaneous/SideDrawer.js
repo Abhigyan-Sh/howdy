@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SideDrawer = () => {
   return (
@@ -6,4 +6,4 @@ const SideDrawer = () => {
   )
 }
 
-export default SideDrawer
+export default SideDrawer;

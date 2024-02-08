@@ -1,40 +1,43 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import Router from 'next/router'
-// import { useHistory } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Router from 'next/router';
+import { LoadingButton } from '@mui/lab';
 import { 
   FormControl, 
-  FormLabel, 
-  FormErrorMessage, 
-  FormHelperText, 
-  Stack, HStack, VStack, 
-  useToast } from '@chakra-ui/react'
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/input'
-import { Button } from '@chakra-ui/button'
-// import axios from 'axios'
+  InputLabel, 
+  Input, 
+  FormHelperText 
+} from '@mui/material';
+import SnackbarToast from '../../utils/SnackbarToast.js';
 
 const Signup = () => {
-  const [ show, setShow ] = useState(false)
-  const handleShow = () => setShow(!show)
-  const toast = useToast()
-  // const [ loading, setLoading ] = useState(false)
-  const [ picLoading, setPicLoading ] = useState(false)
-  const [pic, setPic] = useState()
-  const { register, handleSubmit, watch, formState: {errors} } = useForm()
-  // const history = useHistory()
+  const [ show, setShow ] = useState(false);
+  const [ open, onOpen ] = useState(false);
+  const [ message, setMessage ] = useState("");
+  const [ severity, setSeverity ] = useState("");
+  const [ loader, setLoader ] = useState(false);
+
+  const [pic, setPic] = useState();
+  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  
+  const handleShow = () => setShow(!show);
+  const handleClose = () => onOpen(false);
+  const handleClick = () => onOpen(true);
+  const setToastVisible = ({_message, _severity}) => {
+    setMessage(_message);
+    setSeverity(_severity);
+    handleClick();
+  }
 
   const postDetails = (pics) => {
-    setPicLoading(true)
+    setLoader(true)
     if (pics === undefined) {
-      toast ({
-        title: 'Please Select an Image!',
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setPicLoading(false)
-      return
+      setToastVisible({
+        _message: "Please Select an Image !", 
+        _severity: "warning"
+      });
+      setLoader(false);
+      return;
     }
     if (pics.type === 'image/jpg' || pics.type === 'image/jpeg' || pics.type === 'image/png') {
       const data = new FormData()
@@ -48,46 +51,37 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data)=> {
           setPic(data.url.toString())
-          setPicLoading(false)
+          setLoader(false)
         })
         .catch((err) => {
           console.log(err)
         })
     } else {
-      toast({
-        title: 'Please Select an Image!',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setPicLoading(false)
+      setToastVisible({
+        _message: "Please Select an Image (jpg, jpeg, png) !", 
+        _severity: "warning"
+      });
+      setLoader(false)
       return
     }
   }
   const onSubmit = async (data) => {
-    setPicLoading(true)
-    if (!data.username || !data.emailId || !data.password || !data.confirmPassword){
-      toast ({
-        title: 'Please fill all the required fields !',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setPicLoading(false)
-      return
+    setLoader(true);
+    if (!data.username || !data.emailId || !data.password || !data.confirmPassword) {
+      setToastVisible({
+        _message: "Please fill all the required fields !", 
+        _severity: "error"
+      });
+      setLoader(false);
+      return;
     }
     if (data.password !== data.confirmPassword) {
-      toast ({
-        title: 'Passwords do not match !',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setPicLoading(false)
-      return
+      setToastVisible({
+        _message: "Passwords do not match !", 
+        _severity: "error"
+      });
+      setLoader(false);
+      return;
     }
     try {
       fetch('/api/user/signup', {
@@ -104,77 +98,76 @@ const Signup = () => {
       })
         .then(data => data.json())
         .then(response => {
-          toast ({
-            title: 'Registration is successful !',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-            position: 'bottom',
-          })
-          localStorage.setItem('userInfo', JSON.stringify(response))
-          // history.push('/chats')
-          Router.push('/chats')
+          setToastVisible({
+            _message: "Registration is successful !", 
+            _severity: "success"
+          });
+          localStorage.setItem('userInfo', JSON.stringify(response));
+          Router.push('/chats');
+          setLoader(false);
         })
-      setPicLoading(false)
     } catch (err) {
-      toast ({
-        title: 'Error Occurred !',
-        description: err.response.data.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setPicLoading(false)
+      setToastVisible({
+        _message: "Error Occurred !", 
+        _severity: "error"
+      });
+      setLoader(false);
     }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing="10px">
-        <FormControl isRequired>
-          <FormLabel>Username</FormLabel>
+      <div className='flex'>
+        {/* -------username------- */}
+        <FormControl>
+          <InputLabel htmlFor="username-id">Username</InputLabel>
           <Input 
             {...register('username')}
             // {...register('username', {required: true, minLength: 3})}
             type='text'
-            placeholder= 'username'/>
+            id="username-id"
+            autoComplete="true" />
         </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Email address</FormLabel>
+        {/* -------email------- */}
+        <FormControl>
+          <InputLabel htmlFor="email-id">Email address</InputLabel>
           <Input 
             {...register('emailId')}
             type='email'
-            placeholder= 'email address'/>
-          <FormHelperText>We will never share your email.</FormHelperText>
+            id="email-id" 
+            autoComplete="true" 
+            aria-describedby="helper-text-email" />
+          <FormHelperText id="helper-text-email">We'll never share your email.</FormHelperText>
         </FormControl>
-        <FormControl isRequired>
-          <FormLabel>password</FormLabel>
-          <InputGroup>
+        {/* -------password ------- */}
+        <FormControl>
+          <InputLabel htmlFor="password-id">password</InputLabel>
+          <div className='flex justify-between'>
             <Input 
               {...register('password')}
               type= {show ? 'text' : 'password'}
-              placeholder= 'password'/>
-            <InputRightElement>
-              <Button pr='1.5rem' onClick={handleShow}>
-                {show ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+              id="password-id"
+              autoComplete="true" />
+            <button pr='1.5rem' onClick={handleShow}>
+              {show ? 'Hide' : 'Show'}
+            </button>
+          </div>
         </FormControl>
-        <FormControl isRequired>
-          <FormLabel>confirm password</FormLabel>
-          <InputGroup>
+        {/* -------confirm password------- */}
+        <FormControl>
+          <InputLabel htmlFor="confirmPassword-id">confirm password</InputLabel>
+          <div className='flex justify-between'>
             <Input 
               {...register('confirmPassword')}
               type= {show ? 'text' : 'password'}
-              placeholder= 'confirm password'/>
-            <InputRightElement>
-              <Button pr='1.5rem' onClick={handleShow}>
-                {show ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+              id="confirmPassword-id" 
+              autoComplete="true" />
+            <button pr='1.5rem' onClick={handleShow}>
+              {show ? 'Hide' : 'Show'}
+            </button>
+          </div>
         </FormControl>
+        {/* DISCARDED INPUT CODE BELOW ⚰️ */}
+        {/* upload your picture */}
         {/* <FormControl>
               <FormLabel>upload your picture</FormLabel>
               <Input 
@@ -182,22 +175,51 @@ const Signup = () => {
                 type='file'
                 accept= '/image/*'/>
           </FormControl> */}
+        {/* -------upload your picture------- */}
         <FormControl>
-          <FormLabel>upload your picture</FormLabel>
+          <InputLabel htmlFor="picture-id">upload your picture</InputLabel>
           <Input 
             type='file'
             accept= 'image/*'
-            onChange = {e => postDetails(e.target.files[0])}/>
+            onChange = {e => postDetails(e.target.files[0])}
+            id="picture-id"
+            autoComplete="true" />
         </FormControl>
-        <Button 
-          type='submit'
-          width='100%'
-          colorScheme="blue"
-          mt='2rem'
-          isLoading = {picLoading}> Sign-in
-        </Button>
-      </VStack>
+        {/* -------submit button------- */}
+        {loader ? (
+          <LoadingButton
+            type='submit' 
+            variant="contained"
+            className='mt-2 text-black font-bold'
+            loading>
+              Sign-up
+          </LoadingButton>
+        ) : (
+          <LoadingButton
+            type='submit' 
+            variant="contained"
+            className='mt-2 text-black font-bold'>
+              Sign-up
+          </LoadingButton>
+        )}
+        {/* -------toast------- */}
+        <SnackbarToast 
+          // key={"key-00"} 
+          message={message} 
+          open={open} 
+          onClose={handleClose} 
+          transition="SlideTransition" 
+          delay={5000} 
+          vertical="bottom" 
+          horizontal="center" 
+          severity={severity} 
+          variant="filled"
+          sx={{ width: '100%' }} 
+          actionNumber={1} 
+        />
+      </div>
     </form>
   )
 }
-export default Signup
+
+export default Signup;
