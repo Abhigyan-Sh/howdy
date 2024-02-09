@@ -211,22 +211,13 @@ const Signup = () => {
         </FormControl>
         {/* -------submit button------- */}
         <div className='mb-4'></div>
-        {loader ? (
-          <LoadingButton
-            type='submit' 
-            variant="contained"
-            className='mt-2 text-black font-bold hover:text-white'
-            loading>
-              Sign-up
-          </LoadingButton>
-        ) : (
-          <LoadingButton
-            type='submit' 
-            variant="contained"
-            className='mt-2 text-black font-bold hover:text-white'>
-              Sign-up
-          </LoadingButton>
-        )}
+        <LoadingButton
+          type='submit' 
+          variant="contained"
+          className='mt-2 text-black font-bold hover:text-white'
+          loading={loader}>
+            Sign-up
+        </LoadingButton>
         {/* -------toast------- */}
         <SnackbarToast 
           // key={"key-00"} 

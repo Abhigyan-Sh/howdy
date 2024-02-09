@@ -1,36 +1,42 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-// import { 
-//   FormControl, 
-//   FormLabel, 
-//   FormErrorMessage, 
-//   FormHelperText, 
-//   Stack, HStack,
-//   VStack, useToast } from '@chakra-ui/react'
-// import { Input, InputGroup, InputRightElement } from '@chakra-ui/input'
-// import { Button } from '@chakra-ui/button'
-// import axios from 'axios'
-import Router from 'next/router'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Router from 'next/router';
+import { LoadingButton } from '@mui/lab';
+import { 
+  FormControl, 
+  InputLabel, 
+  Input, 
+  Stack, 
+  Button 
+} from '@mui/material';
+import SnackbarToast, { setToastVisible } from '../../utils/SnackbarToast.js';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Signin = () => {
-  const [ show, setShow ] = useState(false)
-  const handleShow = () => setShow(!show)
-  const [ loading, setLoading ] = useState(false)
-  const { register, handleSubmit, watch, formState: {errors} } = useForm()
-  const toast = useToast()
+  const [ show, setShow ] = useState(false);
+  const [ loader, setLoader ] = useState(false);
+  const [ message, setMessage ] = useState("");
+  const [ open, onClose ] = useState(false);
+  const [ severity, setSeverity ] = useState("");
+
+  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  
+  const handleShow = () => setShow(!show);
+  const handleClose = () => onClose(false);
 
   const onSubmit = async (data) => {
-    setLoading(true)
+    setLoader(true);
     if (!data.emailId || !data.password) {
-      toast ({
-        title: 'Please fill in all the fields !',
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setLoading(false)
-      return
+      setToastVisible({
+        _message: "Please fill in all the fields !", 
+        _severity: "warning", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onClose
+      });
+      setLoader(false);
+      return;
     }
     try {
       // const user = await axios.post(
@@ -48,82 +54,97 @@ const Signin = () => {
         }
       })
         .then(data => data.json())
-        // data has ok(true for 201 & 200) & status properties from 
-        // class response, well now converting that to a promise 
+        /* @dev::: data has ok(true for 201 & 200) & status properties from 
+        class response, well now converting that to a promise */
         .then(response => {
           if (response.statusCode === 401) {
-            toast({
-              title: response.message,
-              // description: err.response.data.message,
-              status: 'error',
-              duration: 4000,
-              isClosable: true,
-              position: 'bottom',
-            })
+            setToastVisible({
+              _message: "Unauthorized Request: " + response.message, 
+              _severity: "error", 
+              setMessage: setMessage, 
+              setSeverity: setSeverity, 
+              onOpen: onClose
+            });
           } else if (response.statusCode === 200) {
-            toast({
-              title: 'Login Successful',
-              status: 'success',
-              duration: 4000,
-              isClosable: true,
-              position: 'bottom',
-            })
-            localStorage.setItem('userInfo', JSON.stringify(response))
-            // history.push("/chats")
-            Router.push('/chats')
+            setToastVisible({
+              _message: "Login Successful", 
+              _severity: "success", 
+              setMessage: setMessage, 
+              setSeverity: setSeverity, 
+              onOpen: onClose
+            });
+            localStorage.setItem('userInfo', JSON.stringify(response));
+            Router.push('/chats');
           }
-          setLoading(false)
-        })
+          setLoader(false)
+        });
     } catch (err) {
-      toast({
-        title: 'Error Occurred!',
-        description: err.response.data.message,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom',
-      })
-      setLoading(false)
+      setToastVisible({
+        _message: "Error Occurred ! " + err.response.data.message, 
+        _severity: "error", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onClose
+      });
+      setLoader(false);
     }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing="10px">
-        <FormControl isRequired>
-          <FormLabel>Email address</FormLabel>
+      <Stack spacing={2}>
+        {/* -------email------- */}
+        <FormControl required>
+          <InputLabel htmlFor="email-id">Email address</InputLabel>
           <Input 
-            {...register('emailId')}
-            type='email'
-            placeholder= 'email address'/>
-          <FormHelperText>We will never share your email.</FormHelperText>
+            {...register("emailId")} 
+            type="email" 
+            id="email-id" 
+            autoComplete="true" 
+            aria-describedby="helper-text-email" />
         </FormControl>
-
-        <FormControl isRequired>
-          <FormLabel>password</FormLabel>
-          <InputGroup>
+        {/* -------password------- */}
+        <div className='flex flex-row justify-between'>
+          <FormControl required>
+            <InputLabel htmlFor="password-id">password</InputLabel>
             <Input 
               {...register('password')}
               type= {show ? 'text' : 'password'}
-              placeholder= 'password'/>
-            <InputRightElement>
-              <Button pr='1.5rem' onClick={handleShow}>
-                {show ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-
-        <Button 
-          type='submit'
-          width='100%'
-          colorScheme="blue"
-          mt='2rem'
-          isLoading = {loading}>
+              id="password-id"
+              autoComplete="true" />
+          </FormControl>
+          <Button variant="outlined" onClick={handleShow}>
+            {show 
+            ? <VisibilityOffIcon className="text-black" color="" titleAccess="hide"/> 
+            : <VisibilityIcon className="text-black" titleAccess="look"/>}
+          </Button>
+        </div>
+        {/* -------submit button------- */}
+        <div className='mb-4'></div>
+        <LoadingButton
+          type='submit' 
+          variant="contained"
+          className='mt-2 text-black font-bold hover:text-white'
+          loading={loader}>
             Sign-in
-        </Button>
-      </VStack>
+        </LoadingButton>
+        {/* -------toast------- */}
+        <SnackbarToast 
+          // key={"key-00"} 
+          message={message} 
+          open={open} 
+          onClose={handleClose} 
+          transition="SlideTransition" 
+          delay={5000} 
+          vertical="bottom" 
+          horizontal="center" 
+          severity={severity} 
+          variant="filled"
+          sx={{ width: '100%' }} 
+          actionNumber={1} 
+        />
+      </Stack>
     </form>
   )
 }
 
-export default Signin
+export default Signin;
