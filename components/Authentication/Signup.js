@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Router from 'next/router';
-import { LoadingButton } from '@mui/lab';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import Router from 'next/router'
+import { LoadingButton } from '@mui/lab'
 import { 
   FormControl, 
   InputLabel, 
@@ -9,25 +9,25 @@ import {
   FormHelperText, 
   Stack, 
   Button 
-} from '@mui/material';
-import SnackbarToast, { setToastVisible } from '../../utils/SnackbarToast.js';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+} from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import SnackbarToast, { setToastVisible } from '../ui/SnackbarToast'
 
 const Signup = () => {
-  const [ showPass, setShowPass ] = useState(false);
-  const [ showConfirmPass, setShowConfirmPass ] = useState(false);
-  const [ open, onOpen ] = useState(false);
-  const [ message, setMessage ] = useState("");
-  const [ severity, setSeverity ] = useState("");
-  const [ loader, setLoader ] = useState(false);
+  const [ showPass, setShowPass ] = useState(false)
+  const [ showConfirmPass, setShowConfirmPass ] = useState(false)
+  const [ open, onOpen ] = useState(false)
+  const [ message, setMessage ] = useState("")
+  const [ severity, setSeverity ] = useState("")
+  const [ loader, setLoader ] = useState(false)
 
-  const [pic, setPic] = useState();
-  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  const [pic, setPic] = useState()
+  const { register, handleSubmit, watch, formState: {errors} } = useForm()
   
-  const handleShowPass = () => setShowPass(!showPass);
-  const handleShowConfirmPass = () => setShowConfirmPass(!showConfirmPass);
-  const handleClose = () => onOpen(false);
+  const handleShowPass = () => setShowPass(!showPass)
+  const handleShowConfirmPass = () => setShowConfirmPass(!showConfirmPass)
+  const handleClose = () => onOpen(false)
 
   const postDetails = (pics) => {
     setLoader(true)
@@ -38,9 +38,9 @@ const Signup = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onOpen
-      });
-      setLoader(false);
-      return;
+      })
+      setLoader(false)
+      return
     }
     if (pics.type === 'image/jpg' || pics.type === 'image/jpeg' || pics.type === 'image/png') {
       const data = new FormData()
@@ -66,13 +66,13 @@ const Signup = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onOpen
-      });
+      })
       setLoader(false)
       return
     }
   }
   const onSubmit = async (data) => {
-    setLoader(true);
+    setLoader(true)
     if (!data.username || !data.emailId || !data.password || !data.confirmPassword) {
       setToastVisible({
         _message: "Please fill all the required fields !", 
@@ -80,9 +80,9 @@ const Signup = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onOpen
-      });
-      setLoader(false);
-      return;
+      })
+      setLoader(false)
+      return
     }
     if (data.password !== data.confirmPassword) {
       setToastVisible({
@@ -91,9 +91,9 @@ const Signup = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onOpen
-      });
-      setLoader(false);
-      return;
+      })
+      setLoader(false)
+      return
     }
     try {
       fetch('/api/user/signup', {
@@ -116,10 +116,10 @@ const Signup = () => {
             setMessage: setMessage, 
             setSeverity: setSeverity, 
             onOpen: onOpen
-          });
-          localStorage.setItem('userInfo', JSON.stringify(response));
-          Router.push('/chats');
-          setLoader(false);
+          })
+          localStorage.setItem('userInfo', JSON.stringify(response))
+          Router.push('/chats')
+          setLoader(false)
         })
     } catch (err) {      
       setToastVisible({
@@ -128,8 +128,8 @@ const Signup = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onOpen
-      });
-      setLoader(false);
+      })
+      setLoader(false)
     }
   }
   return (
@@ -239,4 +239,4 @@ const Signup = () => {
   )
 }
 
-export default Signup;
+export default Signup

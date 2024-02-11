@@ -1,5 +1,5 @@
-import connectToMongoDB from '../utils/connectMongo.js'
 import jwt from 'jsonwebtoken'
+import connectToMongoDB from '../utils/connectMongo.js'
 import User from '../models/users.js'
 
 const AuthMiddleware = (handler) => {

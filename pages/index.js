@@ -1,28 +1,28 @@
-import { useState } from 'react';
-import Head from 'next/head';
-import { Container, Box, Stack, Tab } from '@mui/material/';
-import { TabContext, TabList, TabPanel } from '@mui/lab/';
+import { useState } from 'react'
+import Head from 'next/head'
+import { Container, Box, Stack, Tab } from '@mui/material/'
+import { TabContext, TabList, TabPanel } from '@mui/lab/'
 
-import homeStyles from '../styles/Home.module.css';
-import Signin from '../components/Authentication/Signin.js';
-import Signup from '../components/Authentication/Signup.js';
+import homeStyles from '../styles/Home.module.css'
+import Signin from '../components/authentication/Signin'
+import Signup from '../components/authentication/Signup'
 
 const Home = () => {
   /* @dev:: [DISCARDED CODE BELOW ⚰️] below doesn't work when put inside 
   useEffect(), actually later realized I should keep it outside useEffect() 
   and it works then but then realized why not to handle it in ChatProvider.js
   // useEffect(() => {
-  //   const { user } = chatState();
+  //   const { user } = chatState()
   //   if(user) {
-  //     router.push('/chats');
+  //     router.push('/chats')
   //   }
-  // }, [router]); */
+  // }, [router]) */
 
-  const [value, setValue] = useState('2');
+  const [value, setValue] = useState('2')
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
   return (
     <div className={homeStyles.container}>
       <Head>
@@ -61,4 +61,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Home

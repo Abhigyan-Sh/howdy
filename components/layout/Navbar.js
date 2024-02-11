@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Input } from '@mui/base/Input'
 import SearchIcon from '@mui/icons-material/Search'
 import Person3Icon from '@mui/icons-material/Person3'
-import { Stack, Divider, Button, Menu, MenuItem } from '@mui/material'
+import { Button, Menu, MenuItem } from '@mui/material'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
-import Avatar from '../../components/Avatar'
-import CustomSearch from '../CustomSearch'
-import ProfileModal from '../ProfileModal'
 import { chatState } from '../../context/ChatProvider'
+import Avatar from '../../components/ui/Avatar'
+import ProfileModal from '../widgets/Modal'
+import SideDrawer from '../layout/SideDrawer'
+import UserSearchAndSelect from '../UserSearchAndSelect'
 
 const Navbar = () => {
   const router = useRouter()
-  const { user, setUser } = chatState()
+  const { user } = chatState()
   /* -------dropdown------- */ 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -27,32 +27,36 @@ const Navbar = () => {
   const handleModal = () => 
     closeModal(true)
 
+  /* -------drawer------- */ 
+  const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
+  const [searchFocused, setSearchFocused ] = useState(false)
+  const handleDrawer = () => {
+    setSearchFocused(!searchFocused) // set or remove autoFocus from search Input when SideDrawer is opened
+    setIsDrawerOpen(!isDrawerOpen)
+  }
   const logoutHandler = () => {
     localStorage.removeItem("userInfo")
     router.push('/')
   }
   return (
     <>
-      <Stack 
-        className='w-full h-14 px-6 bg-zinc-200' 
-        direction="row" 
-        justifyContent="space-between" 
-        alignItems="center" 
-        divider={<Divider orientation="horizontal" flexItem />} 
-        spacing={2}
-      >
+      <div className='w-full h-14 px-6 bg-zinc-200 flex flex-row justify-between items-center gap-2'>
         <div className='flex flex-row justify-between items-center w-6/12'>
-          <CustomSearch 
-            placeholder="Search for a friend.." 
-            override={"font-bold text-neutral-800"} />
-            
+          {/* Friend Search Button and Application Name */}
+          <button 
+            className='flex flex-row bg-rose-80 justify-between items-center p-2 gap-2 border border-gray-400 rounded-lg font-bold text-neutral-700'
+            onClick={handleDrawer}>
+              <SearchIcon />
+              <p>Search for a friend..</p>
+          </button>
+          {/* Application Name */}
           <p className='text-xl font-bold text-gray-800'>howdy</p>
         </div>
-
+        {/* Notification Bell and Profile Icon */}
         <div className='flex flex-row justify-between items-center gap-2'>
-          {/* -------notifications------- */}
+          {/* -------Notification Bell------- */}
           notification bell
-          {/* -------account button------- */}
+          {/* -------Profile Icon------- */}
           <Button
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
@@ -87,11 +91,11 @@ const Navbar = () => {
             </MenuItem>
           </Menu>
         </div>
-      </Stack>
-      {/* -------modal------- */}
+      </div>
+      {/* -------Modal------- */}
       {isOpen && (
         <ProfileModal onClose={() => closeModal(false)}>
-          {/* Profile name */}
+          {/* Profile Name */}
           <h1 className="inline-block text-center text-3xl">
             {user.username}</h1>
           {/* Profile Photo */}
@@ -101,12 +105,20 @@ const Navbar = () => {
             height={150}
             alt="your profile pic" 
           />
-          {/* Profile email */}
+          {/* Profile Email */}
           <div>
             <p><span className='font-bold'>Email: </span>{user.email}</p>
           </div>
         </ProfileModal>
       )}
+      {/* -------SideDrawer------- */}
+      <SideDrawer 
+        isOpen={isDrawerOpen} 
+        setIsOpen={handleDrawer} 
+        header="Search for a friend.." 
+      >
+        <UserSearchAndSelect searchFocused={searchFocused} setIsOpen={handleDrawer} />
+      </SideDrawer>
     </>
   )
 }

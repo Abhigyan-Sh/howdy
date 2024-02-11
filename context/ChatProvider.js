@@ -1,31 +1,40 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { createContext, useContext, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-const ChatContext = createContext();
+const ChatContext = createContext()
 
 const ChatProvider = ({children}) => {
-    const router = useRouter();
-    const [ user, setUser ] = useState(null);
+    const router = useRouter()
+    const [ user, setUser ] = useState(null)
+    const [ chats, setChats ] = useState([])
+    const [ selectedChat, setSelectedChat ] = useState(null)
     useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        setUser(userInfo);
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        setUser(userInfo)
         if(!userInfo) {
-            router.push('/');
+            router.push('/')
         }
         else if(router.pathname === '/') {
-            router.push('/chats');
+            router.push('/chats')
         }
-    }, [router]);
+    }, [router])
     return (
-        <ChatContext.Provider value = {{ user, setUser }}>
+        <ChatContext.Provider value = {{ 
+            user, 
+            setUser, 
+            chats, 
+            setChats, 
+            selectedChat, 
+            setSelectedChat 
+        }}>
             {children}
         </ChatContext.Provider>
     )
 }
 
 const chatState = () => {
-    return useContext(ChatContext);
+    return useContext(ChatContext)
 }
 
-export { ChatProvider, chatState };
-export default ChatProvider;
+export { ChatProvider, chatState }
+export default ChatProvider

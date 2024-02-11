@@ -1,32 +1,32 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Router from 'next/router';
-import { LoadingButton } from '@mui/lab';
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import Router from 'next/router'
+import { LoadingButton } from '@mui/lab'
 import { 
   FormControl, 
   InputLabel, 
   Input, 
   Stack, 
   Button 
-} from '@mui/material';
-import SnackbarToast, { setToastVisible } from '../../utils/SnackbarToast.js';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+} from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import SnackbarToast, { setToastVisible } from '../ui/SnackbarToast'
 
 const Signin = () => {
-  const [ show, setShow ] = useState(false);
-  const [ loader, setLoader ] = useState(false);
-  const [ message, setMessage ] = useState("");
-  const [ open, onClose ] = useState(false);
-  const [ severity, setSeverity ] = useState("");
+  const [ show, setShow ] = useState(false)
+  const [ loader, setLoader ] = useState(false)
+  const [ message, setMessage ] = useState("")
+  const [ open, onClose ] = useState(false)
+  const [ severity, setSeverity ] = useState("")
 
-  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  const { register, handleSubmit, watch, formState: {errors} } = useForm()
   
-  const handleShow = () => setShow(!show);
-  const handleClose = () => onClose(false);
+  const handleShow = () => setShow(!show)
+  const handleClose = () => onClose(false)
 
   const onSubmit = async (data) => {
-    setLoader(true);
+    setLoader(true)
     if (!data.emailId || !data.password) {
       setToastVisible({
         _message: "Please fill in all the fields !", 
@@ -34,9 +34,9 @@ const Signin = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onClose
-      });
-      setLoader(false);
-      return;
+      })
+      setLoader(false)
+      return
     }
     try {
       // const user = await axios.post(
@@ -64,7 +64,7 @@ const Signin = () => {
               setMessage: setMessage, 
               setSeverity: setSeverity, 
               onOpen: onClose
-            });
+            })
           } else if (response.statusCode === 200) {
             setToastVisible({
               _message: "Login Successful", 
@@ -72,12 +72,12 @@ const Signin = () => {
               setMessage: setMessage, 
               setSeverity: setSeverity, 
               onOpen: onClose
-            });
-            localStorage.setItem('userInfo', JSON.stringify(response));
-            Router.push('/chats');
+            })
+            localStorage.setItem('userInfo', JSON.stringify(response))
+            Router.push('/chats')
           }
           setLoader(false)
-        });
+        })
     } catch (err) {
       setToastVisible({
         _message: "Error Occurred ! " + err.response.data.message, 
@@ -85,8 +85,8 @@ const Signin = () => {
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onClose
-      });
-      setLoader(false);
+      })
+      setLoader(false)
     }
   }
   return (
@@ -147,4 +147,4 @@ const Signin = () => {
   )
 }
 
-export default Signin;
+export default Signin
