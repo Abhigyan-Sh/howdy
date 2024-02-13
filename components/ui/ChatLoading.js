@@ -1,12 +1,12 @@
 import React from 'react'
 
-const ChatLoading = () => {
+const ChatLoading = ({count}) => {
   return (
     <div 
       role="status" 
       className="p-2 mt-6 space-y-4 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 dark:border-gray-700"
     >
-      {[...Array(4)].map((_, index) => (
+      {[...Array(count)].map((_, index) => (
         <div key={index} className="flex items-center justify-start pt-6">
           <div className="h-6 w-6 bg-gray-300 rounded-full dark:bg-gray-600 mr-4"></div>
           <div>

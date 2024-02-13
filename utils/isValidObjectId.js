@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb'
 
 const isValidObjectId = (id) => {
-    return ObjectId.isValid(id);
+    return ObjectId.isValid(id)
 }
-export default isValidObjectId;
+export default isValidObjectId

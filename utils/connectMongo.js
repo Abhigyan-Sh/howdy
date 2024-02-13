@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-const connection_string = process.env.CONNECTION_STRING;
+import mongoose from 'mongoose'
+const connection_string = process.env.CONNECTION_STRING
 
 const connectToMongoDB = () => {
   mongoose.connect(connection_string)
@@ -11,4 +11,4 @@ const connectToMongoDB = () => {
   })
 }
 
-export default connectToMongoDB;
+export default connectToMongoDB

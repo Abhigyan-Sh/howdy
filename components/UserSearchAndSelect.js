@@ -109,7 +109,7 @@ const UserSearchAndSelect = ({searchFocused, setIsOpen}) => {
         onChange={handleSearch} />
 
         {isLoading ? (
-          <ChatLoading />
+          <ChatLoading count={4} />
         ) : (
           <div className="divide-y divide-dashed mt-6">
             {searchResult?.map((searchedUser, index) => (

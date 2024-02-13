@@ -44,7 +44,7 @@ const accessChat = async (req, res) => {
     if (isChat.length > 0) {
       res.send(isChat[0])
     } else {
-      const chatNameField = await User.findOne({ _id: userId }, {username : 1});
+      const chatNameField = await User.findOne({ _id: userId }, {username : 1})
       if(!chatNameField) {
         return res.status(400).json({
           status: 'error',
@@ -71,22 +71,35 @@ const accessChat = async (req, res) => {
       }
     }
   }
-  // if (method === 'GET') {}
 }
 
 const fetchChats = async (req, res) => {
   try {
     const { method } = req
     if (method === 'GET') {
-      Chat.find({ users: { $elemMatch: { $eq: req.user._id } }})
-        // .populate('users', 'password') // will get me just password populated
+      let chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } }})
         .populate('users', '-password')
-        .then(async (data) => {
-          await res.send(data)})
+        .populate('groupAdmin', '-password')
+        .populate({
+          path: 'latestMessage',
+          options: { 
+            // Specify 'retainNullValues' to true to keep null/undefined values
+            retainNullValues: true 
+          }
+        })
+        .sort({ updatedAt: -1 })
+
+      // Populating the sender details in the 'latestMessage' field
+      chats = await User.populate(chats, {
+        path: 'latestMessage.sender',
+        select: 'username pic email'
+      });
+      res.status(200).json({ statusCode: 200, data: chats })
     }
   } catch (err) {
-    res.status(400)
-    throw new Error(err.message)
+    /* @dev::If an error occurs during the fetch operation or while processing the 
+    response then set status to indicate an error occurred (not necessarily 500) */
+    res.status(500).json({ statusCode: 500, error: err.message })
   }
 }
 

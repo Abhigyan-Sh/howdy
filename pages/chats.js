@@ -5,10 +5,10 @@ import MyChats from '../components/MyChats'
 import ChatBox from '../components/ChatBox'
 
 const Chats = () => {
-  const { user, setUser } = chatState()
+  const { user } = chatState()
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-screen overflow-auto no-scrollbar">
       {user && <Navbar/>}
       <div className='w-full h-[91.5vh] relative'>
         {/* -------background image------- */}
