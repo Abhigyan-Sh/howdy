@@ -20,4 +20,4 @@ const renameGroup = async (req, res) => {
   }
 }
 export default renameGroup
-// @dev:: name already matches the previous name
+// @dev:: make it such that it tells if name already matches the previous name

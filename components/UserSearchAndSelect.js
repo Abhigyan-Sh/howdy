@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { chatState } from '../context/ChatProvider'
+import { searchUser } from '../utils/searchUser'
 import SnackbarToast, { setToastVisible }  from './ui/SnackbarToast'
 import UserListItem from './ui/UserListItem'
 import CustomSearch from './ui/CustomSearch'
 import ChatLoading from './ui/ChatLoading'
 
-const UserSearchAndSelect = ({searchFocused, setIsOpen}) => {
+const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
   /* -------search------- */
   const { user, chats, setChats, selectedChat, setSelectedChat } = chatState()
   const [ search, setSearch ] = useState('')
@@ -35,36 +36,15 @@ const UserSearchAndSelect = ({searchFocused, setIsOpen}) => {
     }
 
     setTypingTimeout(setTimeout(() => {
-      fetch(`/api/user/${search}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${user.token}`
-        }
+      searchUser({ 
+        user, 
+        search, 
+        setMessage, 
+        setSeverity, 
+        onToastClose, 
+        setSearchResult, 
+        setLoading
       })
-        .then(data => data.json())
-        .then(response => {
-          if (response.status === 401) {
-            setToastVisible({
-              _message: "Unauthorized Request: " + response.message, 
-              _severity: "error", 
-              setMessage: setMessage, 
-              setSeverity: setSeverity, 
-              onOpen: onToastClose
-            })
-          } else if (response.statusCode === 200) {
-            setSearchResult(response.users)
-          }
-        })
-        .catch(error => {
-          setToastVisible({
-            _message: "Error Occurred! " + error.message, 
-            _severity: "error", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
-          })
-        })
-      setLoading(false)
     }, 300)) // delay between last keypress and search performed using API (in milliseconds)
   }
   const handleChatClick = (userId) => {
@@ -126,7 +106,7 @@ const UserSearchAndSelect = ({searchFocused, setIsOpen}) => {
             )}
           </div>
         )}
-      {/* -------toast------- */}
+      {/* -------Toast------- */}
       <SnackbarToast 
         // key={"key-00"} 
         message={message} 

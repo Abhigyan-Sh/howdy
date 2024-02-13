@@ -99,8 +99,7 @@ const Signin = () => {
             {...register("emailId")} 
             type="email" 
             id="email-id" 
-            autoComplete="true" 
-            aria-describedby="helper-text-email" />
+            autoComplete="true" />
         </FormControl>
         {/* -------password------- */}
         <div className='flex flex-row justify-between'>

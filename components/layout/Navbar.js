@@ -94,7 +94,7 @@ const Navbar = () => {
       </div>
       {/* -------Modal------- */}
       {isOpen && (
-        <ProfileModal onClose={() => closeModal(false)}>
+        <ProfileModal onClose={() => closeModal(false)} modalOverlay={true}>
           {/* Profile Name */}
           <h1 className="inline-block text-center text-3xl">
             {user.username}</h1>
