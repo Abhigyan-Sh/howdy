@@ -6,6 +6,7 @@ import { Button, Menu, MenuItem } from '@mui/material'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import { chatState } from '../../context/ChatProvider'
+import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
 import Avatar from '../../components/ui/Avatar'
 import ProfileModal from '../widgets/Modal'
 import SideDrawer from '../layout/SideDrawer'
@@ -33,10 +34,6 @@ const Navbar = () => {
   const handleDrawer = () => {
     setSearchFocused(!searchFocused) // set or remove autoFocus from search Input when SideDrawer is opened
     setIsDrawerOpen(!isDrawerOpen)
-  }
-  const logoutHandler = () => {
-    localStorage.removeItem("userInfo")
-    router.push('/')
   }
   return (
     <>
@@ -85,7 +82,7 @@ const Navbar = () => {
             <MenuItem onClick={
               () => {
                 handleClose()
-                logoutHandler()
+                removeUserInfoAndRedirect(router)
               }}>
                 Logout
             </MenuItem>
@@ -94,7 +91,12 @@ const Navbar = () => {
       </div>
       {/* -------Modal------- */}
       {isOpen && (
-        <ProfileModal onClose={() => closeModal(false)} modalOverlay={true}>
+        <ProfileModal 
+          onClose={() => closeModal(false)} 
+          modalOverlay={true} 
+          w='w-4/12' 
+          // h='h-3/6' 
+        >
           {/* Profile Name */}
           <h1 className="inline-block text-center text-3xl">
             {user.username}</h1>

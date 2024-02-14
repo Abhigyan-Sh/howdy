@@ -17,8 +17,9 @@ const Chats = () => {
           alt="Background Image" 
           layout="fill" // fill entire parent container
           objectFit="cover" // cover entire parent container
-          quality={100} 
+          quality={60} 
           className="z-0" // ensure the background image is behind other content
+          loading="lazy" 
         />
         {/* -------Optional: Overlay for background image------- */}
         <div className='absolute inset-0 bg-opacity-50 bg-gray-800'></div>

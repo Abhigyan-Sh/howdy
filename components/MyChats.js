@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa'
+import { useRouter } from 'next/router'
 import { chatState } from '../context/ChatProvider'
+import { removeUserInfoAndRedirect } from '../utils/removeUserInfoAndRedirect'
 import ChatLoading from './ui/ChatLoading'
 import SnackbarToast, { setToastVisible }  from './ui/SnackbarToast'
 import ChatListItem from './ui/ChatListItem'
@@ -8,6 +10,7 @@ import GroupChatModal from '../components/widgets/Modal'
 import GroupChatForm from '../components/GroupChatForm'
 
 const MyChats = ({ fetchAgain }) => {
+  const router = useRouter()
   const { user, chats, setChats, selectedChat, setSelectedChat } = chatState()
   const [ loading, setLoading ] = useState(false)
 
@@ -43,6 +46,7 @@ const MyChats = ({ fetchAgain }) => {
           setSeverity: setSeverity, 
           onOpen: onToastClose
         })
+        removeUserInfoAndRedirect(router)
         throw new Error(response.statusText)
       }
       return response.json() // return the promise
@@ -104,10 +108,16 @@ const MyChats = ({ fetchAgain }) => {
         </div>
       </div>
       {/* -------GroupChatModal------- */}
-      {/* @dev */}
-      {true && (
-        <GroupChatModal onClose={handleGroupChatModal} header="Create Group Chat" modalOverlay={true} >
-          <GroupChatForm />
+      {isModalOpen && (
+        <GroupChatModal 
+          onClose={handleGroupChatModal} 
+          header="Create Group Chat" 
+          modalOverlay={true} 
+          w='w-5/12' 
+          h='h-5/6' 
+          px='px-8'
+        >
+          <GroupChatForm onClose={handleGroupChatModal} />
         </GroupChatModal>
       )}
       {/* -------toast------- */}

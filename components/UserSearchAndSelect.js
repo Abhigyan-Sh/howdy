@@ -51,8 +51,8 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
     /* -------Access Chat------- */ 
     try {
       fetch('/api/chat/', {
-        method: 'POST',
-        body: JSON.stringify({ userId }),
+        method: 'POST', 
+        body: JSON.stringify({ userId }), 
         headers: {
           'Content-type': 'application/json; charset=UTF-8', 
           Authorization: `Bearer ${user.token}`
