@@ -169,7 +169,8 @@ const GroupChatForm = ({ onClose }) => {
                 text={selectedUser?.username} 
                 onClick={() => handleDelete(selectedUser)} />
               ))}
-            {selectedUsers.length > numberOfBadgeItem && <p className='font-bold text-xs text-slate-700 mb-1'>...more</p>}
+            {(selectedUsers.length > numberOfBadgeItem) 
+              && <p className='font-bold text-xs text-slate-700 mb-1'>...more</p>}
           </div>
 
           {isLoading ? (
@@ -188,7 +189,7 @@ const GroupChatForm = ({ onClose }) => {
                   key_prop={searchedUser._id} 
                   user={searchedUser} 
                   onClick={() => handleGroup(searchedUser)}
-                  w='w-fit' />
+                  className='w-fit' />
               ))}
               {!searchResult.length && search && (
                 <div className="w-full flex justify-center font-bold text-slate-700 mb-2">
@@ -206,7 +207,11 @@ const GroupChatForm = ({ onClose }) => {
             speedMultiplier={1} 
             aria-label="Loading Spinner" />
         </div>
-        <Button text='Create Chat' className='mt-2' onClick={() => createGroupChat()} />
+        <Button 
+          text='Create Chat' 
+          type='alternative' 
+          className='mt-2' 
+          onClick={() => createGroupChat()} />
       </div>
       {/* -------toast------- */}
       <SnackbarToast
@@ -214,7 +219,6 @@ const GroupChatForm = ({ onClose }) => {
         message={message} 
         open={isToastOpen} 
         onClose={handleToast} 
-        transition="SlideTransition" 
         delay={5000} 
         vertical="bottom" 
         horizontal="center" 

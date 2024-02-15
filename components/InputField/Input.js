@@ -5,9 +5,9 @@ const Input = forwardRef = ( ({}, ref) => { ...ref={ref}... } ) */
 
 /* @dev:: id and {...register()} are required ⚠️ fields */
 
-const Input = forwardRef(({ id, label, icon, ...rest }, ref) => {
+const Input = forwardRef(({ id, label, icon, coverWidth, className, ...rest }, ref) => {
   return (
-    <div className='my-2 w-full block'>
+    <div className={`my-2 block ${coverWidth ? coverWidth : "w-full"}`}>
       {label && (
         <label 
           for={id} 
@@ -32,7 +32,7 @@ const Input = forwardRef(({ id, label, icon, ...rest }, ref) => {
         <input 
           id={id} 
           ref={ref} 
-          className={`bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!icon ? "rounded-lg" : "rounded-none rounded-e-lg"}`} 
+          className={`bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!icon ? "rounded-lg" : "rounded-none rounded-e-lg"} ${className}`} 
           placeholder={
             rest?.placeholder 
             ? rest.placeholder

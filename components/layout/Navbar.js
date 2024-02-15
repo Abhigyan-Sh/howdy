@@ -7,9 +7,9 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
-import Avatar from '../../components/ui/Avatar'
-import ProfileModal from '../widgets/Modal'
 import SideDrawer from '../layout/SideDrawer'
+import ProfileModal from '../widgets/Modal'
+import Profile from '../widgets/Profile'
 import UserSearchAndSelect from '../UserSearchAndSelect'
 
 const Navbar = () => {
@@ -97,20 +97,7 @@ const Navbar = () => {
           w='w-4/12' 
           // h='h-3/6' 
         >
-          {/* Profile Name */}
-          <h1 className="inline-block text-center text-3xl">
-            {user.username}</h1>
-          {/* Profile Photo */}
-          <Avatar
-            src={user.pic}
-            width={150}
-            height={150}
-            alt="your profile pic" 
-          />
-          {/* Profile Email */}
-          <div>
-            <p><span className='font-bold'>Email: </span>{user.email}</p>
-          </div>
+          <Profile user={user} />
         </ProfileModal>
       )}
       {/* -------SideDrawer------- */}

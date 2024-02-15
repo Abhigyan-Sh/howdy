@@ -47,7 +47,9 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
       })
     }, 300)) // delay between last keypress and search performed using API (in milliseconds)
   }
+  console.log(searchResult)
   const handleChatClick = (userId) => {
+    console.log(userId)
     /* -------Access Chat------- */ 
     try {
       fetch('/api/chat/', {
@@ -97,7 +99,7 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
                 key={searchedUser._id}
                 key_prop={searchedUser._id} 
                 user={searchedUser}
-                handleClick={() => handleChatClick(searchedUser._id)} />
+                onClick={() => handleChatClick(searchedUser._id)} />
             ))}
             {!searchResult.length && (
                 <div className="w-full flex justify-center">
@@ -112,7 +114,6 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
         message={message} 
         open={isToastOpen} 
         onClose={handleToast} 
-        transition="SlideTransition" 
         delay={5000} 
         vertical="bottom" 
         horizontal="center" 

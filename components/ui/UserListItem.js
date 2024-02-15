@@ -1,12 +1,12 @@
 import React from 'react'
 import Avatar from './Avatar'
 
-const UserListItem = ({ key_prop, user, onClick, w }) => {
+const UserListItem = ({ key_prop, user, onClick, className }) => {
   return (
     <button 
       key={key_prop} 
       onClick={onClick} 
-      className={`bg-zinc-200 ${w ? w : "w-full"} flex flex-row justify-start items-center gap-3 p-2 rounded-lg my-2 cursor-pointer border-2 border-gray-200 hover:bg-gray-100`}
+      className={`w-full bg-zinc-200 flex flex-row justify-start items-center gap-3 p-2 rounded-lg my-2 cursor-pointer border-2 border-gray-200 hover:bg-gray-100 ${className}`}
     >
       {/* pic */}
       <Avatar 

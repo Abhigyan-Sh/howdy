@@ -80,7 +80,7 @@ const fetchChats = async (req, res) => {
       let chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } }})
         .populate('users', '-password')
         .populate('groupAdmin', '-password')
-        // @dev:: why below part creates issue ??
+        // @dev:: [why below part creates issue ??] 
         // .populate({
         //   path: 'latestMessage',
         //   options: { 

@@ -28,7 +28,7 @@ const Modal = ({ children, onClose, header, modalOverlay, w, h, px }) => {
                   <CloseIcon /> 
               </button>
           </div>
-          <div className={`flex flex-col justify-between items-center gap-5 ${px} w-full h-full`}>
+          <div className={`relative flex flex-col justify-between items-center gap-5 ${px} w-full h-full`}>
             {header && <p className='text-2xl text-slate-900 font-bold'>
               {header} </p>}
             {children}

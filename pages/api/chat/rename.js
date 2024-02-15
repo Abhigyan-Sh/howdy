@@ -10,14 +10,13 @@ const renameGroup = async (req, res) => {
       // you can put a check that chatName shouldn't be the same as previous
       // also wrap with authMiddleware
       if (!chatId || !chatName) {
-        return res.status(400).send('Invalid request !')
+        return res.status(400).json({ statusCode: 400, error: "Invalid request !" })
       }
       await Chat.findByIdAndUpdate(chatId, {chatName})
-      res.status(200).send(`Chat has been renamed to ${chatName}`)
+      res.status(200).json({ statusCode: 200, data: `Chat has been renamed to ${chatName}` })
     } catch (err) {
-      res.status(500).send(err.message)
+      res.status(500).json({ statusCode: 500, error: err.message })
     }
   }
 }
 export default renameGroup
-// @dev:: make it such that it tells if name already matches the previous name

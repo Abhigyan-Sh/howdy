@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Image from 'next/image'
 import { chatState } from '../context/ChatProvider'
 import Navbar from '../components/layout/Navbar'
@@ -6,7 +7,10 @@ import ChatBox from '../components/ChatBox'
 
 const Chats = () => {
   const { user } = chatState()
-
+  /* @dev:: value is made to toggle between true and false where a  
+  toggle indicates that chats need to be fetched again from database */
+  const [ fetchAgain, setFetchAgain ] = useState(false)
+  
   return (
     <div className="relative w-full h-screen overflow-auto no-scrollbar">
       {user && <Navbar/>}
@@ -26,10 +30,10 @@ const Chats = () => {
         {/* Other content: Chats */}
         <div className='w-full h-full flex flex-row items-center justify-between bg-transparent relative'>
           <div className='w-4/12 h-full flex flex-row items-center justify-center p-4 pr-2'>
-            {user && <MyChats/>}
+            {user && <MyChats fetchAgain={fetchAgain} />}
           </div>
           <div className='w-8/12 h-full flex flex-row items-center justify-center p-4 pl-2'>
-            {user && <ChatBox/>}
+            {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
           </div>
         </div>
       </div>

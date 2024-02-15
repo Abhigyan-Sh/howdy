@@ -132,7 +132,6 @@ const Signin = () => {
           message={message} 
           open={open} 
           onClose={handleClose} 
-          transition="SlideTransition" 
           delay={5000} 
           vertical="bottom" 
           horizontal="center" 

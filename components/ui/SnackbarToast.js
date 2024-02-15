@@ -1,6 +1,6 @@
-import React from 'react';
-import { Snackbar, Alert, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import React from 'react'
+import { Snackbar, Alert, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 
 const action_1 = (onClose) => (
   <React.Fragment>
@@ -20,7 +20,6 @@ const SnackbarToast = ( {
     message, 
     open, 
     onClose, 
-    transition, 
     delay, 
     vertical, 
     horizontal, 
@@ -35,7 +34,6 @@ const SnackbarToast = ( {
       // message="Please Select an Image!"
       open={open}
       onClose={onClose}
-      TransitionComponent={transition}
       autoHideDuration={delay}
       anchorOrigin={{ vertical, horizontal }}
       action={
@@ -53,11 +51,11 @@ const SnackbarToast = ( {
   )
 }
 
-const setToastVisible = ({_message, _severity, setMessage, setSeverity, onOpen}) => {
-  setMessage(_message);
-  setSeverity(_severity);
-  onOpen(true);
+const setToastVisible = ({ _message, _severity, setMessage, setSeverity, onOpen }) => {
+  setMessage(_message)
+  setSeverity(_severity)
+  onOpen(true)
 }
 
-export { setToastVisible };
-export default SnackbarToast;
+export { setToastVisible }
+export default SnackbarToast

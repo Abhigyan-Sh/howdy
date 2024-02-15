@@ -44,4 +44,5 @@ const createGroupChat = async (req, res) => {
     throw new Error(error.message)
   }
 }
+
 export default authMiddleware(createGroupChat)
