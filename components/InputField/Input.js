@@ -5,9 +5,9 @@ const Input = forwardRef = ( ({}, ref) => { ...ref={ref}... } ) */
 
 /* @dev:: id and {...register()} are required ⚠️ fields */
 
-const Input = forwardRef(({ id, label, icon, coverWidth, className, ...rest }, ref) => {
+const Input = forwardRef(({ id, label, icon, coverClass, className, ...rest }, ref) => {
   return (
-    <div className={`my-2 block ${coverWidth ? coverWidth : "w-full"}`}>
+    <div className={`block ${coverClass}`}>
       {label && (
         <label 
           for={id} 

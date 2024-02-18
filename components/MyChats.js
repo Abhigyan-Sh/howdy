@@ -80,8 +80,6 @@ const MyChats = ({ fetchAgain }) => {
   useEffect(() => {
     fetchChats()
   }, [fetchAgain])
-  // @dev:: [to remove] added for ease while development
-  setSelectedChat(chats[0])
   return (
     <>
       <div className='w-full h-full p-4 bg-white bg-opacity-80 rounded-lg border-2 border-zinc-400'>

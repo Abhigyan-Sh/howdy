@@ -13,31 +13,31 @@ const sendMessage = async (req, res) => {
   channel are taken-out from DB) or create messages(each message will have 
   chatId, chatId which is unique to a channel or group) */
   if(method === 'POST') {
+    if (!content || !chat) {
+      return res.status(400).json({statusCode: 400, error: 'Invalid request'})
+    }
     try {
-      if (!content || !chat) {
-        return res.status(400).send('Invalid request')
-      }
       // send the message to database
       const message = await Message.create({
         sender: req.user._id,
         content, 
         chat
       })
-      /* @dev:: whats happening in code below ??
+      /* @dev:: explained below code ??
       although construct fullMessage (message + username + pic) and display it in chat 
       of user who sent it but also update the Chat collection for latestMessage */ 
       let fullMessage = await Message.findById(message._id)
         .populate('chat')
+        .populate('sender', 'username pic')
         // .populate('chat', 'users')
       fullMessage = await User.populate(fullMessage, {
         path: 'chat.users',
-        select: 'username pic'
+        select: 'username pic email'
       })
       await Chat.findByIdAndUpdate(chat, { latestMessage: fullMessage })
-      res.status(201).send(fullMessage)
+      res.status(201).json({statusCode: 201, message: fullMessage})
     } catch(error) {
-      res.status(500)
-        .send(error.message)
+      res.status(500).json({statusCode: 500, error: error.message})
     }
   }
 }

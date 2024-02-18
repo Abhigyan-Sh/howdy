@@ -58,6 +58,16 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
       ))
   }
   const updateGroupChatName = () => {
+    if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
+      setToastVisible({
+        _message: "Only Admin can modify chat name", 
+        _severity: "info", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onToastClose
+      })
+      return
+    }
     if (!groupChatName || !selectedUsers) {
       setToastVisible({
         _message: "Please provide all the Fields", 
@@ -122,6 +132,16 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
     })
   }
   const handleSearch = (e) => {
+    if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
+      setToastVisible({
+        _message: "Only Admin can add other members", 
+        _severity: "info", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onToastClose
+      })
+      return
+    }
     setLoading(true)
     setSearch(e.target.value)
 
@@ -140,11 +160,11 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
       })
     }, 300)) // delay between last keypress and search performed using API (in milliseconds)
   }
-  const updateUsers = () => {
-    if (selectedUsers.length < 3) {
+  const updateUsers = (verifyForAdmin, updatedSelectedUsers) => {
+    if(verifyForAdmin && !isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
       setToastVisible({
-        _message: "More than 2 users are required to form a group chat", 
-        _severity: "warning", 
+        _message: "Only Admin can add other members", 
+        _severity: "info", 
         setMessage: setMessage, 
         setSeverity: setSeverity, 
         onOpen: onToastClose
@@ -154,13 +174,13 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
     setSearch('')
     setSearchResults([])
     setSpinner(true)
-      
+    
     return new Promise((resolve, reject) => {
       fetch('/api/chat/updatemembers', {
         method: 'PUT',
         body: JSON.stringify({
           "chatId": chatGroup?._id, 
-          "userIds": extractIds(selectedUsers)
+          "userIds": updatedSelectedUsers ? extractIds(updatedSelectedUsers) : extractIds(selectedUsers)
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -205,6 +225,16 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
     })
   }
   const handleGroup = (userToAdd) => {
+    if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
+      setToastVisible({
+        _message: "Only Admin can add other members", 
+        _severity: "info", 
+        setMessage: setMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onToastClose
+      })
+      return
+    }
     if(selectedUsers.includes(userToAdd)) {
       setToastVisible({
         _message: "User has been added already", 
@@ -217,7 +247,22 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
     }
     setSelectedUsers([userToAdd, ...selectedUsers])
   }
-  const leaveGroup = () => {}
+  const leaveGroup = () => {
+    /* @dev: as in React, state updates via useState() setters are asynchronously applied 
+    only after the current function completes its execution and in cases where you expect its 
+    updated state to be used within same function then you find that its not been updated yet and 
+    that causes problem and so there are three possible workarounds to it:
+      1) useEffect() , here it can't be used though
+      2) pass in as parameter to the f(n) directly [using this one]
+      3) use a callback inside setter function [didn't work]
+        // setSelectedUsers(prevSelectedUsers => (
+          // prevSelectedUsers.filter((chatMember) => (chatMember._id !== user._id))
+        // )) */
+    const updatedSelectedUsers = selectedUsers.filter((chatMember) => (chatMember._id !== user._id))
+    setSelectedUsers(updatedSelectedUsers)
+    updateUsers(false, updatedSelectedUsers)
+    handleToast()
+  }
   return (
     <>
       <p className='text-2xl font-semibold'>{chatGroup?.chatName}</p>
@@ -239,7 +284,8 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
             id="groupName-id" 
             type="text" 
             placeholder="modify Chat name" 
-            coverWidth="w-4/6" 
+            coverClass="w-4/6" 
+            // coverWidth="w-4/6" 
             value={groupChatName} 
             onChange={(e) => {setGroupChatName(e.target.value)}} />
           <Button 
@@ -253,12 +299,13 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
             type="text" 
             icon={true} 
             placeholder="add Another user to group" 
-            coverWidth="w-4/6" 
+            coverClass="w-4/6" 
+            // coverWidth="w-4/6" 
             value={search} 
             onChange={handleSearch} />
           <Button 
             text="update users" 
-            onClick={updateUsers} 
+            onClick={() => updateUsers(true)} 
             type="success" 
             className="w-2/6" />
         </div>
