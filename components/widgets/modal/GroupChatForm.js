@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
-import { chatState } from '../context/ChatProvider'
-import { searchUser } from '../utils/searchUser'
-import Input from '../components/InputField/Input'
-import Button from '../components/Button'
-import { setToastVisible }  from '../components/ui/SnackbarToast'
-import UserListItem from './ui/UserListItem'
-import UserBadgeItem from './ui/UserBadgeItem'
-import SnackbarToast from './ui/SnackbarToast'
-import ChatLoading from './ui/ChatLoading'
+import { chatState } from '../../../context/ChatProvider'
+import { searchUser } from '../../../utils/searchUser'
+import Input from '../../elements/Input'
+import Button from '../../elements/Button'
+import { setToastVisible }  from '../SnackbarToast'
+import UserListItem from '../../elements/list/UserListItem'
+import UserBadgeItem from '../../ui/UserBadgeItem'
+import SnackbarToast from '../SnackbarToast'
+import ChatLoading from '../ChatLoading'
 
 const GroupChatForm = ({ onClose }) => {
   const { user, chats, setChats } = chatState()
@@ -165,6 +165,7 @@ const GroupChatForm = ({ onClose }) => {
             {selectedUsers.slice(0, numberOfBadgeItem).map((selectedUser, index) => (
               <UserBadgeItem 
                 key={index + selectedUser?._id} 
+                key_prop={index + selectedUser?._id}
                 index={index} 
                 text={selectedUser?.username} 
                 onClick={() => handleDelete(selectedUser)} />

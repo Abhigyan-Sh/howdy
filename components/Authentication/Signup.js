@@ -12,9 +12,12 @@ import {
 } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import SnackbarToast, { setToastVisible } from '../ui/SnackbarToast'
+import SnackbarToast, { setToastVisible } from '../widgets/SnackbarToast'
 
 const Signup = () => {
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+
   const [ showPass, setShowPass ] = useState(false)
   const [ showConfirmPass, setShowConfirmPass ] = useState(false)
   const [ open, onOpen ] = useState(false)
@@ -45,9 +48,9 @@ const Signup = () => {
     if (pics.type === 'image/jpg' || pics.type === 'image/jpeg' || pics.type === 'image/png') {
       const data = new FormData()
       data.append('file', pics)
-      data.append('upload_preset', 'howdie')
-      data.append('cloud_name', 'dfgh07xa9')
-      fetch('https://api.cloudinary.com/v1_1/dfgh07xa9/image/upload', {
+      data.append('upload_preset', uploadPreset)
+      data.append('cloud_name', cloudName)
+      fetch('https://api.cloudinary.com/v1_1/'+ cloudName +'/image/upload', {
         method: 'post',
         body: data,
       })
@@ -56,8 +59,8 @@ const Signup = () => {
           setPic(data.url.toString())
           setLoader(false)
         })
-        .catch((err) => {
-          console.log(err)
+        .catch((error) => {
+          console.log(error)
         })
     } else {
       setToastVisible({

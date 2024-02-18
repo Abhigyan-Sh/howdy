@@ -6,13 +6,13 @@ import { FiSend } from "react-icons/fi"
 import ClipLoader from 'react-spinners/ClipLoader'
 import { chatState } from '../context/ChatProvider'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
-import SnackbarToast, { setToastVisible }  from '../components/ui/SnackbarToast'
-import ScrollableChat from '../components/ScrollableChat'
-import Input from '../components/InputField/Input'
-import Button from '../components/Button'
+import SnackbarToast, { setToastVisible }  from '../components/widgets/SnackbarToast'
+import ScrollableChat from './miscellaneous/ScrollableChat'
+import Input from './elements/Input'
+import Button from './elements/Button'
 import ChatInfoModal from './widgets/Modal'
-import Profile from './widgets/Profile'
-import GroupChatInfo from './widgets/GroupChatInfo'
+import Profile from './widgets/modal/Profile'
+import GroupChatInfo from './widgets/modal/GroupChatInfo'
 
 const ChatBox = ( { fetchAgain, setFetchAgain } ) => {
   const { user, selectedChat } = chatState()
@@ -127,7 +127,7 @@ const ChatBox = ( { fetchAgain, setFetchAgain } ) => {
                 icon={!isLoading ? FiSend : ClipLoader}
                 iconProps={{
                   color: "white", 
-                  loading: isLoading, 
+                  loading: isLoading ? "true" : "false", 
                   size: 20
                 }}
                 className='h-full rounded-l-none' />

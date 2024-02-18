@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import SnackbarToast, { setToastVisible } from '../ui/SnackbarToast'
+import SnackbarToast, { setToastVisible } from '../widgets/SnackbarToast'
 
 const Signin = () => {
   const [ show, setShow ] = useState(false)

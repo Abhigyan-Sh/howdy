@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
-import { chatState } from '../context/ChatProvider'
-import { formatUpdatedAt } from '../utils/formatUpdatedAt'
-import { isSentByLoggedInUser, isConsecutiveSender } from '../utils/chatLogics'
-import { setToastVisible } from '../components/ui/SnackbarToast'
-import Message from './Message'
+import { chatState } from '../../context/ChatProvider'
+import { formatUpdatedAt } from '../../utils/formatUpdatedAt'
+import { isSentByLoggedInUser, isConsecutiveSender } from '../../utils/chatLogics'
+import { setToastVisible } from '../widgets/SnackbarToast'
+import Message from '../ui/Message'
 
 const ScrollableChat = ({ 
   fetchedMessages, 
@@ -80,6 +80,8 @@ const ScrollableChat = ({
           {fetchedMessages?.map((message, index) => (
             <div className={`w-full flex flex-row items-center ${isSentByLoggedInUser(message, user) ? "justify-end" : "justify-start"} my-3`}>
               <Message 
+                key={message._id + index}
+                key_prop={message._id + index}
                 src={message.sender.pic} 
                 alt="sender's pic" 
                 sender={message.sender.username} 

@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
-import { chatState } from '../../context/ChatProvider'
-import { isAdmin } from '../../utils/isAdmin'
-import { searchUser } from '../../utils/searchUser'
-import { extractIds } from '../../utils/extractIds'
-import Input from '../InputField/Input'
-import Button from '../Button'
-import UserBadgeItem from '../ui/UserBadgeItem'
-import UserListItem from '../ui/UserListItem'
-import ChatLoading from '../ui/ChatLoading'
-import { setToastVisible }  from '../ui/SnackbarToast'
-import SnackbarToast from '../ui/SnackbarToast'
+import { chatState } from '../../../context/ChatProvider'
+import { isAdmin } from '../../../utils/isAdmin'
+import { searchUser } from '../../../utils/searchUser'
+import { extractIds } from '../../../utils/extractIds'
+import Input from '../../elements/Input'
+import Button from '../../elements/Button'
+import UserBadgeItem from '../../ui/UserBadgeItem'
+import UserListItem from '../../elements/list/UserListItem'
+import ChatLoading from '../ChatLoading'
+import SnackbarToast, { setToastVisible }  from '../../widgets/SnackbarToast'
 
 const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   const numberOfBadgeItem = 9
@@ -270,6 +269,7 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
         {selectedUsers.slice(0, numberOfBadgeItem).map((groupMember, index) => (
           <UserBadgeItem 
             key={index + groupMember?._id} 
+            key_prop={index + groupMember?._id} 
             index={index} 
             text={groupMember?.username} 
             onClick={() => handleDelete(groupMember)} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getChatSender } from '../../utils/getChatSender'
+import { getChatSender } from '../../../utils/getChatSender'
 
 const ChatListItem = ({ key_prop, chat, onClick, selectedItem }) => {
   return (

@@ -28,7 +28,7 @@ const Home = () => {
       <Head>
         <title>howdy</title>
         <meta name="description" content="howdy chat application. Connect with people." />
-        <link rel="icon" href="../assets/logo.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       
       <Container className='w-2/6 h-lvh bg-rose-20'>

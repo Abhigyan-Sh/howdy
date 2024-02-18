@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { chatState } from '../context/ChatProvider'
-import { searchUser } from '../utils/searchUser'
-import SnackbarToast, { setToastVisible }  from './ui/SnackbarToast'
-import UserListItem from './ui/UserListItem'
-import CustomSearch from './ui/CustomSearch'
-import ChatLoading from './ui/ChatLoading'
+import { chatState } from '../../context/ChatProvider'
+import { searchUser } from '../../utils/searchUser'
+import SnackbarToast, { setToastVisible }  from '../widgets/SnackbarToast'
+import UserListItem from '../elements/list/UserListItem'
+import CustomSearch from '../elements/CustomSearch'
+import ChatLoading from '../widgets/ChatLoading'
 
 const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
   /* -------search------- */
@@ -13,15 +13,11 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
   const [ searchResult, setSearchResult ] = useState([])
   const [ isLoading, setLoading ] = useState(false)
   const [typingTimeout, setTypingTimeout] = useState(0)
-//   console.log(search)
 
   /* -------toast------- */
   const [ severity, setSeverity ] = useState('')
   const [ message, setMessage ] = useState('')
   const [ isToastOpen, onToastClose ] = useState(false)
-
-//   console.log(selectedChat)
-//   console.log(chats)
   
   const handleToast = () => {
     onToastClose(false)
@@ -47,9 +43,7 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
       })
     }, 300)) // delay between last keypress and search performed using API (in milliseconds)
   }
-  console.log(searchResult)
   const handleChatClick = (userId) => {
-    console.log(userId)
     /* -------Access Chat------- */ 
     try {
       fetch('/api/chat/', {

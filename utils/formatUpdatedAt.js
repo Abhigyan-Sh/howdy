@@ -1,3 +1,6 @@
+/* returns type: string, hours:minutes:seconds
+description: calculates the value of updatedAt or createdAt (returned 
+  form mongoDB) in hours:minutes:seconds */
 export const formatUpdatedAt = (updatedAt) => {
   const date = new Date(updatedAt)
   const hours = date.getHours()

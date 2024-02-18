@@ -9,8 +9,8 @@ import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
 import SideDrawer from '../layout/SideDrawer'
 import ProfileModal from '../widgets/Modal'
-import Profile from '../widgets/Profile'
-import UserSearchAndSelect from '../UserSearchAndSelect'
+import Profile from '../widgets/modal/Profile'
+import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
 
 const Navbar = () => {
   const router = useRouter()

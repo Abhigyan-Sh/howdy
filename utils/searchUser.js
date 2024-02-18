@@ -1,4 +1,4 @@
-import { setToastVisible }  from '../components/ui/SnackbarToast'
+import { setToastVisible }  from '../components/widgets/SnackbarToast'
 
 export const searchUser = ({ 
   user, 

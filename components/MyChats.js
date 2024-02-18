@@ -3,11 +3,11 @@ import { FaPlus } from 'react-icons/fa'
 import { useRouter } from 'next/router'
 import { chatState } from '../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../utils/removeUserInfoAndRedirect'
-import ChatLoading from './ui/ChatLoading'
-import SnackbarToast, { setToastVisible }  from './ui/SnackbarToast'
-import ChatListItem from './ui/ChatListItem'
+import ChatLoading from './widgets/ChatLoading'
+import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
+import ChatListItem from './elements/list/ChatListItem'
 import GroupChatModal from '../components/widgets/Modal'
-import GroupChatForm from '../components/GroupChatForm'
+import GroupChatForm from '../components/widgets/modal/GroupChatForm'
 
 const MyChats = ({ fetchAgain }) => {
   const router = useRouter()

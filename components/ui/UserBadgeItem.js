@@ -1,7 +1,7 @@
 import React from 'react'
 import { IoClose } from 'react-icons/io5'
 
-const UserBadgeItem = ({ key, index, text, onClick }) => {
+const UserBadgeItem = ({ key_prop, index, text, onClick }) => {
   const badgeColors = [
     'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
     'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
@@ -14,7 +14,7 @@ const UserBadgeItem = ({ key, index, text, onClick }) => {
   ]
   return (
     <button 
-      key={key}
+      key={key_prop}
       onClick={onClick}
       className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded ${badgeColors[index % badgeColors.length]} my-1 basis-[10% - 10px] flex flex-row justify-between items-center gap-1 cursor-pointer`}
     >
