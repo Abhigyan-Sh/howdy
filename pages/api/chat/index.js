@@ -81,13 +81,13 @@ const fetchChats = async (req, res) => {
         .populate('users', '-password')
         .populate('groupAdmin', '-password')
         // @dev:: [why below part creates issue ??] 
-        // .populate({
-        //   path: 'latestMessage',
-        //   options: { 
-        //     // Specify 'retainNullValues' to true to keep null/undefined values
-        //     retainNullValues: true 
-        //   }
-        // })
+        .populate({
+          path: 'latestMessage',
+          options: { 
+            // Specify 'retainNullValues' to true to keep null/undefined values
+            retainNullValues: true 
+          }
+        })
         .sort({ updatedAt: -1 })
 
       // Populating the sender details in the 'latestMessage' field
