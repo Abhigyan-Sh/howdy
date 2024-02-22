@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 const ChatContext = createContext()
 
-const ChatProvider = ({children}) => {
+const ChatProvider = ({ children }) => {
     const router = useRouter()
     const [ user, setUser ] = useState(null)
     const [ chats, setChats ] = useState([])

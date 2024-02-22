@@ -25,7 +25,8 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
 
   const handleSearch = (e) => {
     setLoading(true)
-    setSearch(e.target.value)
+    const newSearch = e.target.value
+    setSearch(newSearch)
 
     if (typingTimeout) {
       clearTimeout(typingTimeout)
@@ -34,7 +35,7 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
     setTypingTimeout(setTimeout(() => {
       searchUser({ 
         user, 
-        search, 
+        search : newSearch, 
         setMessage, 
         setSeverity, 
         onToastClose, 

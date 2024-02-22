@@ -4,7 +4,7 @@ import User from '../models/users.js'
 
 const AuthMiddleware = (handler) => {
   return async (req, res) => {
-    // connectToMongoDB()
+    connectToMongoDB()
     // code goes here..
     let token
     if (req.headers.authorization && 

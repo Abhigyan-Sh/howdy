@@ -24,13 +24,12 @@ const ScrollableChat = ({ fetchedMessages, isSpinner }) => {
     }, [fetchedMessages])
     
     return (
-      <>
-        <div ref={containerRef} className='w-full h-[35.5rem] p-2 overflow-y-auto'>
-          {fetchedMessages?.map((message, index) => (
-            <div className={`w-full flex flex-row items-center ${isSentByLoggedInUser(message, user) ? "justify-end" : "justify-start"} my-3`}>
+      <div ref={containerRef} className='w-full h-[35.5rem] p-2 overflow-y-auto'>
+        {fetchedMessages?.map((message, index) => (
+          <div 
+            key={message._id + index}
+            className={`w-full flex flex-row items-center ${isSentByLoggedInUser(message, user) ? "justify-end" : "justify-start"} my-3`}>
               <Message 
-                key={message._id + index}
-                key_prop={message._id + index}
                 src={message.sender.pic} 
                 alt="sender's pic" 
                 sender={message.sender.username} 
@@ -38,17 +37,16 @@ const ScrollableChat = ({ fetchedMessages, isSpinner }) => {
                 content={message.content} 
                 isConsecutiveSender={isConsecutiveSender(fetchedMessages, index)} 
                 isSentByLoggedInUser={isSentByLoggedInUser(message, user)} />
-            </div>
-          ))}
-          <ClimbingBoxLoader 
-            color='#0f172a' 
-            loading={isSpinner} 
-            cssOverride={cssOverride} 
-            size={26} 
-            speedMultiplier={1} 
-            aria-label="Loading Spinner" />
-        </div>
-      </>
+          </div>
+        ))}
+        <ClimbingBoxLoader 
+          color='#0f172a' 
+          loading={isSpinner} 
+          cssOverride={cssOverride} 
+          size={26} 
+          speedMultiplier={1} 
+          aria-label="Loading Spinner" />
+      </div>
     )
 }
 

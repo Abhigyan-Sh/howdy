@@ -142,7 +142,8 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
       return
     }
     setLoading(true)
-    setSearch(e.target.value)
+    const newSearch = e.target.value
+    setSearch(newSearch)
 
     if (typingTimeout) {
       clearTimeout(typingTimeout)
@@ -150,7 +151,7 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
     setTypingTimeout(setTimeout(() => {
       searchUser({ 
         user, 
-        search, 
+        search : newSearch, 
         setMessage, 
         setSeverity, 
         onToastClose, 

@@ -13,7 +13,7 @@ const GetChats = (req, res) => {
 has to be displayed having this user's userId and current logged in user's 
 id but if not there already then create a new chat */ 
 const accessChat = async (req, res) => {
-  // connectToMongoDB()
+  connectToMongoDB()
   const { method, body } = req
   const { userId } = body
   /* @dev:::userId comes from what chat has been clicked 

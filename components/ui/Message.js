@@ -1,9 +1,16 @@
 
 
-const Message = ({ key_prop, src, alt, className, sender, time, content, isConsecutiveSender, isSentByLoggedInUser }) => (
-  <div 
-    key={key_prop}
-    className="flex items-start gap-2.5">
+const Message = ({ 
+  src, 
+  alt, 
+  className, 
+  sender, 
+  time, 
+  content, 
+  isConsecutiveSender, 
+  isSentByLoggedInUser 
+}) => (
+  <div className="flex items-start gap-2.5">
       {(!isSentByLoggedInUser && !isConsecutiveSender) ? (
         <img 
           className="w-8 h-8 rounded-full" 

@@ -41,7 +41,8 @@ const GroupChatForm = ({ onClose }) => {
 
   const handleSearch = (e) => {
     setLoading(true)
-    setSearch(e.target.value)
+    const newSearch = e.target.value
+    setSearch(newSearch)
 
     if (typingTimeout) {
       clearTimeout(typingTimeout)
@@ -49,7 +50,7 @@ const GroupChatForm = ({ onClose }) => {
     setTypingTimeout(setTimeout(() => {
       searchUser({ 
         user, 
-        search, 
+        search : newSearch, 
         setMessage, 
         setSeverity, 
         onToastClose, 

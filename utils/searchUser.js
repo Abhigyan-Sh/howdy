@@ -15,6 +15,12 @@ export const searchUser = ({
   from parameters rather than hook.
   const { user } = chatState() */
 
+  if(search == '') {
+    setLoading(false)
+    setSearchResult([])
+    return
+  }
+
   fetch(`/api/user/${search}`, {
     method: 'GET',
     headers: {

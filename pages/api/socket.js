@@ -35,11 +35,11 @@ const SocketHandler = (req, res) => {
       })
 
       socket.on('typing', (room) => {
-        socket.in(room).emit('typing')
+        io.to(room).emit('typing-loader', room)
       })
 
       socket.on('typing stopped', (room) => {
-        socket.in(room).emit('typing stopped')
+        io.to(room).emit('typing-stopped', room)
       })
 
       socket.off('setup', () => {

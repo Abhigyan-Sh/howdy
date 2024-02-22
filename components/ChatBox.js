@@ -8,13 +8,14 @@ import SyncLoader from 'react-spinners/SyncLoader'
 import io from 'socket.io-client'
 import { chatState } from '../context/ChatProvider'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
-import SnackbarToast, { setToastVisible }  from '../components/widgets/SnackbarToast'
 import ScrollableChat from './miscellaneous/ScrollableChat'
+// import VideoCall from './miscellaneous/VideoCall'
+import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
+import GroupChatInfo from './widgets/modal/GroupChatInfo'
+import Profile from './widgets/modal/Profile'
+import ChatInfoModal from './widgets/Modal'
 import Input from './elements/Input'
 import Button from './elements/Button'
-import ChatInfoModal from './widgets/Modal'
-import Profile from './widgets/modal/Profile'
-import GroupChatInfo from './widgets/modal/GroupChatInfo'
 
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, notification, setNotification } = chatState()
@@ -138,7 +139,8 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   }
   // -------socket-------
   const handleTyping = (event) => {
-    setNewMessage(event.target.value)
+    const inputValue = event.target.value
+    setNewMessage(inputValue)
 
     if(!selectedChat || !socket) return
 
@@ -148,25 +150,23 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       is placed) via backend .in broadcast */
       socket.emit('typing', selectedChat._id)
     }
-    let lastTypingTime = new Date().getTime()
-    let timerLength = 3000
 
-    setTimeout(() => {
-      let timeNow = new Date().getTime()
-      let timePassed = timeNow - lastTypingTime
-      if((timePassed >= timerLength) && typing) {
-        socket.emit('typing stopped', selectedChat._id)
+    const timerLength = 3000 // in milliseconds
+    const timeoutId = setTimeout(() => {
         setTyping(false)
-      }
+        socket.emit('typing stopped', selectedChat._id)
     }, timerLength)
+    // clearing the timeout if in case the user starts typing again before it expires
+    return () => clearTimeout(timeoutId)
   }
+  // -------initializing socket connection-------
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch('/api/socket')
       const newSocket = io()
       newSocket.emit("setup", user)
       newSocket.on("connected", () => {
-        console.log('working back and forth !!')
+        console.log('socket set back and forth')
         setSocket(newSocket)
       })
     }
@@ -174,36 +174,44 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   }, [])
 
   useEffect(() => {
-    if(socket && selectedChat) 
-      fetchMesssages()
+    if(!socket || !selectedChat) return
+    
+    fetchMesssages()
   }, [selectedChat, socket])
 
   useEffect(() => {
-    if(socket && selectedChat) {
-      socket.on('message received', (newReceivedMessage) => {
-        if(selectedChat && (selectedChat._id !== newReceivedMessage.chat._id)) {
-          if(!notification.includes(newReceivedMessage)) {
-            setNotification([newReceivedMessage, ...notification])
-            /* for a new sender it displays a new chat in MyChats, 
-            for existing users it just simply topples the chat to top row */
-            setFetchAgain(!fetchAgain)
-          }
-        } else {
-          setFetchedMessages([...fetchedMessages, newReceivedMessage])
+    /* socket would have been set by now as useEffect() executes 
+    in the order of useEffect() hooks placed in code but since I had 
+    to use selectedChat and so if selectedChat is not set yet so hook 
+    should not get rendered rather when it gets set hook should execute 
+    then only (such behavior has been ensured by adding in []) and then 
+    since it also uses socket so its existence is ensured and placed in 
+    dependency array both done to ensure good practice */
+    if(!socket || !selectedChat) return
+
+    socket.on('message received', (newReceivedMessage) => {
+      if(selectedChat && (selectedChat._id !== newReceivedMessage.chat._id)) {
+        if(!notification.includes(newReceivedMessage)) {
+          setNotification([newReceivedMessage, ...notification])
+          /* below function would, for a new sender it displays a new chat in MyChats, 
+          for existing users it just simply topples the chat to top row */
+          setFetchAgain(!fetchAgain)
         }
-      })
-    }
-  }, [selectedChat, socket])
+      } else {
+        setFetchedMessages([...fetchedMessages, newReceivedMessage])
+      }
+    })
+  }, [selectedChat, socket, fetchedMessages])
 
   useEffect(() => {
     if(!socket) return
-    socket.on('typing', () => {
+    socket.on('typing-loader', (room) => {
       setIsTyping(true)
     })
-    socket.on('typing stopped', () => {
+    socket.on('typing-stopped', (room) => {
       setIsTyping(false)
     })
-  }, [])
+  }, [socket])
   
   return (
     <>
@@ -216,12 +224,16 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                 {!selectedChat?.isGroupChat ? (
                   getChatSender(selectedChat.users)
                 ) : selectedChat.chatName} </p>
-              <Button 
-                icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
-                type='alternative' 
-                className='px-1 py-1 bg-zinc-500 dark:bg-zinc-500' 
-                onClick={() => onModalClose(true)} 
-                iconProps={{ color:"#CCCCCC", size:24 }} />
+              {/* <div>
+                <button 
+                  onClick={() => {}}>video call</button> */}
+                <Button 
+                  icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
+                  type='alternative' 
+                  className='px-1 py-1 bg-zinc-500 dark:bg-zinc-500' 
+                  onClick={() => onModalClose(true)} 
+                  iconProps={{ color:"#CCCCCC", size:24 }} />
+              {/* </div> */}
             </div>
             {/* message display area */}
             <ScrollableChat 

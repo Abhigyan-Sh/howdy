@@ -1,12 +1,15 @@
 import ErrorBoundary from '../components/ErrorBoundary'
 import ChatProvider from '../context/ChatProvider'
+import VideoProvider from '../context/VideoProvider'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   return (
     <ErrorBoundary>
       <ChatProvider>
-        <Component {...pageProps}/>
+        <VideoProvider>
+          <Component {...pageProps}/>
+        </VideoProvider>
       </ChatProvider>
     </ErrorBoundary>
   )
