@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { FaPlus } from 'react-icons/fa'
 import { chatState } from '../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../utils/removeUserInfoAndRedirect'
-import VideoCall from './miscellaneous/VideoCall'
 import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
 import ChatLoading from './widgets/ChatLoading'
 import GroupChatForm from './widgets/modal/GroupChatForm'
@@ -86,7 +85,6 @@ const MyChats = ({ fetchAgain }) => {
       <div className='w-full h-full p-4 bg-white bg-opacity-80 rounded-lg border-2 border-zinc-400'>
         <div className='p-2 flex flex-row justify-between items-center rounded-lg bg-zinc-300 mb-4'>
           <p className='text-xl font-bold text-gray-800'> My Chats </p>
-          {/* <VideoCall /> */}
           <button 
             type="button" 
             className="h-fit w-fit py-2.5 px-5 me-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"

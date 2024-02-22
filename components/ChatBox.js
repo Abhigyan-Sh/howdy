@@ -9,7 +9,6 @@ import io from 'socket.io-client'
 import { chatState } from '../context/ChatProvider'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
 import ScrollableChat from './miscellaneous/ScrollableChat'
-// import VideoCall from './miscellaneous/VideoCall'
 import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
 import GroupChatInfo from './widgets/modal/GroupChatInfo'
 import Profile from './widgets/modal/Profile'
@@ -224,16 +223,12 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                 {!selectedChat?.isGroupChat ? (
                   getChatSender(selectedChat.users)
                 ) : selectedChat.chatName} </p>
-              {/* <div>
-                <button 
-                  onClick={() => {}}>video call</button> */}
-                <Button 
-                  icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
-                  type='alternative' 
-                  className='px-1 py-1 bg-zinc-500 dark:bg-zinc-500' 
-                  onClick={() => onModalClose(true)} 
-                  iconProps={{ color:"#CCCCCC", size:24 }} />
-              {/* </div> */}
+              <Button 
+                icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
+                type='alternative' 
+                className='px-1 py-1 bg-zinc-500 dark:bg-zinc-500' 
+                onClick={() => onModalClose(true)} 
+                iconProps={{ color:"#CCCCCC", size:24 }} />
             </div>
             {/* message display area */}
             <ScrollableChat 
