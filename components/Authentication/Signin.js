@@ -113,8 +113,8 @@ const Signin = () => {
           </FormControl>
           <Button variant="outlined" onClick={handleShow}>
             {show 
-            ? <VisibilityOffIcon className="text-black" color="" titleAccess="hide"/> 
-            : <VisibilityIcon className="text-black" titleAccess="look"/>}
+            ? <VisibilityOffIcon color="action" fontSize="small" titleAccess="hide" /> 
+            : <VisibilityIcon color="primary" fontSize="small" titleAccess="look" />}
           </Button>
         </div>
         {/* -------submit button------- */}

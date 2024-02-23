@@ -172,8 +172,8 @@ const Signup = () => {
           </FormControl>
           <Button variant="outlined" onClick={handleShowPass}>
             {showPass 
-            ? <VisibilityOffIcon className="text-black" color="" titleAccess="hide"/> 
-            : <VisibilityIcon className="text-black" titleAccess="look"/>}
+            ? <VisibilityOffIcon color="action" fontSize="small" titleAccess="hide" />
+            : <VisibilityIcon color="primary" fontSize="small" titleAccess="look" />}
           </Button>
         </div>
         {/* -------confirm password------- */}
@@ -188,8 +188,8 @@ const Signup = () => {
           </FormControl>
           <Button variant="outlined" onClick={handleShowConfirmPass}>
             {showConfirmPass 
-            ? <VisibilityOffIcon className="text-black" color="" titleAccess="hide"/> 
-            : <VisibilityIcon className="text-black" titleAccess="look"/>}
+            ? <VisibilityOffIcon color="action" fontSize="small" titleAccess="hide" /> 
+            : <VisibilityIcon color="primary" fontSize="small" titleAccess="look" />}
           </Button>
         </div>
         {/* DISCARDED INPUT CODE BELOW ⚰️ */}
@@ -209,7 +209,7 @@ const Signup = () => {
             id="picture-id"
             accept= 'image/*'
             onChange = {e => postDetails(e.target.files[0])}
-            className='bg-rose-10 '
+            // className=''
             autoComplete="true" />
         </FormControl>
         {/* -------submit button------- */}

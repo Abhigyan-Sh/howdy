@@ -24,22 +24,22 @@ const Home = () => {
     setValue(newValue)
   }
   return (
-    <div className={homeStyles.container}>
+    <>
       <Head>
         <title>howdy</title>
         <meta name="description" content="howdy chat application. Connect with people." />
         <link rel="icon" href="/logo.png" />
       </Head>
-      
-      <Container className='w-2/6 h-lvh bg-rose-20'>
+
+      <Container className='w-full h-[80%] mt-24 flex flex-col items-center justify-center gap-10 px-2'>
         {/* box 1 */}
-        <Box className='pt-32 pb-12'>
+        <Box>
           <Stack spacing={3}>
-            <p className='text-5xl'>&#128274; Authorize user</p>
+            <p className='text-3xl sm:text-4xl md:text-5xl'>&#128274; Authorize user</p>
           </Stack>
         </Box>
         {/* box 2 */}
-        <Box>
+        <Box className='border-2 rounded-lg h-[31rem] w-full sm:w-4/6 md:w-2/6'>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="sign up or sign in">
@@ -57,7 +57,7 @@ const Home = () => {
           </TabContext>
         </Box>
       </Container>
-    </div>
+    </>
   )
 }
 

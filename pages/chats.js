@@ -6,7 +6,7 @@ import MyChats from '../components/MyChats'
 import ChatBox from '../components/ChatBox'
 
 const Chats = () => {
-  const { user } = chatState()
+  const { user, selectedChat } = chatState()
   /* @dev:: value is made to toggle between true and false where a  
   toggle indicates that chats need to be fetched again from database */
   const [ fetchAgain, setFetchAgain ] = useState(false)
@@ -29,10 +29,10 @@ const Chats = () => {
         <div className='absolute inset-0 bg-opacity-50 bg-gray-800'></div>
         {/* Other content: Chats */}
         <div className='w-full h-full flex flex-row items-center justify-between bg-transparent relative'>
-          <div className='w-4/12 h-full flex flex-row items-center justify-center p-4 pr-2'>
+          <div className={`h-full ${selectedChat ? 'hidden' : 'w-full'} md:w-4/12 md:flex flex-row items-center justify-center p-4 pr-2`}>
             {user && <MyChats fetchAgain={fetchAgain} />}
           </div>
-          <div className='w-8/12 h-full flex flex-row items-center justify-center p-4 pl-2'>
+          <div className={`h-full ${selectedChat ? 'w-full' : 'hidden'} md:w-8/12 md:flex flex-row items-center justify-center p-4 pl-2`}>
             {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
           </div>
         </div>

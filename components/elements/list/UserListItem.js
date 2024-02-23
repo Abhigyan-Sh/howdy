@@ -16,9 +16,9 @@ const UserListItem = ({ key_prop, user, onClick, className }) => {
         className_ring={"border-2"} />
       {/* username and email */}
       <div className='flex flex-col justify-center items-start'>
-        <p className="font-bold text-gray-800">
+        <p className="font-bold text-gray-800 text-sm sm:text-base">
             {user.username}</p>
-        <p className="">
+        <p className="text-xs sm:text-sm">
             <span className="font-bold text-gray-600">email: </span>{user.email}</p>
       </div>
     </button>

@@ -13,7 +13,7 @@ import SnackbarToast, { setToastVisible }  from '../../widgets/SnackbarToast'
 
 const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   const numberOfBadgeItem = 9
-  const numberOfUserItem = 4
+  const numberOfUserItem = 3
   const cssOverride = {
     width: '100%',
     height: '100%',
@@ -265,50 +265,52 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   }
   return (
     <>
-      <p className='text-2xl font-semibold'>{chatGroup?.chatName}</p>
-      <div className='w-full flex flex-row items-end flex-wrap p-2'>
-        {selectedUsers.slice(0, numberOfBadgeItem).map((groupMember, index) => (
-          <UserBadgeItem 
-            key={index + groupMember?._id} 
-            key_prop={index + groupMember?._id} 
-            index={index} 
-            text={groupMember?.username} 
-            onClick={() => handleDelete(groupMember)} />
-          ))}
-        {(selectedUsers.length > numberOfBadgeItem) 
-           && <p className='font-bold text-xs text-slate-700 mb-1'>...more</p>}
-      </div>
-
-      <div className='w-full px-2'>
-        <div className='flex flex-row justify-between items-center w-full'>
-          <Input 
-            id="groupName-id" 
-            type="text" 
-            placeholder="modify Chat name" 
-            coverClass="w-4/6" 
-            // coverWidth="w-4/6" 
-            value={groupChatName} 
-            onChange={(e) => {setGroupChatName(e.target.value)}} />
-          <Button 
-            text="update" 
-            onClick={updateGroupChatName} 
-            className="w-2/6" />
+      <div className='flex flex-col justify-start items-center w-full h-full'>
+        <p className='text-xl md:text-2xl font-semibold mb-4'>{chatGroup?.chatName}</p>
+        <div className='w-full flex flex-row items-end flex-wrap p-2 mb-4'>
+          {selectedUsers.slice(0, numberOfBadgeItem).map((groupMember, index) => (
+            <UserBadgeItem 
+              key={index + groupMember?._id} 
+              key_prop={index + groupMember?._id} 
+              index={index} 
+              text={groupMember?.username} 
+              onClick={() => handleDelete(groupMember)} />
+            ))}
+          {(selectedUsers.length > numberOfBadgeItem) 
+             && <p className='font-bold text-xs text-slate-700 mb-1'>...more</p>}
         </div>
-        <div className='flex flex-row justify-between items-center w-full'>
-          <Input 
-            id="usernameOrEmail-id" 
-            type="text" 
-            icon={true} 
-            placeholder="add Another user to group" 
-            coverClass="w-4/6" 
-            // coverWidth="w-4/6" 
-            value={search} 
-            onChange={handleSearch} />
-          <Button 
-            text="update users" 
-            onClick={() => updateUsers(true)} 
-            type="success" 
-            className="w-2/6" />
+  
+        <div className='w-full px-2'>
+          <div className='flex md:flex-row flex-col justify-between items-center w-full mb-2'>
+            <Input 
+              id="groupName-id" 
+              type="text" 
+              placeholder="modify Chat name" 
+              coverClass="w-11/12 md:w-10/12 lg:w-8/12 mb-1 md:mb-0 mr-2" 
+              // coverWidth="w-4/6" 
+              value={groupChatName} 
+              onChange={(e) => {setGroupChatName(e.target.value)}} />
+            <Button 
+              text="update" 
+              onClick={updateGroupChatName} 
+              className="w-2/6" />
+          </div>
+          <div className='flex md:flex-row flex-col justify-between items-center w-full mb-2'>
+            <Input 
+              id="usernameOrEmail-id" 
+              type="text" 
+              icon={true} 
+              placeholder="add Another user to group" 
+              coverClass="w-11/12 md:w-10/12 lg:w-8/12 mb-1 md:mb-0 mr-2" 
+              // coverWidth="w-4/6" 
+              value={search} 
+              onChange={handleSearch} />
+            <Button 
+              text="update users" 
+              onClick={() => updateUsers(true)} 
+              type="success" 
+              className="w-2/6" />
+          </div>
         </div>
       </div>
       
@@ -316,9 +318,9 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
         <div className='flex flex-col items-center'>
           <ChatLoading 
             count={numberOfUserItem} 
-            diameter={'h-9 w-9'} 
-            w_upper={'w-24'} 
-            w_lower={'w-80'} 
+            diameter={'h-8 w-8'} 
+            w_upper={'w-14 sm:w-20'} 
+            w_lower={'w-48 sm:w-64'} 
             margin_top={'mt-0'} />
         </div>
       ) : (
@@ -329,7 +331,7 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
               key_prop={searchedUser._id} 
               user={searchedUser} 
               onClick={() => handleGroup(searchedUser)}
-              className='w-96' />
+              className='w-64 sm:w-80' />
           ))}
           {!searchResults.length && search && (
             <div className="w-full flex justify-center font-bold text-slate-700 mb-2">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { BsPersonVcardFill } from 'react-icons/bs'
 import { RiChatSettingsLine } from 'react-icons/ri'
+import { IoReturnDownBackOutline } from 'react-icons/io5'
 import { FiSend } from "react-icons/fi"
 import ClipLoader from 'react-spinners/ClipLoader'
 import SyncLoader from 'react-spinners/SyncLoader'
@@ -17,7 +18,7 @@ import Input from './elements/Input'
 import Button from './elements/Button'
 
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {
-  const { user, selectedChat, notification, setNotification } = chatState()
+  const { user, selectedChat, setSelectedChat, notification, setNotification } = chatState()
   const [ fetchedMessages, setFetchedMessages ] = useState([])
   const [ newMessage, setNewMessage ] = useState('')
   const [ isLoading, setIsLoading ] = useState(false)
@@ -219,14 +220,20 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
           <div className='w-full h-full flex flex-col justify-between'>
             {/* upper strip div */}
             <div className='w-full h-fit bg-zinc-300 rounded-t-lg flex flex-row justify-between items-center py-2 px-3'>
-              <p className='text-xl font-bold '>
+              <Button 
+                icon={IoReturnDownBackOutline} 
+                type='alternative' 
+                className='block md:hidden' 
+                onClick={() => setSelectedChat(null)} 
+                iconProps={{ color:"#CCCCCC", size:24 }}
+              />
+              <p className='text-sm sm:text-xl font-bold mx-2'>
                 {!selectedChat?.isGroupChat ? (
                   getChatSender(selectedChat.users)
                 ) : selectedChat.chatName} </p>
-              <Button 
+              <Button  
                 icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
                 type='alternative' 
-                className='px-1 py-1 bg-zinc-500 dark:bg-zinc-500' 
                 onClick={() => onModalClose(true)} 
                 iconProps={{ color:"#CCCCCC", size:24 }} />
             </div>
@@ -254,7 +261,8 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                   value={newMessage} 
                   onChange={handleTyping} 
                   onKeyPress={handleKeyPress} 
-                  coverClass='w-full my-0 rounded-r-none' />
+                  coverClass='w-full my-0 rounded-r-none' 
+                  style={{ borderRadius: '0.5rem 0 0 0.5rem' }} />
                 <Button 
                   type="default" 
                   onClick={sendMessage} 
@@ -284,7 +292,8 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       ? <ChatInfoModal 
           onClose={handleChatInfo} 
           modalOverlay={true} 
-          w='w-4/12' 
+          w='w-11/12 h-3/6 md:w-8/12 md:h-4/6 lg:w-4/12 lg:h-3/6' 
+          closeIcon={true}
         >
           <Profile 
             user={getChatSenderFull(selectedChat?.users)} 
@@ -294,9 +303,10 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
         <ChatInfoModal 
           onClose={handleChatInfo} 
           modalOverlay={true} 
-          w='w-4/12' 
-          // h='h-5/6' 
-          // px='px-8'
+          w='w-11/12 md:w-8/12 lg:w-5/12' 
+          h='h-[92%] sm:5/6' 
+          className='px-0 md:px-8'
+          closeIcon={false}
         >
           <GroupChatInfo 
             chatGroup={selectedChat} 

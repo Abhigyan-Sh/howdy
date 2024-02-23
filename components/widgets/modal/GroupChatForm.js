@@ -153,12 +153,14 @@ const GroupChatForm = ({ onClose }) => {
             id="groupName-id" 
             type="text" 
             placeholder="group Chat name" 
+            coverClass="w-11/12 md:w-10/12 lg:w-8/12 mb-2" 
             value={groupChatName} 
             onChange={(e) => {setGroupChatName(e.target.value)}} />
           <Input 
             id="usernameOrEmail-id" 
             type="text" 
             icon={true} 
+            coverClass="w-11/12 md:w-10/12 lg:w-8/12 mb-2" 
             value={search} 
             onChange={handleSearch} />
 
@@ -176,12 +178,14 @@ const GroupChatForm = ({ onClose }) => {
           </div>
 
           {isLoading ? (
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center h-full w-full'>
               <ChatLoading 
                 count={numberOfUserItem} 
-                w_upper={'w-20'} 
-                w_lower={'w-56'} 
-                margin_top={'mt-0'} />
+                diameter={'h-8 w-8'}
+                w_upper={'w-14 sm:w-20'} 
+                w_lower={'w-48 sm:w-64'} 
+                margin_top={'mt-0'}
+              />
             </div>
           ) : (
             <div className="divide-y divide-dashed flex flex-col items-center">
@@ -191,7 +195,8 @@ const GroupChatForm = ({ onClose }) => {
                   key_prop={searchedUser._id} 
                   user={searchedUser} 
                   onClick={() => handleGroup(searchedUser)}
-                  className='w-fit' />
+                  className='w-64 sm:w-80'
+                />
               ))}
               {!searchResult.length && search && (
                 <div className="w-full flex justify-center font-bold text-slate-700 mb-2">

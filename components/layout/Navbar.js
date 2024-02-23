@@ -7,10 +7,10 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
+import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
 import SideDrawer from '../layout/SideDrawer'
 import ProfileModal from '../widgets/Modal'
 import Profile from '../widgets/modal/Profile'
-import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
 
 const Navbar = () => {
   const router = useRouter()
@@ -38,13 +38,13 @@ const Navbar = () => {
   return (
     <>
       <div className='w-full h-14 px-6 bg-zinc-200 flex flex-row justify-between items-center gap-2'>
-        <div className='flex flex-row justify-between items-center w-6/12'>
+        <div className='flex flex-row justify-between items-center w-6/12 gap-2'>
           {/* Friend Search Button and Application Name */}
           <button 
-            className='flex flex-row bg-rose-80 justify-between items-center p-2 gap-2 border border-gray-400 rounded-lg font-bold text-neutral-700'
+            className='flex flex-row justify-between items-center p-2 gap-2 border border-gray-400 rounded-lg font-bold text-neutral-700'
             onClick={handleDrawer}>
               <SearchIcon />
-              <p>Search for a friend..</p>
+              <p className='hidden md:block'>Search for a friend..</p>
           </button>
           {/* Application Name */}
           <p className='text-xl font-bold text-gray-800'>howdy</p>
@@ -94,7 +94,7 @@ const Navbar = () => {
         <ProfileModal 
           onClose={() => closeModal(false)} 
           modalOverlay={true} 
-          w='w-4/12' 
+          w='w-11/12 h-3/6 md:w-8/12 md:h-4/6 lg:w-4/12 lg:h-3/6' 
           // h='h-3/6' 
         >
           <Profile user={user} />
