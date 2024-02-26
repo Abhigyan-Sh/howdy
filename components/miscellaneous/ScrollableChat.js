@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
 import { chatState } from '../../context/ChatProvider'
-import { formatUpdatedAt } from '../../utils/formatUpdatedAt'
 import { isSentByLoggedInUser, isConsecutiveSender } from '../../utils/chatLogics'
 import Message from '../ui/Message'
 
@@ -30,11 +29,8 @@ const ScrollableChat = ({ fetchedMessages, isSpinner }) => {
             key={message._id + index}
             className={`w-full flex flex-row items-center ${isSentByLoggedInUser(message, user) ? "justify-end" : "justify-start"} my-3`}>
               <Message 
-                src={message.sender.pic} 
+                message={message}
                 alt="sender's pic" 
-                sender={message.sender.username} 
-                time={formatUpdatedAt(message.updatedAt)} 
-                content={message.content} 
                 isConsecutiveSender={isConsecutiveSender(fetchedMessages, index)} 
                 isSentByLoggedInUser={isSentByLoggedInUser(message, user)} />
           </div>

@@ -231,7 +231,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                 {!selectedChat?.isGroupChat ? (
                   getChatSender(selectedChat.users)
                 ) : selectedChat.chatName} </p>
-              <Button  
+              <Button 
                 icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
                 type='alternative' 
                 onClick={() => onModalClose(true)} 

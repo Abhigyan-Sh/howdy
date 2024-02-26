@@ -1,38 +1,36 @@
-
+import { IoCheckmarkDoneOutline } from 'react-icons/io5'
+import { formatUpdatedAt } from '../../utils/formatUpdatedAt'
+import { readBy } from '../../utils/readBy'
 
 const Message = ({ 
-  src, 
+  message, 
   alt, 
   className, 
-  sender, 
-  time, 
-  content, 
   isConsecutiveSender, 
   isSentByLoggedInUser 
 }) => (
   <div className="flex items-start gap-2.5">
-      {(!isSentByLoggedInUser && !isConsecutiveSender) ? (
-        <img 
-          className="w-8 h-8 rounded-full" 
-          src={src} 
-          alt={alt} />
-      ) : (
-        <div className="w-12"></div>
-      )}
+    {(!isSentByLoggedInUser && !isConsecutiveSender) ? (
+      <img 
+        className="w-8 h-8 rounded-full" 
+        src={message.sender.pic} 
+        alt={alt} />
+    ) : (
+      <div className="w-12"></div>
+    )}
     <div className="flex flex-col gap-1 w-full max-w-[320px]">
       {!isSentByLoggedInUser && !isConsecutiveSender && (
-        <span className="text-sm font-semibold text-gray-900 dark:text-white">
-            {sender}</span>
+        <span className="text-sm font-semibold text-gray-900">
+            {message.sender.username}</span>
       )}
-      <div className={`flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700 ${isSentByLoggedInUser && "bg-emerald-700 dark:bg-emerald-700"} ${className}`}>
+      <div className={`flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl ${isSentByLoggedInUser ? "bg-emerald-700 dark:bg-emerald-700" : "bg-gray-100 dark:bg-gray-700"} ${className}`}>
         <p className="text-sm font-normal text-gray-900 dark:text-white"> 
-          {content}</p>
+          {message.content}</p>
       </div>
       <div className="flex items-center space-x-2 rtl:space-x-reverse text-xs">
-        <span className="font-normal text-gray-500 dark:text-gray-400">
-          Delivered</span>
-        <span className="font-normal text-gray-500 dark:text-gray-400">
-            {time}</span>
+        {isSentByLoggedInUser && <IoCheckmarkDoneOutline className={`font-normal text-lg ${readBy(message) ? "text-sky-500" : "text-slate-800"}`}/>}
+        <span className="font-normal text-gray-500">
+          {formatUpdatedAt(message.updatedAt)}</span>
       </div>
     </div>
 
