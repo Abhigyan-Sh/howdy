@@ -24,7 +24,7 @@ const ScrollableChat = ({ fetchedMessages, isSpinner }) => {
     
     return (
       <div ref={containerRef} className='w-full h-[35.5rem] p-2 overflow-y-auto'>
-        {fetchedMessages?.map((message, index) => (
+        {!isSpinner && fetchedMessages?.map((message, index) => (
           <div 
             key={message._id + index}
             className={`w-full flex flex-row items-center ${isSentByLoggedInUser(message, user) ? "justify-end" : "justify-start"} my-3`}>

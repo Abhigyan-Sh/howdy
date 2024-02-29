@@ -1,6 +1,9 @@
 import { IoCheckmarkDoneOutline } from 'react-icons/io5'
 import { formatUpdatedAt } from '../../utils/formatUpdatedAt'
+import { getFileFormat } from '../../utils/computeFileProps'
 import { readBy } from '../../utils/readBy'
+import NextCloudPlayer from '../widgets/NextCloudPlayer'
+import NextCloudImg from '../widgets/NextCloudImg'
 
 const Message = ({ 
   message, 
@@ -8,8 +11,12 @@ const Message = ({
   className, 
   isConsecutiveSender, 
   isSentByLoggedInUser 
-}) => (
-  <div className="flex items-start gap-2.5">
+}) => {
+  const mediaFormatExtension = getFileFormat(message.media)
+
+  return (
+    <div className="flex items-start gap-2.5">
+    {/* LEFT */}
     {(!isSentByLoggedInUser && !isConsecutiveSender) ? (
       <img 
         className="w-8 h-8 rounded-full" 
@@ -18,22 +25,45 @@ const Message = ({
     ) : (
       <div className="w-12"></div>
     )}
-    <div className="flex flex-col gap-1 w-full max-w-[320px]">
+    {/* MIDDLE */}
+    <div className="flex flex-col gap-1 w-full">
       {!isSentByLoggedInUser && !isConsecutiveSender && (
         <span className="text-sm font-semibold text-gray-900">
-            {message.sender.username}</span>
+          {message.sender.username}</span>
       )}
-      <div className={`flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl ${isSentByLoggedInUser ? "bg-emerald-700 dark:bg-emerald-700" : "bg-gray-100 dark:bg-gray-700"} ${className}`}>
-        <p className="text-sm font-normal text-gray-900 dark:text-white"> 
-          {message.content}</p>
+
+      {/* MESSAGE SECTION: content, payment || contract(wont' include content) || media || web-scrapping */}
+      <div className={`flex flex-col leading-1.5 p-4 border-gray-200 ${isSentByLoggedInUser ? "bg-emerald-700 dark:bg-emerald-700 rounded-s-xl rounded-ee-xl" : "bg-gray-100 dark:bg-gray-700 rounded-e-xl rounded-es-xl"} ${className}`}>
+        {/* display media */}
+        {['mp4', 'mpeg', 'quicktime'].includes(
+          mediaFormatExtension
+        ) && (
+          <NextCloudPlayer src={message.media} />
+        )}
+        {['jpg', 'jpeg', 'png'].includes(
+          mediaFormatExtension
+        ) && (
+          <NextCloudImg src={message.media} />
+        )}
+        {/* display message content */}
+        {message.content && (
+          <div className='mt-2'>
+            <p className="text-sm md:text-[16px] font-normal text-gray-900 dark:text-white"> 
+              {message.content}</p> 
+          </div> )}
       </div>
+
       <div className="flex items-center space-x-2 rtl:space-x-reverse text-xs">
-        {isSentByLoggedInUser && <IoCheckmarkDoneOutline className={`font-normal text-lg ${readBy(message) ? "text-sky-500" : "text-slate-800"}`}/>}
+        {isSentByLoggedInUser && (
+          <IoCheckmarkDoneOutline 
+            className={`font-normal text-lg ${readBy(message) ? "text-sky-500" : "text-slate-800"}`}
+          />
+        )}
         <span className="font-normal text-gray-500">
           {formatUpdatedAt(message.updatedAt)}</span>
       </div>
     </div>
-
+    {/* RIGHT */}
     <button 
       id="dropdownMenuIconButton" 
       className="inline-flex self-center items-center p-1 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" 
@@ -49,6 +79,7 @@ const Message = ({
         </svg>
     </button>
   </div>
-)
+  )
+}
 
 export default Message

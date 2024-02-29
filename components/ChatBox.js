@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { IconContext } from 'react-icons'
 import { BsPersonVcardFill } from 'react-icons/bs'
 import { RiChatSettingsLine } from 'react-icons/ri'
 import { IoReturnDownBackOutline } from 'react-icons/io5'
 import { FiSend } from "react-icons/fi"
+import { MdOutlinePermMedia, MdPermMedia } from 'react-icons/md'
 import ClipLoader from 'react-spinners/ClipLoader'
 import SyncLoader from 'react-spinners/SyncLoader'
 import io from 'socket.io-client'
 import { chatState } from '../context/ChatProvider'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
+import { getFileFormat } from '../utils/computeFileProps'
 import ScrollableChat from './miscellaneous/ScrollableChat'
 import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
+import SelectedMedia from './widgets/SelectedMedia'
 import GroupChatInfo from './widgets/modal/GroupChatInfo'
 import Profile from './widgets/modal/Profile'
 import ChatInfoModal from './widgets/Modal'
@@ -18,10 +22,18 @@ import Input from './elements/Input'
 import Button from './elements/Button'
 
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+
   const { user, selectedChat, setSelectedChat, notification, setNotification } = chatState()
   const [ fetchedMessages, setFetchedMessages ] = useState([])
   const [ newMessage, setNewMessage ] = useState('')
-  const [ isLoading, setIsLoading ] = useState(false)
+  const [ media, setMedia ] = useState('')
+  const [ selectedFile, setSelectedFile ] = useState(null)
+  const [ isLoading, setIsLoading ] = useState({
+    sendButton: false, 
+    chooseMedia: false, 
+  })
   const [ isSpinner, setSpinner ] = useState(false)
   // -------socket-------
   const [ socket, setSocket ] = useState(null)
@@ -41,18 +53,23 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     onToastClose(false)
 
   const sendMessage = () => {
-    if (newMessage.trim() !== '') {
-      setNewMessage('')
-    }
     socket.emit('typing stopped', selectedChat._id)
-    setIsLoading(true)
+    
+    if (newMessage.trim() === '' && !media) return
+
+    setIsLoading(prevState => ({
+      ...prevState, 
+      sendButton: true
+    }))
 
     return new Promise((resolve, reject) => {
       fetch('/api/message/', {
         method: 'POST',
         body: JSON.stringify({
           "content": newMessage, 
-          "chat": selectedChat._id
+          "chat": selectedChat._id, 
+          "media": media, 
+          "contentType": getFileFormat(media) == '' ? '' : 'media', 
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -87,7 +104,12 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       })
       .finally(() => {
         setNewMessage('')
-        setIsLoading(false)
+        setMedia('')
+        setSelectedFile(null)
+        setIsLoading(prevState => ({
+          ...prevState, 
+          sendButton: false
+        }))
       })
     })
   }
@@ -137,6 +159,84 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     if (event.key === 'Enter') 
       sendMessage()
   }
+  
+  const postDetails = (_media) => {
+    setIsLoading(prevState => ({
+      ...prevState, 
+      chooseMedia: true
+    }))
+    if (_media === undefined) {
+      setToastVisible({
+        _message: "no image or video selected !", 
+        _severity: "warning", 
+        setMessage: setToastMessage, 
+        setSeverity: setSeverity, 
+        onOpen: onToastClose
+      })
+      setIsLoading(prevState => ({
+        ...prevState, 
+        chooseMedia: false
+      }))
+      return
+    }
+    if (_media.type === 'image/jpg' || _media.type === 'image/jpeg' || _media.type === 'image/png' 
+    || _media.type === 'video/mp4' || _media.type === 'video/mpeg' || _media.type === 'video/quicktime'
+    ) {
+      setSelectedFile(_media)
+      const folder = _media.type.startsWith('image') ? 'images' : 'videos'
+      const data = new FormData()
+      data.append('file', _media)
+      data.append('upload_preset', uploadPreset)
+      data.append('cloud_name', cloudName)
+      data.append('folder', folder)
+      
+      fetch('https://api.cloudinary.com/v1_1/'+ cloudName +'/upload', {
+        method: 'post', 
+        body: data, 
+      })
+      .then(response => response.json())
+      .then(blob => {
+        setMedia(blob.url.toString())
+      })
+      .catch((error) => {
+        console.log(error)
+        setToastVisible({
+          _message: "some error occurred while parsing", 
+          _severity: "warning", 
+          setMessage: setToastMessage, 
+          setSeverity: setSeverity, 
+          onOpen: onToastClose
+        })
+        setSelectedFile(null)
+      })
+      .finally(() => {
+        setIsLoading(prevState => ({
+          ...prevState, 
+          chooseMedia: false
+        }))
+      })
+    } else {
+      if(!selectedFile) {
+        setToastVisible({
+          _message: "Please Select an Image (jpg, jpeg, png) or for Video (mp4, mpeg, quicktime) !", 
+          _severity: "warning", 
+          setMessage: setToastMessage, 
+          setSeverity: setSeverity, 
+          onOpen: onToastClose
+        })
+      }
+      setIsLoading(prevState => ({
+        ...prevState, 
+        chooseMedia: false
+      }))
+    }
+  }
+  const removeMedia = () => {
+    setSelectedFile(null)
+    setMedia('')
+    /* @dev:: in future, code for removal of image uploaded to 
+    cloudinary can be written below. */
+  }
   // -------socket-------
   const handleTyping = (event) => {
     const inputValue = event.target.value
@@ -159,6 +259,11 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     // clearing the timeout if in case the user starts typing again before it expires
     return () => clearTimeout(timeoutId)
   }
+  useEffect(() => {
+    setSelectedFile(null)
+    setNewMessage('')
+    setMedia('')
+  }, [selectedChat])
   // -------initializing socket connection-------
   useEffect(() => {
     const socketInitializer = async () => {
@@ -237,42 +342,72 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                 onClick={() => onModalClose(true)} 
                 iconProps={{ color:"#CCCCCC", size:24 }} />
             </div>
-            {/* message display area */}
+            {/* display area for message */}
             <ScrollableChat 
               fetchedMessages={fetchedMessages} 
               isSpinner={isSpinner} />
-            {/* Input area */}
-            <div className='flex flex-col m-2'>
-              {isTyping && (
-                <div className='pb-2 pl-1'>
-                  <SyncLoader
-                    color="#0F172A"
-                    margin={2}
-                    size={5}
-                    speedMultiplier={0.6} />
+
+            <div className='relative'>
+              {/* display area for selected file */}
+              <div className='absolute bottom-16 left-2'>
+                {selectedFile && (
+                  <SelectedMedia 
+                    selectedFile={selectedFile} 
+                    onClick={removeMedia} 
+                    isLoading={isLoading} />
+                )}
+              </div>
+              {/* Input area */}
+              <div className='flex flex-col m-2'>
+                {isTyping && (
+                  <div className='pb-2 pl-1'>
+                    <SyncLoader 
+                      color="#0F172A" 
+                      margin={2} 
+                      size={5} 
+                      speedMultiplier={0.6} />
+                  </div>
+                )}
+                <div className='w-full flex flex-row justify-between border-2 rounded-lg border-y-teal-700'>
+                  <label 
+                    htmlFor="file-upload" 
+                    className='text-white bg-slate-800 p-2 rounded-lg cursor-pointer w-10 h-10 flex justify-center items-center mr-1'>
+                      {selectedFile 
+                      ? (<IconContext.Provider value={{ color: 'white', className: 'text-lg' }}>
+                          <MdPermMedia /> 
+                        </IconContext.Provider> )
+                      : (<IconContext.Provider value={{ color: 'white', className: 'text-lg' }}>
+                          <MdOutlinePermMedia />
+                        </IconContext.Provider> )}
+                  </label>
+                  <Input 
+                    type='file'
+                    id="file-upload"
+                    accept= 'image/*, video/*'
+                    onChange = {e => postDetails(e.target.files[0])}
+                    className='hidden' />
+                  <Input 
+                    id='send-message-id' 
+                    type="text" 
+                    placeholder='type your message' 
+                    autoFocus={true} 
+                    value={newMessage} 
+                    onChange={handleTyping} 
+                    onKeyPress={handleKeyPress} 
+                    coverClass='w-full my-0 rounded-r-none' 
+                    style={{ borderRadius: '0.5rem 0 0 0.5rem' }} />
+                  <Button 
+                    type="default" 
+                    onClick={sendMessage} 
+                    icon={!isLoading.sendButton ? FiSend : ClipLoader}
+                    iconProps={{
+                      color: "white", 
+                      loading: isLoading.sendButton ? "true" : "false", 
+                      size: 20
+                    }}
+                    className={`h-full rounded-l-none ${isLoading.chooseMedia && 'cursor-wait'}`}
+                    disabled={isLoading.chooseMedia} />
                 </div>
-              )}
-              <div className='w-full flex flex-row justify-between border-2 rounded-lg border-y-teal-700'>
-                <Input 
-                  id='send-message-id' 
-                  type="text" 
-                  placeholder='type your message' 
-                  autoFocus={true} 
-                  value={newMessage} 
-                  onChange={handleTyping} 
-                  onKeyPress={handleKeyPress} 
-                  coverClass='w-full my-0 rounded-r-none' 
-                  style={{ borderRadius: '0.5rem 0 0 0.5rem' }} />
-                <Button 
-                  type="default" 
-                  onClick={sendMessage} 
-                  icon={!isLoading ? FiSend : ClipLoader}
-                  iconProps={{
-                    color: "white", 
-                    loading: isLoading ? "true" : "false", 
-                    size: 20
-                  }}
-                  className='h-full rounded-l-none' />
               </div>
             </div>
           </div>

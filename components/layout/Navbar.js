@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import SearchIcon from '@mui/icons-material/Search'
-import Person3Icon from '@mui/icons-material/Person3'
 import { Button, Menu, MenuItem } from '@mui/material'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
+import { 
+  IoIosSearch, 
+  IoMdPerson, 
+  IoMdNotifications, 
+  IoMdNotificationsOff 
+} from 'react-icons/io'
 import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
 import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
@@ -43,7 +45,7 @@ const Navbar = () => {
           <button 
             className='flex flex-row justify-between items-center p-2 gap-2 border border-gray-400 rounded-lg font-bold text-neutral-700'
             onClick={handleDrawer}>
-              <SearchIcon />
+              <IoIosSearch />
               <p className='hidden md:block'>Search for a friend..</p>
           </button>
           {/* Application Name */}
@@ -61,7 +63,7 @@ const Navbar = () => {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <Person3Icon className='text-black' />
+            <IoMdPerson className='text-black' />
           </Button>
           <Menu
             id="basic-menu"

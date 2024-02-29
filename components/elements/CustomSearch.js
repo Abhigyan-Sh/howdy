@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import SearchIcon from '@mui/icons-material/Search'
+import { FiSearch } from 'react-icons/fi'
 
 const CustomSearch = ({ 
   placeholder, 
@@ -25,8 +25,8 @@ const CustomSearch = ({
 
   return (
     <div className={`relative my-4 ${noMargin && "my-0"}`}>
-      {visibility && <SearchIcon className='absolute top-3 left-3 text-gray-500' />}
-      <input
+      {visibility && <FiSearch className='absolute top-3 left-3 text-gray-500' />}
+      <input 
         ref={inputRef} // Assigning the ref to the input element
         type="search" 
         value={value} 

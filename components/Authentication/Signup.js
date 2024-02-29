@@ -10,8 +10,7 @@ import {
   Stack, 
   Button 
 } from '@mui/material'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
 import SnackbarToast, { setToastVisible } from '../widgets/SnackbarToast'
 
 const Signup = () => {
@@ -172,8 +171,8 @@ const Signup = () => {
           </FormControl>
           <Button variant="outlined" onClick={handleShowPass}>
             {showPass 
-            ? <VisibilityOffIcon color="action" fontSize="small" titleAccess="hide" />
-            : <VisibilityIcon color="primary" fontSize="small" titleAccess="look" />}
+            ? <IoIosEyeOff style={{ color: 'black', fontSize: '24px' }} title="hide" />
+            : <IoIosEye style={{ color: '#0369a1', fontSize: '24px' }} title="look" />}
           </Button>
         </div>
         {/* -------confirm password------- */}
@@ -188,8 +187,8 @@ const Signup = () => {
           </FormControl>
           <Button variant="outlined" onClick={handleShowConfirmPass}>
             {showConfirmPass 
-            ? <VisibilityOffIcon color="action" fontSize="small" titleAccess="hide" /> 
-            : <VisibilityIcon color="primary" fontSize="small" titleAccess="look" />}
+            ? <IoIosEyeOff style={{ color: 'black', fontSize: '24px' }} title="hide" />
+            : <IoIosEye style={{ color: '#0369a1', fontSize: '24px' }} title="look" />}
           </Button>
         </div>
         {/* DISCARDED INPUT CODE BELOW ⚰️ */}

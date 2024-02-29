@@ -1,5 +1,5 @@
 import React from 'react'
-import CloseIcon from '@mui/icons-material/Close'
+import { IoMdClose } from 'react-icons/io'
 
 const SideDrawer = ({ children, isOpen, setIsOpen, header, className }) => {
   return (
@@ -26,7 +26,7 @@ const SideDrawer = ({ children, isOpen, setIsOpen, header, className }) => {
               className="bg-transparent border-0 text-2xl pointer-cursor sm:hidden block"
               onClick={setIsOpen}
               >
-                <CloseIcon /> 
+                <IoMdClose /> 
             </button>
           </div>
           <div className={`w-full pt-6 overflow-y-auto scrollbar-hide ${className}`}>
