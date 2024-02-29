@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { FaPlus } from 'react-icons/fa'
 import { chatState } from '../context/ChatProvider'
+import { useSnackbar } from '../context/SnackbarToast'
 import { removeUserInfoAndRedirect } from '../utils/removeUserInfoAndRedirect'
-import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
 import ChatLoading from './widgets/ChatLoading'
 import GroupChatForm from './widgets/modal/GroupChatForm'
 import GroupChatModal from './widgets/Modal'
@@ -12,6 +12,7 @@ import ChatListItem from './elements/list/ChatListItem'
 const MyChats = ({ fetchAgain }) => {
   const router = useRouter()
   const { user, chats, setChats, selectedChat, setSelectedChat } = chatState()
+  const { showSnackbar } = useSnackbar()
   const [ loading, setLoading ] = useState(false)
 
   // -------Modal-------
@@ -20,14 +21,6 @@ const MyChats = ({ fetchAgain }) => {
   const handleGroupChatModal = () => 
     onModalClose(false)
 
-  // -------Toast-------
-  const [ message, setMessage ] = useState('')
-  const [ severity, setSeverity ] = useState('')
-  const [ isToastOpen, onToastClose ] = useState(false)
-  
-  const handleToast = () => {
-    onToastClose(false)
-  }
   // -------Fetch Chats-------
   const fetchChats = () => {
     setLoading(true)
@@ -39,12 +32,9 @@ const MyChats = ({ fetchAgain }) => {
     })
     .then(response => {
       if (!response.ok) {
-        setToastVisible({
-          _message: `Error Occurred: ${response.statusText}`, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: `Error Occurred: ${response.statusText}`, 
+          severity: "error", 
         })
         removeUserInfoAndRedirect(router)
         throw new Error(response.statusText)
@@ -53,12 +43,9 @@ const MyChats = ({ fetchAgain }) => {
     })
     .then(data => {
       if (data.statusCode !== 200) {
-        setToastVisible({
-          _message: data.error, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: data.error, 
+          severity: "error", 
         })
       } else {
         setChats(data.data)
@@ -67,12 +54,9 @@ const MyChats = ({ fetchAgain }) => {
     })
     .catch(error => {
       // console.error('error while fetching chats or winding up response: ' , error)
-      setToastVisible({
-        _message: "Error Occurred: failed to load chats !", 
-        _severity: "error", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Error Occurred: failed to load chats !", 
+        severity: "error", 
       })
       setLoading(false)
     })
@@ -121,20 +105,6 @@ const MyChats = ({ fetchAgain }) => {
           <GroupChatForm onClose={handleGroupChatModal} />
         </GroupChatModal>
       )}
-      {/* -------toast------- */}
-      <SnackbarToast 
-        // key={"key-00"} 
-        message={message} 
-        open={isToastOpen} 
-        onClose={handleToast} 
-        delay={5000} 
-        vertical="bottom" 
-        horizontal="center" 
-        severity={severity} 
-        variant="filled"
-        sx={{ width: '100%' }} 
-        actionNumber={1} 
-      />
     </>
   )
 }

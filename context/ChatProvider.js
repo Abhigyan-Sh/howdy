@@ -9,6 +9,7 @@ const ChatProvider = ({ children }) => {
     const [ chats, setChats ] = useState([])
     const [ selectedChat, setSelectedChat ] = useState(null)
     const [ notification, setNotification ] = useState([])
+
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         setUser(userInfo)
@@ -19,6 +20,7 @@ const ChatProvider = ({ children }) => {
             router.push('/chats')
         }
     }, [router])
+    
     return (
         <ChatContext.Provider value = {{ 
             user, 

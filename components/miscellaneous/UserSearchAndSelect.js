@@ -1,27 +1,20 @@
 import React, { useState } from 'react'
 import { chatState } from '../../context/ChatProvider'
+import { useSnackbar } from '../../context/SnackbarToast'
 import { searchUser } from '../../utils/searchUser'
-import SnackbarToast, { setToastVisible }  from '../widgets/SnackbarToast'
 import UserListItem from '../elements/list/UserListItem'
 import CustomSearch from '../elements/CustomSearch'
 import ChatLoading from '../widgets/ChatLoading'
 
 const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
   /* -------search------- */
-  const { user, chats, setChats, selectedChat, setSelectedChat } = chatState()
+  const { user, chats, setChats, setSelectedChat } = chatState()
+  const { showSnackbar } = useSnackbar()
+
   const [ search, setSearch ] = useState('')
   const [ searchResult, setSearchResult ] = useState([])
   const [ isLoading, setLoading ] = useState(false)
   const [typingTimeout, setTypingTimeout] = useState(0)
-
-  /* -------toast------- */
-  const [ severity, setSeverity ] = useState('')
-  const [ message, setMessage ] = useState('')
-  const [ isToastOpen, onToastClose ] = useState(false)
-  
-  const handleToast = () => {
-    onToastClose(false)
-  }
 
   const handleSearch = (e) => {
     setLoading(true)
@@ -36,14 +29,13 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
       searchUser({ 
         user, 
         search : newSearch, 
-        setMessage, 
-        setSeverity, 
-        onToastClose, 
+        showSnackbar, 
         setSearchResult, 
         setLoading
       })
     }, 300)) // delay between last keypress and search performed using API (in milliseconds)
   }
+
   const handleChatClick = (userId) => {
     /* -------Access Chat------- */ 
     try {
@@ -57,21 +49,18 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
       })
         .then(data => data.json())
         .then(response => {
-          if(! chats?.find((chat) => {chat?._id === response?._id})) setChats([response, ...chats])
+          if(! chats?.find((chat) => {chat?._id === response?._id})) {
+            setChats([response, ...chats])
+          }
           setSelectedChat(response)
           setIsOpen() // close the SideDrawer
           setSearch('')
           setSearchResult([])
-          setSeverity('') // reset toast prop
-          setMessage('') // reset toast prop
         })
       } catch (err) {
-        setToastVisible({
-          _message: "Error Occurred ! " + err.message, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onClose
+        showSnackbar({
+          message: `Error Occurred ! ${err.message}`, 
+          severity: "error", 
         })
       }
   }
@@ -103,19 +92,6 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
             )}
           </div>
         )}
-      {/* -------Toast------- */}
-      <SnackbarToast 
-        // key={"key-00"} 
-        message={message} 
-        open={isToastOpen} 
-        onClose={handleToast} 
-        delay={5000} 
-        vertical="bottom" 
-        horizontal="center" 
-        severity={severity} 
-        variant="filled"
-        sx={{ width: '100%' }} 
-        actionNumber={1} />
     </>
   )
 }

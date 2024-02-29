@@ -10,29 +10,24 @@ import {
   Button 
 } from '@mui/material'
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
-import SnackbarToast, { setToastVisible } from '../widgets/SnackbarToast'
+import { useSnackbar } from '../../context/SnackbarToast'
 
 const Signin = () => {
+  const { showSnackbar } = useSnackbar()
   const [ show, setShow ] = useState(false)
   const [ loader, setLoader ] = useState(false)
-  const [ message, setMessage ] = useState("")
-  const [ open, onClose ] = useState(false)
-  const [ severity, setSeverity ] = useState("")
 
   const { register, handleSubmit, watch, formState: {errors} } = useForm()
   
-  const handleShow = () => setShow(!show)
-  const handleClose = () => onClose(false)
+  const handleShow = () => 
+    setShow(!show)
 
   const onSubmit = async (data) => {
     setLoader(true)
     if (!data.emailId || !data.password) {
-      setToastVisible({
-        _message: "Please fill in all the fields !", 
-        _severity: "warning", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onClose
+      showSnackbar({
+        message: "Please fill in all the fields !", 
+        severity: "warning", 
       })
       setLoader(false)
       return
@@ -57,20 +52,14 @@ const Signin = () => {
         class response, well now converting that to a promise */
         .then(response => {
           if (response.statusCode === 401) {
-            setToastVisible({
-              _message: "Unauthorized Request: " + response.message, 
-              _severity: "error", 
-              setMessage: setMessage, 
-              setSeverity: setSeverity, 
-              onOpen: onClose
+            showSnackbar({
+              message: "Unauthorized Request: " + response.message, 
+              severity: "error", 
             })
           } else if (response.statusCode === 200) {
-            setToastVisible({
-              _message: "Login Successful", 
-              _severity: "success", 
-              setMessage: setMessage, 
-              setSeverity: setSeverity, 
-              onOpen: onClose
+            showSnackbar({
+              message: "Login Successful", 
+              severity: "success", 
             })
             localStorage.setItem('userInfo', JSON.stringify(response))
             Router.push('/chats')
@@ -78,12 +67,9 @@ const Signin = () => {
           setLoader(false)
         })
     } catch (err) {
-      setToastVisible({
-        _message: "Error Occurred ! " + err.response.data.message, 
-        _severity: "error", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onClose
+      showSnackbar({
+        message: "Error Occurred ! " + err.response.data.message, 
+        severity: "error", 
       })
       setLoader(false)
     }
@@ -125,20 +111,6 @@ const Signin = () => {
           loading={loader}>
             Sign-in
         </LoadingButton>
-        {/* -------toast------- */}
-        <SnackbarToast 
-          // key={"key-00"} 
-          message={message} 
-          open={open} 
-          onClose={handleClose} 
-          delay={5000} 
-          vertical="bottom" 
-          horizontal="center" 
-          severity={severity} 
-          variant="filled"
-          sx={{ width: '100%' }} 
-          actionNumber={1} 
-        />
       </Stack>
     </form>
   )

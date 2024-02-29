@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
 import { chatState } from '../../../context/ChatProvider'
+import { useSnackbar } from '../../../context/SnackbarToast'
 import { searchUser } from '../../../utils/searchUser'
 import Input from '../../elements/Input'
 import Button from '../../elements/Button'
-import { setToastVisible }  from '../SnackbarToast'
 import UserListItem from '../../elements/list/UserListItem'
 import UserBadgeItem from '../../ui/UserBadgeItem'
-import SnackbarToast from '../SnackbarToast'
 import ChatLoading from '../ChatLoading'
 
 const GroupChatForm = ({ onClose }) => {
+  const { showSnackbar } = useSnackbar()
+
   const { user, chats, setChats } = chatState()
   const [ isLoading, setLoading ] = useState(false)
   const [ isSpinner, setSpinner ] = useState(false)
   const [ typingTimeout, setTypingTimeout ] = useState(0)
+
   const numberOfBadgeItem = 9
   const numberOfUserItem = 4
   const cssOverride = {
@@ -30,14 +32,6 @@ const GroupChatForm = ({ onClose }) => {
   const [ searchResult, setSearchResult ] = useState([])
   const [ groupChatName, setGroupChatName ] = useState('')
   const [ selectedUsers, setSelectedUsers ] = useState([])
-  // -------toast-------
-  const [ message, setMessage ] = useState([])
-  const [ severity, setSeverity ] = useState('')
-  const [ isToastOpen, onToastClose ] = useState(false)
-
-  const handleToast = () => {
-    onToastClose(false)
-  }
 
   const handleSearch = (e) => {
     setLoading(true)
@@ -51,9 +45,7 @@ const GroupChatForm = ({ onClose }) => {
       searchUser({ 
         user, 
         search : newSearch, 
-        setMessage, 
-        setSeverity, 
-        onToastClose, 
+        showSnackbar, 
         setSearchResult, 
         setLoading
       })
@@ -61,12 +53,9 @@ const GroupChatForm = ({ onClose }) => {
   }
   const handleGroup = (userToAdd) => {
     if(selectedUsers.includes(userToAdd)) {
-      setToastVisible({
-        _message: "User has been added already", 
-        _severity: "warning", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "User has been added already", 
+        severity: "warning", 
       })
       return
     }
@@ -80,12 +69,9 @@ const GroupChatForm = ({ onClose }) => {
   }
   const createGroupChat = () => {
     if (!groupChatName || !selectedUsers) {
-      setToastVisible({
-        _message: "Please provide all the Fields", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Please provide all the Fields", 
+        severity: "warning", 
       })
       return
     }
@@ -107,12 +93,9 @@ const GroupChatForm = ({ onClose }) => {
       })
       .then(response => {
         if (!response.ok) {
-          setToastVisible({
-            _message: `Error Occurred: ${response.statusText}`, 
-            _severity: "error", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: `Error Occurred: ${response.statusText}`, 
+            severity: "error", 
           })
           // throw new Error(`Failed to create group chat ${response.statusText}`)
         }
@@ -121,22 +104,16 @@ const GroupChatForm = ({ onClose }) => {
       .then(data => {
         setChats([data, ...chats])
         onClose()
-        setToastVisible({
-          _message: "Created New Group Chat", 
-          _severity: "success", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: "Created New Group Chat", 
+          severity: "success", 
         })
         resolve(data)
       })
       .catch(error => {
-        setToastVisible({
-          _message: `Error occurred while creating group chat: ${error.message}`, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: `Error occurred while creating group chat: ${error.message}`, 
+          severity: "error", 
         })
         reject(error)
       })
@@ -220,19 +197,6 @@ const GroupChatForm = ({ onClose }) => {
           className='mt-2' 
           onClick={() => createGroupChat()} />
       </div>
-      {/* -------toast------- */}
-      <SnackbarToast
-        // key={"key-00"} 
-        message={message} 
-        open={isToastOpen} 
-        onClose={handleToast} 
-        delay={5000} 
-        vertical="bottom" 
-        horizontal="center" 
-        severity={severity} 
-        variant="filled"
-        sx={{ width: '100%' }} 
-        actionNumber={1} />
     </>
   )
 }

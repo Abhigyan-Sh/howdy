@@ -1,11 +1,7 @@
-import { setToastVisible }  from '../components/widgets/SnackbarToast'
-
 export const searchUser = ({ 
   user, 
   search, 
-  setMessage, 
-  setSeverity, 
-  onToastClose, 
+  showSnackbar, 
   setSearchResult, 
   setLoading 
 }) => {
@@ -27,29 +23,23 @@ export const searchUser = ({
       'Authorization': `Bearer ${user.token}`
     }
   })
-    .then(data => data.json())
-    .then(response => {
-      if (response.status === 401) {
-        setToastVisible({
-          _message: "Unauthorized Request: " + response.message, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
-        })
-      } else if (response.statusCode === 200) {
-        setSearchResult(response.users)
-      }
-      setLoading(false)
-    })
-    .catch(error => {
-      setToastVisible({
-        _message: "Error Occurred! " + error.message, 
-        _severity: "error", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+  .then(data => data.json())
+  .then(response => {
+    if (response.status === 401) {
+      showSnackbar({
+        message: "Unauthorized Request: " + response.message, 
+        severity: "error", 
       })
-      setLoading(false)
+    } else if (response.statusCode === 200) {
+      setSearchResult(response.users)
+    }
+    setLoading(false)
+  })
+  .catch(error => {
+    showSnackbar({
+      message: "Error Occurred! " + error.message, 
+      severity: "error", 
     })
+    setLoading(false)
+  })
 }

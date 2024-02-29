@@ -10,10 +10,10 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import SyncLoader from 'react-spinners/SyncLoader'
 import io from 'socket.io-client'
 import { chatState } from '../context/ChatProvider'
+import { useSnackbar } from '../context/SnackbarToast'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
 import { getFileFormat } from '../utils/computeFileProps'
 import ScrollableChat from './miscellaneous/ScrollableChat'
-import SnackbarToast, { setToastVisible }  from './widgets/SnackbarToast'
 import SelectedMedia from './widgets/SelectedMedia'
 import GroupChatInfo from './widgets/modal/GroupChatInfo'
 import Profile from './widgets/modal/Profile'
@@ -24,6 +24,8 @@ import Button from './elements/Button'
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+
+  const { showSnackbar } = useSnackbar()
 
   const { user, selectedChat, setSelectedChat, notification, setNotification } = chatState()
   const [ fetchedMessages, setFetchedMessages ] = useState([])
@@ -41,16 +43,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const [ isTyping, setIsTyping] = useState(false)
   // -------modal-------
   const [ isModalOpen, onModalClose ] = useState(false)
-  // -------toast-------
-  const [ toastMessage, setToastMessage ] = useState('')
-  const [ severity, setSeverity ] = useState('')
-  const [ isToastOpen, onToastClose ] = useState(false)
 
   const handleChatInfo = () => 
     onModalClose(false)
-
-  const handleToast = () => 
-    onToastClose(false)
 
   const sendMessage = () => {
     socket.emit('typing stopped', selectedChat._id)
@@ -79,12 +74,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       .then(response => response.json())
       .then(data => {
         if(data.statusCode && [400, 500].includes(data.statusCode)) {
-          setToastVisible({
-            _message: `Error ${data.statusCode}: ${data?.error}`, 
-            _severity: "error", 
-            setMessage: setToastMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: `Error ${data.statusCode}: ${data?.error}`, 
+            severity: "error", 
           })
         } else if (data.statusCode === 201) {
           socket.emit("new message", data)
@@ -93,12 +85,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
         resolve(data)
       })
       .catch(error => {
-        setToastVisible({
-          _message: `Error occurred while updating group chat name: ${error.message}`, 
-          _severity: "error", 
-          setMessage: setToastMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: `Error occurred while updating group chat name: ${error.message}`, 
+          severity: "error", 
         })
         reject(error)
       })
@@ -126,12 +115,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       .then(response => response.json())
       .then(data => {
         if(data.statusCode && [400, 404, 405, 500].includes(data.statusCode)) {
-          setToastVisible({
-            _message: `Error ${data.statusCode}: ${data?.error}`, 
-            _severity: "error", 
-            setMessage: setToastMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: `Error ${data.statusCode}: ${data?.error}`, 
+            severity: "error", 
           })
         } else if (data.statusCode === 200) {
           socket.emit("join chat", selectedChat._id)
@@ -140,12 +126,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
         resolve(data)
       })
       .catch(error => {
-        setToastVisible({
-          _message: `Error occurred while updating users in group: ${error.message}`, 
-          _severity: "error", 
-          setMessage: setToastMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: `Error occurred while updating users in group: ${error.message}`, 
+          severity: "error", 
         })
         reject(error)
       })
@@ -166,12 +149,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       chooseMedia: true
     }))
     if (_media === undefined) {
-      setToastVisible({
-        _message: "no image or video selected !", 
-        _severity: "warning", 
-        setMessage: setToastMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: `no image or video selected !`, 
+        severity: "warning", 
       })
       setIsLoading(prevState => ({
         ...prevState, 
@@ -200,12 +180,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       })
       .catch((error) => {
         console.log(error)
-        setToastVisible({
-          _message: "some error occurred while parsing", 
-          _severity: "warning", 
-          setMessage: setToastMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: "some error occurred while parsing", 
+          severity: "warning", 
         })
         setSelectedFile(null)
       })
@@ -217,12 +194,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       })
     } else {
       if(!selectedFile) {
-        setToastVisible({
-          _message: "Please Select an Image (jpg, jpeg, png) or for Video (mp4, mpeg, quicktime) !", 
-          _severity: "warning", 
-          setMessage: setToastMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: "Please Select an Image (jpg, jpeg, png) or for Video (mp4, mpeg, quicktime) !", 
+          severity: "warning", 
         })
       }
       setIsLoading(prevState => ({
@@ -449,19 +423,6 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
             setFetchAgain={setFetchAgain} />
         </ChatInfoModal>
       )}
-      {/* -------toast------- */}
-      <SnackbarToast
-        // key={"key-00"} 
-        message={toastMessage} 
-        open={isToastOpen} 
-        onClose={handleToast} 
-        delay={5000} 
-        vertical="bottom" 
-        horizontal="center" 
-        severity={severity} 
-        variant="filled"
-        sx={{ width: '100%' }} 
-        actionNumber={1} />
     </>
   )
 }

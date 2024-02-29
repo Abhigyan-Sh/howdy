@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
 import { chatState } from '../../../context/ChatProvider'
+import { useSnackbar } from '../../../context/SnackbarToast'
 import { isAdmin } from '../../../utils/isAdmin'
 import { searchUser } from '../../../utils/searchUser'
 import { extractIds } from '../../../utils/extractIds'
@@ -9,7 +10,6 @@ import Button from '../../elements/Button'
 import UserBadgeItem from '../../ui/UserBadgeItem'
 import UserListItem from '../../elements/list/UserListItem'
 import ChatLoading from '../ChatLoading'
-import SnackbarToast, { setToastVisible }  from '../../widgets/SnackbarToast'
 
 const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   const numberOfBadgeItem = 9
@@ -21,7 +21,10 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
     justifyContent: 'center',
     alignItems: 'center'
   }
+
   const { user } = chatState()
+  const { showSnackbar } = useSnackbar()
+
   const [ isLoading, setLoading ] = useState(false) // Controls the display of skeleton UI to indicate loading user components
   const [ isSpinner, setSpinner ] = useState(false) // Controls the visibility of a spinner for API requests
   const [ typingTimeout, setTypingTimeout ] = useState(0)
@@ -30,24 +33,13 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   const [ search, setSearch ] = useState("")
   const [ searchResults, setSearchResults ] = useState([])
   const [ selectedUsers, setSelectedUsers ] = useState(chatGroup?.users)
-  // -------toast-------
-  const [ message, setMessage ] = useState([])
-  const [ severity, setSeverity ] = useState('')
-  const [ isToastOpen, onToastClose ] = useState(false)
-  
-  const handleToast = () => {
-    onToastClose(false)
-  }
 
   // -------update groupChat name | search users | add Or remove users to/from group | leave group
   const handleDelete = (userToDelete) => {
     if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
-      setToastVisible({
-        _message: "Only Admin can remove other members", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Only Admin can remove other members", 
+        severity: "info", 
       })
       return
     }
@@ -58,22 +50,16 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   }
   const updateGroupChatName = () => {
     if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
-      setToastVisible({
-        _message: "Only Admin can modify chat name", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Only Admin can modify chat name", 
+        severity: "info", 
       })
       return
     }
     if (!groupChatName || !selectedUsers) {
-      setToastVisible({
-        _message: "Please provide all the Fields", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Please provide all the Fields", 
+        severity: "warning", 
       })
       return
     }
@@ -96,32 +82,23 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
       .then(response => response.json())
       .then(data => {
         if(data.statusCode === 400 || data.statusCode === 500) {
-          setToastVisible({
-            _message: `Error ${data.statusCode}: ${data?.error}`, 
-            _severity: "error", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: `Error ${data.statusCode}: ${data?.error}`, 
+            severity: "error", 
           })
         } else if (data.statusCode === 200) {
-          setToastVisible({
-            _message: data.data, 
-            _severity: "success", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: data.data, 
+            severity: "success", 
           })
         }
         setFetchAgain(!fetchAgain)
         resolve(data)
       })
       .catch(error => {
-        setToastVisible({
-          _message: `Error occurred while updating group chat name: ${error.message}`, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: `Error occurred while updating group chat name: ${error.message}`, 
+          severity: "error", 
         })
         reject(error)
       })
@@ -132,12 +109,9 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   }
   const handleSearch = (e) => {
     if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
-      setToastVisible({
-        _message: "Only Admin can add other members", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Only Admin can add other members", 
+        severity: "info", 
       })
       return
     }
@@ -152,9 +126,6 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
       searchUser({ 
         user, 
         search : newSearch, 
-        setMessage, 
-        setSeverity, 
-        onToastClose, 
         setSearchResult: setSearchResults, 
         setLoading
       })
@@ -162,12 +133,9 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   }
   const updateUsers = (verifyForAdmin, updatedSelectedUsers) => {
     if(verifyForAdmin && !isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
-      setToastVisible({
-        _message: "Only Admin can add other members", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Only Admin can add other members", 
+        severity: "info", 
       })
       return
     }
@@ -190,32 +158,23 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
       .then(response => response.json())
       .then(data => {
         if(data.statusCode && [400, 404, 405, 500].includes(data.statusCode)) {
-          setToastVisible({
-            _message: `Error ${data.statusCode}: ${data?.error}`, 
-            _severity: "error", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: `Error ${data.statusCode}: ${data?.error}`, 
+            severity: "error", 
           })
         } else if (data.statusCode === 200) {
-          setToastVisible({
-            _message: data.message, 
-            _severity: "success", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onToastClose
+          showSnackbar({
+            message: data.message, 
+            severity: "success", 
           })
         }
         setFetchAgain(!fetchAgain)
         resolve(data)
       })
       .catch(error => {
-        setToastVisible({
-          _message: `Error occurred while updating users in group: ${error.message}`, 
-          _severity: "error", 
-          setMessage: setMessage, 
-          setSeverity: setSeverity, 
-          onOpen: onToastClose
+        showSnackbar({
+          message: `Error occurred while updating users in group: ${error.message}`, 
+          severity: "error", 
         })
         reject(error)
       })
@@ -226,22 +185,16 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   }
   const handleGroup = (userToAdd) => {
     if(!isAdmin({ user, groupAdmin: chatGroup?.groupAdmin })) {
-      setToastVisible({
-        _message: "Only Admin can add other members", 
-        _severity: "info", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+      showSnackbar({
+        message: "Only Admin can add other members", 
+        severity: "info", 
       })
       return
     }
-    if(selectedUsers.includes(userToAdd)) {
-      setToastVisible({
-        _message: "User has been added already", 
-        _severity: "warning", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onToastClose
+    if(extractIds(selectedUsers).includes(userToAdd._id)) {
+      showSnackbar({
+        message: "User has been added already", 
+        severity: "warning", 
       })
       return
     }
@@ -350,20 +303,6 @@ const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
         aria-label="Loading Spinner" />
         
       <Button text='Leave Group' type="danger" onClick={leaveGroup} />
-
-      {/* -------toast------- */}
-      <SnackbarToast
-        // key={"key-00"} 
-        message={message} 
-        open={isToastOpen} 
-        onClose={handleToast} 
-        delay={5000} 
-        vertical="bottom" 
-        horizontal="center" 
-        severity={severity} 
-        variant="filled"
-        sx={{ width: '100%' }} 
-        actionNumber={1} />
     </>
   )
 }

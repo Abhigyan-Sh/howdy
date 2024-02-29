@@ -11,40 +11,38 @@ import {
   Button 
 } from '@mui/material'
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
-import SnackbarToast, { setToastVisible } from '../widgets/SnackbarToast'
+import { useSnackbar } from '../../context/SnackbarToast'
 
 const Signup = () => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 
+  const { showSnackbar } = useSnackbar()
+
   const [ showPass, setShowPass ] = useState(false)
   const [ showConfirmPass, setShowConfirmPass ] = useState(false)
-  const [ open, onOpen ] = useState(false)
-  const [ message, setMessage ] = useState("")
-  const [ severity, setSeverity ] = useState("")
   const [ loader, setLoader ] = useState(false)
 
   const [pic, setPic] = useState()
   const { register, handleSubmit, watch, formState: {errors} } = useForm()
   
-  const handleShowPass = () => setShowPass(!showPass)
-  const handleShowConfirmPass = () => setShowConfirmPass(!showConfirmPass)
-  const handleClose = () => onOpen(false)
+  const handleShowPass = () => 
+    setShowPass(!showPass)
+  const handleShowConfirmPass = () => 
+    setShowConfirmPass(!showConfirmPass)
 
   const postDetails = (pics) => {
     setLoader(true)
     if (pics === undefined) {
-      setToastVisible({
-        _message: "Please Select an Image !", 
-        _severity: "warning", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onOpen
+      showSnackbar({
+        message: "Please Select an Image !", 
+        severity: "warning", 
       })
       setLoader(false)
       return
     }
-    if (pics.type === 'image/jpg' || pics.type === 'image/jpeg' || pics.type === 'image/png') {
+    if (pics.type === 'image/jpg' || pics.type === 'image/jpeg' || pics.type === 'image/png'
+    ) {
       const data = new FormData()
       data.append('file', pics)
       data.append('upload_preset', uploadPreset)
@@ -53,21 +51,18 @@ const Signup = () => {
         method: 'post',
         body: data,
       })
-        .then((res) => res.json())
-        .then((data)=> {
-          setPic(data.url.toString())
-          setLoader(false)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      .then((res) => res.json())
+      .then((data)=> {
+        setPic(data.url.toString())
+        setLoader(false)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     } else {
-      setToastVisible({
-        _message: "Please Select an Image (jpg, jpeg, png) !", 
-        _severity: "warning", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onOpen
+      showSnackbar({
+        message: "Please Select an Image (jpg, jpeg, png) !", 
+        severity: "warning", 
       })
       setLoader(false)
       return
@@ -76,23 +71,17 @@ const Signup = () => {
   const onSubmit = async (data) => {
     setLoader(true)
     if (!data.username || !data.emailId || !data.password || !data.confirmPassword) {
-      setToastVisible({
-        _message: "Please fill all the required fields !", 
-        _severity: "error", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onOpen
+      showSnackbar({
+        message: "Please fill all the required fields !", 
+        severity: "error", 
       })
       setLoader(false)
       return
     }
     if (data.password !== data.confirmPassword) {
-      setToastVisible({
-        _message: "Passwords do not match !", 
-        _severity: "error", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onOpen
+      showSnackbar({
+        message: "Passwords do not match !", 
+        severity: "error", 
       })
       setLoader(false)
       return
@@ -110,26 +99,20 @@ const Signup = () => {
           'Content-type': 'application/json; charset=UTF-8'
         }
       })
-        .then(data => data.json())
-        .then(response => {
-          setToastVisible({
-            _message: "Registration is successful !", 
-            _severity: "success", 
-            setMessage: setMessage, 
-            setSeverity: setSeverity, 
-            onOpen: onOpen
-          })
-          localStorage.setItem('userInfo', JSON.stringify(response))
-          Router.push('/chats')
-          setLoader(false)
+      .then(data => data.json())
+      .then(response => {
+        showSnackbar({
+          message: "Registration is successful !", 
+          severity: "success", 
         })
-    } catch (err) {      
-      setToastVisible({
-        _message: "Error Occurred !", 
-        _severity: "error", 
-        setMessage: setMessage, 
-        setSeverity: setSeverity, 
-        onOpen: onOpen
+        localStorage.setItem('userInfo', JSON.stringify(response))
+        Router.push('/chats')
+        setLoader(false)
+      })
+    } catch (err) { 
+      showSnackbar({
+        message: "Error Occurred !", 
+        severity: "error", 
       })
       setLoader(false)
     }
@@ -220,20 +203,6 @@ const Signup = () => {
           loading={loader}>
             Sign-up
         </LoadingButton>
-        {/* -------toast------- */}
-        <SnackbarToast 
-          // key={"key-00"} 
-          message={message} 
-          open={open} 
-          onClose={handleClose} 
-          delay={5000} 
-          vertical="bottom" 
-          horizontal="center" 
-          severity={severity} 
-          variant="filled"
-          sx={{ width: '100%' }} 
-          actionNumber={1} 
-        />
       </Stack>
       {/* </div> */}
     </form>
