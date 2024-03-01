@@ -4,7 +4,7 @@ import { IconContext } from 'react-icons'
 import { BsPersonVcardFill } from 'react-icons/bs'
 import { RiChatSettingsLine } from 'react-icons/ri'
 import { IoReturnDownBackOutline } from 'react-icons/io5'
-import { FiSend } from "react-icons/fi"
+import { FiSend } from 'react-icons/fi'
 import { MdOutlinePermMedia, MdPermMedia } from 'react-icons/md'
 import ClipLoader from 'react-spinners/ClipLoader'
 import SyncLoader from 'react-spinners/SyncLoader'
@@ -12,7 +12,7 @@ import io from 'socket.io-client'
 import { chatState } from '../context/ChatProvider'
 import { useSnackbar } from '../context/SnackbarToast'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
-import { getFileFormat } from '../utils/computeFileProps'
+import { getFileFormat, isValidMediaType } from '../utils/computeFileProps'
 import ScrollableChat from './miscellaneous/ScrollableChat'
 import SelectedMedia from './widgets/SelectedMedia'
 import GroupChatInfo from './widgets/modal/GroupChatInfo'
@@ -25,9 +25,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 
+  const { user, selectedChat, setSelectedChat, notification, setNotification } = chatState()
   const { showSnackbar } = useSnackbar()
 
-  const { user, selectedChat, setSelectedChat, notification, setNotification } = chatState()
   const [ fetchedMessages, setFetchedMessages ] = useState([])
   const [ newMessage, setNewMessage ] = useState('')
   const [ media, setMedia ] = useState('')
@@ -150,7 +150,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     }))
     if (_media === undefined) {
       showSnackbar({
-        message: `no image or video selected !`, 
+        message: `no media selected !`, 
         severity: "warning", 
       })
       setIsLoading(prevState => ({
@@ -159,11 +159,13 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       }))
       return
     }
-    if (_media.type === 'image/jpg' || _media.type === 'image/jpeg' || _media.type === 'image/png' 
-    || _media.type === 'video/mp4' || _media.type === 'video/mpeg' || _media.type === 'video/quicktime'
-    ) {
+    if (isValidMediaType(_media)) {
       setSelectedFile(_media)
-      const folder = _media.type.startsWith('image') ? 'images' : 'videos'
+      const folder = _media.type.startsWith('image') 
+        ? 'images' 
+        : (_media.type.startsWith('video') 
+          ? 'videos' 
+          : 'audios')
       const data = new FormData()
       data.append('file', _media)
       data.append('upload_preset', uploadPreset)
@@ -195,7 +197,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     } else {
       if(!selectedFile) {
         showSnackbar({
-          message: "Please Select an Image (jpg, jpeg, png) or for Video (mp4, mpeg, quicktime) !", 
+          message: `.${_media.type.split('/')[1]} is not valid media format !`, 
           severity: "warning", 
         })
       }
@@ -357,7 +359,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                   <Input 
                     type='file'
                     id="file-upload"
-                    accept= 'image/*, video/*'
+                    accept= 'image/*, video/*, audio/*'
                     onChange = {e => postDetails(e.target.files[0])}
                     className='hidden' />
                   <Input 

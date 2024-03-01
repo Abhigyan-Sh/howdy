@@ -1,9 +1,15 @@
 import { IoCheckmarkDoneOutline } from 'react-icons/io5'
 import { formatUpdatedAt } from '../../utils/formatUpdatedAt'
-import { getFileFormat } from '../../utils/computeFileProps'
+import { 
+  getFileFormat, 
+  validVideoFormats, 
+  validImageFormats, 
+  validAudioFormats 
+} from '../../utils/computeFileProps'
 import { readBy } from '../../utils/readBy'
 import NextCloudPlayer from '../widgets/NextCloudPlayer'
 import NextCloudImg from '../widgets/NextCloudImg'
+import AudioPlayer from '../widgets/AudioPlayer'
 
 const Message = ({ 
   message, 
@@ -34,18 +40,23 @@ const Message = ({
 
       {/* MESSAGE SECTION: content, payment || contract(wont' include content) || media || web-scrapping */}
       <div className={`flex flex-col leading-1.5 p-4 border-gray-200 ${isSentByLoggedInUser ? "bg-emerald-700 dark:bg-emerald-700 rounded-s-xl rounded-ee-xl" : "bg-gray-100 dark:bg-gray-700 rounded-e-xl rounded-es-xl"} ${className}`}>
-        {/* display media */}
-        {['mp4', 'mpeg', 'quicktime'].includes(
-          mediaFormatExtension
+        {/* 1) display media */}
+        {validVideoFormats.includes(
+          mediaFormatExtension 
         ) && (
           <NextCloudPlayer src={message.media} />
         )}
-        {['jpg', 'jpeg', 'png'].includes(
-          mediaFormatExtension
+        {validImageFormats.includes(
+          mediaFormatExtension 
         ) && (
           <NextCloudImg src={message.media} />
         )}
-        {/* display message content */}
+        {validAudioFormats.includes(
+          mediaFormatExtension 
+        ) && (
+          <AudioPlayer src={message.media} />
+        )}
+        {/* 2) display message content */}
         {message.content && (
           <div className='mt-2'>
             <p className="text-sm md:text-[16px] font-normal text-gray-900 dark:text-white"> 

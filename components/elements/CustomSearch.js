@@ -10,12 +10,12 @@ const CustomSearch = ({
   onChange 
 }) => {
   const [visibility, setVisibility] = useState(true)
-  const inputRef = useRef(null) // Creating a reference to the input element
+  const inputRef = useRef(null) // creating a reference to the input element
 
   useEffect(() => {
-    // Check if autoFocus is true and inputRef.current is defined
+    // now checking that whether if autoFocus is true and inputRef.current is defined
     if (autoFocus && inputRef.current) {
-      // Focus the input element
+      // focus the input element
       inputRef.current.focus()
     }
   }, [autoFocus]) // Run this effect whenever autoFocus changes

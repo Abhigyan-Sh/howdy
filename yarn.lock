@@ -586,7 +586,7 @@
   dependencies:
     "@cloudinary/transformation-builder-sdk" "^1.10.0"
 
-"@cloudinary/url-gen@^1.7.0":
+"@cloudinary/url-gen@^1.18.0", "@cloudinary/url-gen@^1.7.0":
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/@cloudinary/url-gen/-/url-gen-1.18.0.tgz#75bc31f06eea19c1f19cac27612fe5a575e0861f"
   integrity sha512-IszTCvSyvLOOAqtfM47h1jPbWptG0HU7spr4WkO9KdkZfITGk+autVC6lkFZrcbxbu4MRhqUqNklQ7P9yZpqYw==

@@ -47,22 +47,22 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
           Authorization: `Bearer ${user.token}`
         }
       })
-        .then(data => data.json())
-        .then(response => {
-          if(! chats?.find((chat) => {chat?._id === response?._id})) {
-            setChats([response, ...chats])
-          }
-          setSelectedChat(response)
-          setIsOpen() // close the SideDrawer
-          setSearch('')
-          setSearchResult([])
-        })
-      } catch (err) {
-        showSnackbar({
-          message: `Error Occurred ! ${err.message}`, 
-          severity: "error", 
-        })
-      }
+      .then(data => data.json())
+      .then(response => {
+        if(! chats?.find((chat) => {chat?._id === response?._id})) {
+          setChats([response, ...chats])
+        }
+        setSelectedChat(response)
+        setIsOpen() // close the SideDrawer
+        setSearch('')
+        setSearchResult([])
+      })
+    } catch (err) {
+      showSnackbar({
+        message: `Error Occurred ! ${err.message}`, 
+        severity: "error", 
+      })
+    }
   }
   return (
     <>

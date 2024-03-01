@@ -20,19 +20,23 @@ const Navbar = () => {
   /* -------dropdown------- */ 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event) => 
     setAnchorEl(event.currentTarget)
+
   const handleClose = () => 
     setAnchorEl(null)
   
   /* -------modal------- */ 
   const [ isOpen, closeModal ] = useState(false)
+
   const handleModal = () => 
     closeModal(true)
 
   /* -------drawer------- */ 
   const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
   const [searchFocused, setSearchFocused ] = useState(false)
+  
   const handleDrawer = () => {
     setSearchFocused(!searchFocused) // set or remove autoFocus from search Input when SideDrawer is opened
     setIsDrawerOpen(!isDrawerOpen)

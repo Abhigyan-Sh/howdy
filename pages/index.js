@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { Container, Box, Stack, Tab } from '@mui/material/'
 import { TabContext, TabList, TabPanel } from '@mui/lab/'
 
-import homeStyles from '../styles/Home.module.css'
+// import homeStyles from '../styles/Home.module.css'
 import Signin from '../components/authentication/Signin'
 import Signup from '../components/authentication/Signup'
 
