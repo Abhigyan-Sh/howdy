@@ -1,4 +1,5 @@
-import { AudioGear } from 'react-audio-gear'
+// import { AudioGear } from 'react-audio-gear' // ⚠️ package issue 
+import ChildAudioPlayer from './ChildAudioGear/ChildAudioGear'
 import { CloudinaryVideo } from '@cloudinary/url-gen'
 import { bitRate } from '@cloudinary/url-gen/actions/transcode'
 import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId'
@@ -12,7 +13,7 @@ const AudioPlayer = ({ src }) => {
     .transcode(bitRate(bitRateValue)).publicID
   
   return (
-    <AudioGear 
+    <ChildAudioPlayer 
       audioSrc={`https://res.cloudinary.com/dfgh07xa9/video/upload/${publicId}`} />
     // <audio controls>
     //   <source 

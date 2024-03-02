@@ -13,3 +13,95 @@
         scrollbar-width: none;  /* Firefox */
   }
 }
+
+.audio-gear-kode-mono {
+  font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.audio-gear-player-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: #1e293b 3px dashed;
+    width: 18rem;
+    background-color: #f1f4f9;
+    border-radius: 1.5rem;
+    padding: 8px;
+}
+
+/* top sub-component */
+.audio-gear-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.audio-gear-text {
+    margin: 0;
+    font-weight: 500;
+}
+.audio-gear-img {
+    width: 38px;
+    height: 38px;
+}
+.audio-gear-relative {
+  position: relative;
+}
+.audio-gear-blinking-dot {
+  position: absolute;
+  right: -7px;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  animation: audioGearBlink 2s infinite;
+}
+
+@keyframes audioGearBlink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    background-color: rgba(255, 0, 0, 0.5); /* Light red */
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* middle sub-component */
+.audio-gear-SeekBar-timer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+}
+.audio-gear-fontSize {
+    font-size: 12px;
+}
+input[type="range"] {
+    width: 100%;
+    height: 5px;
+    accent-color: #1e293b;
+    outline: none;
+    cursor: pointer;
+}
+
+/* bottom sub-component */
+.audio-gear-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e293b;
+    border-radius: 18px;
+    cursor: pointer;
+}
