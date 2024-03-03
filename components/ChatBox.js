@@ -13,11 +13,13 @@ import { chatState } from '../context/ChatProvider'
 import { useSnackbar } from '../context/SnackbarToast'
 import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
 import { getFileFormat, isValidMediaType } from '../utils/computeFileProps'
+// import { isYouTubeLink } from '../utils/isYoutubeUrl'
 import ScrollableChat from './miscellaneous/ScrollableChat'
 import SelectedMedia from './widgets/SelectedMedia'
 import GroupChatInfo from './widgets/modal/GroupChatInfo'
 import Profile from './widgets/modal/Profile'
 import ChatInfoModal from './widgets/Modal'
+// import MetaData from './widgets/MetaData'
 import Input from './elements/Input'
 import Button from './elements/Button'
 
@@ -333,6 +335,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                     isLoading={isLoading} />
                 )}
               </div>
+              {/* {isYouTubeLink(newMessage) && (
+                <MetaData url="https://www.youtube.com/watch?v=GxCXiSkm6no" />
+              )} */}
               {/* Input area */}
               <div className='flex flex-col m-2'>
                 {isTyping && (
