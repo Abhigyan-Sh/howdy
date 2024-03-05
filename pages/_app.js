@@ -1,6 +1,7 @@
 import ErrorBoundary from '../components/ErrorBoundary'
 import ChatProvider from '../context/ChatProvider'
 import SnackbarProvider from '../context/SnackbarToast'
+import TransactProvider from '../context/TransactProvider'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
@@ -8,7 +9,9 @@ function MyApp({ Component, pageProps }) {
     <ErrorBoundary>
       <ChatProvider>
         <SnackbarProvider>
-          <Component {...pageProps}/>
+          <TransactProvider>
+            <Component {...pageProps}/>
+          </TransactProvider>
         </SnackbarProvider>
       </ChatProvider>
     </ErrorBoundary>

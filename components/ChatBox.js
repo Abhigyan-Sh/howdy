@@ -20,7 +20,7 @@ import GroupChatInfo from './widgets/modal/GroupChatInfo'
 import Profile from './widgets/modal/Profile'
 import ChatInfoModal from './widgets/Modal'
 // import MetaData from './widgets/MetaData'
-import Input from './elements/Input'
+import { Input } from './elements/Input'
 import Button from './elements/Button'
 
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {

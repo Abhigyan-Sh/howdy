@@ -41,7 +41,7 @@ const ScrollableChat = ({ fetchedMessages, isSpinner }) => {
           cssOverride={cssOverride} 
           size={26} 
           speedMultiplier={1} 
-          aria-label="Loading Spinner" />
+          aria-label='Loading Spinner' />
       </div>
     )
 }

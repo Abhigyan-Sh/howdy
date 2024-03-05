@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { IoMdPerson } from 'react-icons/io'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { 
-  IoIosSearch, 
-  IoMdPerson, 
-  IoMdNotifications, 
-  IoMdNotificationsOff 
-} from 'react-icons/io'
 import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
-import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
-import SideDrawer from '../layout/SideDrawer'
 import ProfileModal from '../widgets/Modal'
 import Profile from '../widgets/modal/Profile'
 
-const Navbar = () => {
+const NavBarItem = ({ title }) => (
+  <li className={`mx-2 cursor-pointer flex flex-col justify-center items-center text-lg hover:text-gray-50`}>
+    {title}
+  </li>
+)
+
+const PaymentNavbar = () => {
   const router = useRouter()
   const { user } = chatState()
   /* -------dropdown------- */ 
@@ -32,45 +32,35 @@ const Navbar = () => {
 
   const handleModal = () => 
     closeModal(true)
-
-  /* -------drawer------- */ 
-  const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
-  const [searchFocused, setSearchFocused ] = useState(false)
-  
-  const handleDrawer = () => {
-    setSearchFocused(!searchFocused) // set or remove autoFocus from search Input when SideDrawer is opened
-    setIsDrawerOpen(!isDrawerOpen)
-  }
   return (
     <>
-      <div className='w-full h-14 px-6 bg-zinc-200 flex flex-row justify-between items-center gap-2'>
-        <div className='flex flex-row justify-between items-center w-6/12 gap-2'>
-          {/* Friend Search Button and Application Name */}
-          <button 
-            className='flex flex-row justify-between items-center p-2 gap-2 border border-gray-400 rounded-lg font-bold text-neutral-700'
-            onClick={handleDrawer}>
-              <IoIosSearch />
-              <p className='hidden md:block'>Search for a friend..</p>
-          </button>
-          {/* Application Name */}
-          <p className='text-xl font-bold text-gray-800'>howdy</p>
+      <div className='w-full flex flex-row justify-between items-center p-4'>
+        {/* route to home page */}
+        <div className='flex flex-row items-center justify-between text-white'>
+          <Link href='/chats'>
+            <img src='/logo.png' alt='logo' className='w-8 cursor-pointer' />
+          </Link>
+          <NavBarItem title='howdy' />
         </div>
-        {/* Notification Bell and Profile Icon */}
+        {/* middle header */}
+        <ul className='text-white hidden md:flex'>
+          {['Payments', '&', '\uD83E\uDD84', 'Wallets'].map((item, index) => (
+            <NavBarItem key={item + index} title={item} />
+          ))}
+        </ul>
         <div className='flex flex-row justify-between items-center gap-2'>
-          {/* -------Notification Bell------- */}
-          notification bell
           {/* -------Profile Icon------- */}
           <Button
-            id="basic-button"
+            id='basic-button'
             aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
+            aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <IoMdPerson className='text-black' />
+            <IoMdPerson className='text-white text-xl' />
           </Button>
           <Menu
-            id="basic-menu"
+            id='basic-menu'
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
@@ -108,21 +98,12 @@ const Navbar = () => {
           onClose={() => closeModal(false)} 
           modalOverlay={true} 
           w='w-11/12 h-3/6 md:w-8/12 md:h-4/6 lg:w-4/12 lg:h-3/6' 
-          // h='h-3/6' 
         >
           <Profile user={user} />
         </ProfileModal>
       )}
-      {/* -------SideDrawer------- */}
-      <SideDrawer 
-        isOpen={isDrawerOpen} 
-        setIsOpen={handleDrawer} 
-        header="Search for a friend.." 
-      >
-        <UserSearchAndSelect searchFocused={searchFocused} setIsOpen={handleDrawer} />
-      </SideDrawer>
     </>
   )
 }
 
-export default Navbar
+export default PaymentNavbar
