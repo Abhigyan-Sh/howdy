@@ -92,13 +92,6 @@ const Navbar = () => {
               }}>
                 Logout
             </MenuItem>
-            <MenuItem onClick={
-              () => {
-                handleClose()
-                router.push('/payments')
-              }}>
-                Payments
-            </MenuItem>
           </Menu>
         </div>
       </div>

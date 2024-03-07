@@ -6,7 +6,7 @@ import { Button, Menu, MenuItem } from '@mui/material'
 import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
 import ProfileModal from '../widgets/Modal'
-import Profile from '../widgets/modal/Profile'
+import EditProfile from '../widgets/modal/EditProfile'
 
 const NavBarItem = ({ title }) => (
   <li className={`mx-2 cursor-pointer flex flex-col justify-center items-center text-lg hover:text-gray-50`}>
@@ -82,13 +82,6 @@ const PaymentNavbar = () => {
               }}>
                 Logout
             </MenuItem>
-            <MenuItem onClick={
-              () => {
-                handleClose()
-                router.push('/payments')
-              }}>
-                Payments
-            </MenuItem>
           </Menu>
         </div>
       </div>
@@ -99,7 +92,7 @@ const PaymentNavbar = () => {
           modalOverlay={true} 
           w='w-11/12 h-3/6 md:w-8/12 md:h-4/6 lg:w-4/12 lg:h-3/6' 
         >
-          <Profile user={user} />
+          <EditProfile user={user} />
         </ProfileModal>
       )}
     </>

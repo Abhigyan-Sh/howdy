@@ -1,12 +1,14 @@
 import { useEffect, useState, createContext, useContext } from 'react'
 import { ethers } from 'ethers'
 import { contractABI, contractAddress } from '../utils/transactions/constants'
+import { useSnackbar } from './SnackbarToast'
 
 let ethereum
 const TransactionContext = createContext()
 
 const TransactProvider = ({ children }) => {
   // const ALCHEMY_API = process.env.NEXT_PUBLIC_ALCHEMY_API
+  const { showSnackbar } = useSnackbar()
   
   const [ userAccount, setUserAccount ] = useState('')
   const [ formData, setFormData ] = useState({ 
@@ -53,12 +55,17 @@ const TransactProvider = ({ children }) => {
         setTransactions(structured_transactions)
       }
       else {
-        console.log('no ethereum object !')
+        showSnackbar({
+          message: 'no ethereum object !', 
+          severity: 'warning', 
+        })
       }
     }
     catch (error) {
-      console.log(error)
-      throw new Error('error while parsing')
+      showSnackbar({
+        message: `error while parsing: ${error?.message}`, 
+        severity: 'error', 
+      })
     }
   }
 
@@ -70,14 +77,19 @@ const TransactProvider = ({ children }) => {
       if (accounts.length) {
         setUserAccount(accounts[0])
       } else {
-        console.log('no accounts found')
+        showSnackbar({
+          message: 'no account found', 
+          severity: 'info', 
+        })
       }
       // if(!accounts.length) return
       // getAllTxn()
     }
     catch (error) {
-      console.log(error)
-      throw new error('No ethereum object !')
+      showSnackbar({
+        message: 'no ethereum object', 
+        severity: 'error', 
+      })
     }
   }
 
@@ -91,8 +103,10 @@ const TransactProvider = ({ children }) => {
       setUserAccount(accounts[0])
     }
     catch (error) {
-      console.log(error)
-      throw new Error('no ethereum object !')
+      showSnackbar({
+        message: 'no ethereum object', 
+        severity: 'error', 
+      })
     }
   }
 
@@ -125,10 +139,16 @@ const TransactProvider = ({ children }) => {
       const transactionHash = await transactionContract
           .addToBlockchain(addressTo, parsedAmount, message, keyword)
       setIsLoading(true)
-      console.log(`loading: ${transactionHash.hash}`)
+      showSnackbar({
+        message: `loading: ${transactionHash.hash}`, 
+        severity: 'info', 
+      })
       await transactionHash.wait()
       setIsLoading(false)
-      console.log(`Success: ${transactionHash.hash}`)
+      showSnackbar({
+        message: `Success: ${transactionHash.hash}`, 
+        severity: 'success', 
+      })
 
       // local data update
       const transactionCount = await transactionContract.getTransactionCount()
@@ -137,8 +157,10 @@ const TransactProvider = ({ children }) => {
       setFormData({ addressTo: '', amount: '', keyword: '', message: '' })
       getAllTxn()
     } catch (error) {
-      console.log(error)
-      throw new error ('no ethereum object !')
+      showSnackbar({
+        message: 'no ethereum object !', 
+        severity: 'error', 
+      })
     }
   }
 
@@ -151,8 +173,10 @@ const TransactProvider = ({ children }) => {
         window.localStorage.setItem('transactionCount', currentTransactionCount)
       }
     } catch (error) {
-      console.log(error)
-      throw new Error('ethereum absent')
+      showSnackbar({
+        message: 'ethereum absent', 
+        severity: 'error', 
+      })
     }
   }
   
