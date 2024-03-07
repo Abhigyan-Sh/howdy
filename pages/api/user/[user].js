@@ -11,7 +11,10 @@ const allUsers = async (req, res) => {
         ]
       } : {}
     /* return all users but not the one who is logged-in */
-    const users = await User.find(keyword).find({_id: {$ne: req.user._id}})
+    const users = await User.find(keyword)
+    .find({_id: {$ne: req.user._id}})
+    .select('-password')
+    
     res.status(200).json({ 
       statusCode: 200, 
       users: users

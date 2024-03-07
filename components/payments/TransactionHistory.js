@@ -46,7 +46,7 @@ const TransactionCard = ({
         <img 
           src= {gifUrl} 
           alt= 'gif' 
-          className='w-full h-64 2xl:h-96 rounded-md shadow-lg object-cover'
+          className='w-full h-64 2xl:h-96 rounded-md shadow-lg object-cover hidden sm:block'
         />
           <div className='bg-black p-3 rounded-full px-5 w-max mt-5 shadow-2xl'>
             <p className='text-[#e389b9]'>{timestamp}</p>
@@ -57,26 +57,32 @@ const TransactionCard = ({
 }
 
 const Transaction = () => {
-  const { userAccount, transactions } = transactionState()
+  const { userAccount, transactions, transactionCount } = transactionState()
   return (
-    <div className='flex w-full justify-center items-center 2xl:px-20 gradient-bg-transactions'>
-      <div className='flex flex-col md:p-12 py-12 px-0 sm:px-4'>
-        {userAccount ? (
-          <h1 className='text-white text-2xl sm:text-3xl text-center my-2'>
-            Latest Transactions..
-          </h1>
-        ) : (
-          <h1 className='text-white text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'>
-            Connect your wallet to see more..
-          </h1>
-        )}
-        <div className='flex flex-wrap justify-center items-center mt-10'>
-          {transactions.slice().reverse().map((transaction, index) => (
-            <TransactionCard key={index} {...transaction} />
-          ))}
+    <>
+      <div className='gradient-bg-services h-[14rem] w-full'></div>
+      <div className='flex w-full justify-center items-center 2xl:px-20 gradient-bg-transactions'>
+        <div className='flex flex-col md:p-12 py-12 px-0 sm:px-4'>
+          {userAccount ? (
+            <h1 className='text-white text-2xl sm:text-3xl text-center my-2'>
+              Latest Transactions.. 
+              <p className='text-slate-400 text-bold text-sm'>
+                on application transactions: {transactionCount}
+              </p>
+            </h1>
+          ) : (
+            <h1 className='text-white text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'>
+              Connect your wallet to see more..
+            </h1>
+          )}
+          <div className='flex flex-wrap justify-center items-center mt-10'>
+            {transactions.slice().reverse().map((transaction, index) => (
+              <TransactionCard key={index} {...transaction} />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

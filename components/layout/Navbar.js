@@ -12,7 +12,7 @@ import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect
 import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
 import SideDrawer from '../layout/SideDrawer'
 import ProfileModal from '../widgets/Modal'
-import Profile from '../widgets/modal/Profile'
+import EditProfile from '../widgets/modal/EditProfile'
 
 const Navbar = () => {
   const router = useRouter()
@@ -60,17 +60,17 @@ const Navbar = () => {
           {/* -------Notification Bell------- */}
           notification bell
           {/* -------Profile Icon------- */}
-          <Button
-            id="basic-button"
+          <Button 
+            id='basic-button'
             aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
+            aria-haspopup={true}
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <IoMdPerson className='text-black' />
+            <IoMdPerson className='text-black' fontSize={22} />
           </Button>
-          <Menu
-            id="basic-menu"
+          <Menu 
+            id='basic-menu'
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
@@ -110,14 +110,14 @@ const Navbar = () => {
           w='w-11/12 h-3/6 md:w-8/12 md:h-4/6 lg:w-4/12 lg:h-3/6' 
           // h='h-3/6' 
         >
-          <Profile user={user} />
+          <EditProfile user={user} />
         </ProfileModal>
       )}
       {/* -------SideDrawer------- */}
       <SideDrawer 
         isOpen={isDrawerOpen} 
         setIsOpen={handleDrawer} 
-        header="Search for a friend.." 
+        header='Search for a friend..' 
       >
         <UserSearchAndSelect searchFocused={searchFocused} setIsOpen={handleDrawer} />
       </SideDrawer>

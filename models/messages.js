@@ -11,8 +11,12 @@ const messageSchema = mongoose.Schema(
       trim: true 
     },
     blockchain: {
-      type: String, 
-      unique: true 
+      paidTo: {
+        type: String
+      },
+      amount: {
+        type: Number
+      }
     }, 
     metaData: {
       title: String,

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { IconContext } from 'react-icons'
 import { BsPersonVcardFill } from 'react-icons/bs'
 import { RiChatSettingsLine } from 'react-icons/ri'
 import { IoReturnDownBackOutline } from 'react-icons/io5'
+import { FaEthereum } from 'react-icons/fa'
 import { FiSend } from 'react-icons/fi'
 import { MdOutlinePermMedia, MdPermMedia } from 'react-icons/md'
 import ClipLoader from 'react-spinners/ClipLoader'
@@ -11,7 +13,7 @@ import SyncLoader from 'react-spinners/SyncLoader'
 import io from 'socket.io-client'
 import { chatState } from '../context/ChatProvider'
 import { useSnackbar } from '../context/SnackbarToast'
-import { getChatSender, getChatSenderFull } from '../utils/getChatSender'
+import { getChatSender, getChatSenderFull, getChatSendersAddress } from '../utils/getChatSender'
 import { getFileFormat, isValidMediaType } from '../utils/computeFileProps'
 // import { isYouTubeLink } from '../utils/isYoutubeUrl'
 import ScrollableChat from './miscellaneous/ScrollableChat'
@@ -27,6 +29,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 
+  const router = useRouter()
   const { user, selectedChat, setSelectedChat, notification, setNotification } = chatState()
   const { showSnackbar } = useSnackbar()
 
@@ -215,6 +218,22 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     /* @dev:: in future, code for removal of image uploaded to 
     cloudinary can be written below. */
   }
+  const handlePayments = () => {
+    const payeeAddress = (
+      selectedChat.users[0]._id == user._id 
+      ? selectedChat.users[1].address 
+      : selectedChat.users[0].address
+    )
+    console.log(payeeAddress)
+    if(!payeeAddress) {
+      showSnackbar({
+        message: `ethereum wallet address unavailable`, 
+        severity: 'info', 
+      })
+      return
+    }
+    router.push(`/payments/${payeeAddress}`)
+  }
   // -------socket-------
   const handleTyping = (event) => {
     const inputValue = event.target.value
@@ -314,11 +333,20 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                 {!selectedChat?.isGroupChat ? (
                   getChatSender(selectedChat.users)
                 ) : selectedChat.chatName} </p>
-              <Button 
-                icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
-                type='alternative' 
-                onClick={() => onModalClose(true)} 
-                iconProps={{ color:"#CCCCCC", size:24 }} />
+              <div className='flex gap-2'>
+                {!selectedChat?.isGroupChat && (
+                  <Button
+                    icon={FaEthereum} 
+                    type='alternative' 
+                    onClick={handlePayments} 
+                    iconProps={{ color:"#CCCCCC", size:24 }} />
+                )}
+                <Button 
+                  icon={!selectedChat?.isGroupChat ? BsPersonVcardFill : RiChatSettingsLine} 
+                  type='alternative' 
+                  onClick={() => onModalClose(true)} 
+                  iconProps={{ color:"#CCCCCC", size:24 }} />
+              </div>
             </div>
             {/* display area for message */}
             <ScrollableChat 

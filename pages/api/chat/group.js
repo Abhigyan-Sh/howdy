@@ -36,7 +36,7 @@ const createGroupChat = async (req, res) => {
     // create fullGroupChat (chat + populated users)
     const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
       .populate('users', '-password')
-      // .populate('groupAdmin', '-password')
+      .populate('groupAdmin', '-password')
 
     res.status(200).json(fullGroupChat)
   } catch (error) {

@@ -12,18 +12,18 @@ const Chats = () => {
   const [ fetchAgain, setFetchAgain ] = useState(false)
   
   return (
-    <div className="relative w-full h-screen overflow-auto no-scrollbar">
+    <div className='relative w-full h-screen overflow-auto no-scrollbar'>
       {user && <Navbar/>}
       <div className='w-full h-[91.5vh] relative'>
         {/* -------background image------- */}
         <Image
-          src="/assets/backgroundWallpaper.jpg" 
-          alt="Background Image" 
-          layout="fill" // fill entire parent container
-          objectFit="cover" // cover entire parent container
+          src='/assets/backgroundWallpaper.jpg' 
+          alt='Background Image' 
+          layout='fill' // fill entire parent container
+          objectFit='cover' // cover entire parent container
           quality={60} 
-          className="z-0" // ensure the background image is behind other content
-          loading="lazy" 
+          className='z-0' // ensure the background image is behind other content
+          loading='lazy' 
         />
         {/* -------Optional: Overlay for background image------- */}
         <div className='absolute inset-0 bg-opacity-50 bg-gray-800'></div>

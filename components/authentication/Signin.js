@@ -24,6 +24,7 @@ const Signin = () => {
 
   const onSubmit = async (data) => {
     setLoader(true)
+
     if (!data.emailId || !data.password) {
       showSnackbar({
         message: "Please fill in all the fields !", 
@@ -32,47 +33,44 @@ const Signin = () => {
       setLoader(false)
       return
     }
-    try {
-      // const user = await axios.post(
-      //   '/api/user/signin', 
-      //   { email: data.emailId, password: data.password }
-      // )
-      fetch('/api/user/signin', {
-        method: 'POST',
-        body: JSON.stringify({ 
-          email: data.emailId, 
-          password: data.password
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8'
-        }
-      })
-        .then(data => data.json())
-        /* @dev::: data has ok(true for 201 & 200) & status properties from 
-        class response, well now converting that to a promise */
-        .then(response => {
-          if (response.statusCode === 401) {
-            showSnackbar({
-              message: "Unauthorized Request: " + response.message, 
-              severity: "error", 
-            })
-          } else if (response.statusCode === 200) {
-            showSnackbar({
-              message: "Login Successful", 
-              severity: "success", 
-            })
-            localStorage.setItem('userInfo', JSON.stringify(response))
-            Router.push('/chats')
-          }
-          setLoader(false)
+
+    fetch('/api/user/signin', {
+      method: 'POST',
+      body: JSON.stringify({ 
+        email: data.emailId, 
+        password: data.password
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+    .then(data => data.json())
+    /* @dev::: data has ok(true for 201 & 200) & status properties from 
+    class response, well now converting that to a promise */
+    .then(response => {
+      if (response.statusCode === 401) {
+        showSnackbar({
+          message: "Unauthorized Request: " + response.message, 
+          severity: "error", 
         })
-    } catch (err) {
+      } else if (response.statusCode === 200) {
+        showSnackbar({
+          message: "Login Successful", 
+          severity: "success", 
+        })
+        localStorage.setItem('userInfo', JSON.stringify(response))
+        Router.push('/chats')
+      }
+    })
+    .catch((err) => {
       showSnackbar({
-        message: "Error Occurred ! " + err.response.data.message, 
+        message: "Error Occurred ! " + err, 
         severity: "error", 
       })
+    })
+    .finally(() => {
       setLoader(false)
-    }
+    })
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -4,20 +4,20 @@ import bcrypt from 'bcrypt'
 const userSchema = mongoose.Schema(
   {
     username: { 
-      type: 'String', 
+      type: String, 
       required: true 
     },
     email: { 
-      type: 'String', 
+      type: String, 
       unique: true, 
       required: true 
     },
     password: { 
-      type: 'String', 
+      type: String, 
       required: true 
     },
     pic: {
-      type: 'String',
+      type: String,
       required: false,
       default:
         'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    address: {
+      type: String, 
+      default: null
+    }, 
   },
   { timestamps: true }
 )

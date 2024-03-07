@@ -57,7 +57,7 @@ const PaymentNavbar = () => {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <IoMdPerson className='text-white text-xl' />
+            <IoMdPerson className='text-white' fontSize={22} />
           </Button>
           <Menu
             id='basic-menu'

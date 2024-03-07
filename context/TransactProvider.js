@@ -6,7 +6,7 @@ let ethereum
 const TransactionContext = createContext()
 
 const TransactProvider = ({ children }) => {
-  const ALCHEMY_API = process.env.NEXT_PUBLIC_ALCHEMY_API
+  // const ALCHEMY_API = process.env.NEXT_PUBLIC_ALCHEMY_API
   
   const [ userAccount, setUserAccount ] = useState('')
   const [ formData, setFormData ] = useState({ 
@@ -40,9 +40,7 @@ const TransactProvider = ({ children }) => {
     try {
       if (ethereum) {
         const transfer_contract = await getContract()
-        // console.log(Object.keys(transfer_contract.getAllTransactions))
         const available_transactions = await transfer_contract.getAllTransactions()
-        // console.log(available_transactions)
         const structured_transactions = 
           available_transactions.map((transaction) => ({
             addressTo: transaction.receiver, 
@@ -52,7 +50,6 @@ const TransactProvider = ({ children }) => {
             keyword: transaction.keyword, 
             amount: parseInt(transaction.amount._hex) / (10 ** 18)
           }))
-        console.log(structured_transactions)
         setTransactions(structured_transactions)
       }
       else {
@@ -70,7 +67,6 @@ const TransactProvider = ({ children }) => {
       if(!ethereum) 
         return alert('please install metamask !')
       const accounts = await ethereum.request({ method: 'eth_accounts' })
-      // console.log(accounts)
       if (accounts.length) {
         setUserAccount(accounts[0])
       } else {
@@ -183,6 +179,7 @@ const TransactProvider = ({ children }) => {
       setFormData, 
       handleChange, 
       sendTransaction, 
+      transactionCount, 
       transactions, 
       isLoading
     }}>

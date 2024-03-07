@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import BarLoader from 'react-spinners/BarLoader'
 import { SiEthereum } from 'react-icons/si'
 import { BsInfoCircle } from 'react-icons/bs'
@@ -5,11 +6,12 @@ import { transactionState } from '../../context/TransactProvider'
 import { TrimAddress } from '../../utils/transactions/TrimAddress'
 import { InputPay } from '../elements/Input'
 
-const SendPayments = () => {
+const SendPayments = ({ address }) => {
   const { 
     connectWallet, 
     userAccount, 
     formData, 
+    setFormData, 
     handleChange, 
     sendTransaction, 
     isLoading 
@@ -22,6 +24,9 @@ const SendPayments = () => {
     if (!addressTo || !amount || !keyword || !message) return
     sendTransaction()
   }
+  useEffect(() => {
+    setFormData({ addressTo: address })
+  }, [])
   return (
     <div className='flex w-full justify-center items-center gradient-bg-services'>
       <div className='flex mf:flex-row flex-col items-start justify-between px-0 md:p-20 py-12 w-10/12'>
@@ -58,11 +63,12 @@ const SendPayments = () => {
             </div>
             {/* input area */}
             <div className='p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism'>
-              <InputPay 
-                placeholder='Address To' 
-                name='addressTo' 
-                type='text' 
-                handleChange={handleChange} />
+              <div className='my-2 w-full text-white text-sm'>
+                <p className='tracking-wider'>paying to: </p>
+                <p className='p-2 break-words'>
+                  {formData.addressTo}
+                </p>
+              </div>
               <InputPay 
                 placeholder='Amount (ETH)' 
                 name='amount' 

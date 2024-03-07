@@ -9,11 +9,10 @@ const signin =  async (req, res) => {
     const { email, password } = body
     const user = await User.findOne({email})  
     if ( user && (await user.matchPassword(password))) {
+      delete user._doc.password
+
       res.status(200).json({
-        _id: user.id,
-        username: user.username,
-        email: user.email,
-        pic: user.pic,
+        ...user._doc, 
         token: generateToken(user._id),
         statusCode: 200
       })

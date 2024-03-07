@@ -83,12 +83,13 @@ const fetchChats = async (req, res) => {
         // @dev:: [why below part creates issue ??] 
         // .populate({
         //   path: 'latestMessage',
+        //   match: { $exists: true }, 
         //   options: { 
-        //     // Specify 'retainNullValues' to true to keep null/undefined values
+        //     // here specifying 'retainNullValues' to true to keep null/undefined values
         //     retainNullValues: true 
         //   }
         // })
-        .sort({ updatedAt: -1 })
+        // .sort({ updatedAt: -1 })
 
       // Populating the sender details in the 'latestMessage' field
       chats = await User.populate(chats, {
