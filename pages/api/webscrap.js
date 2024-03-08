@@ -8,6 +8,6 @@ export default async (req, res) => {
         res.send(html)
     } catch (error) {
         console.error('error: ', error)
-        res.status(500).json({ error: 'internal server error' })
+        res.status(500).json({ error: 'Internal Server Error' })
     }
 }

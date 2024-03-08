@@ -11,6 +11,8 @@ const ChatProvider = ({ children }) => {
     const [ notification, setNotification ] = useState([])
 
     useEffect(() => {
+        if(router.pathname.split('/')[1] === 'checkYourMail') return
+
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         setUser(userInfo)
         if(!userInfo) {
@@ -19,7 +21,7 @@ const ChatProvider = ({ children }) => {
         else if(router.pathname === '/') {
             router.push('/chats')
         }
-    }, [router])
+    }, [router.pathname])
     
     return (
         <ChatContext.Provider value = {{ 

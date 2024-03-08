@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 import { RxUpdate } from 'react-icons/rx'
 import { chatState } from '../../../context/ChatProvider'
 import { useSnackbar } from '../../../context/SnackbarToast'
@@ -10,13 +10,11 @@ import Avatar from '../../ui/Avatar'
 const EditProfile = ({ user, height, width, alt }) => {
   const { setUser } = chatState()
   const { showSnackbar } = useSnackbar()
-  const ethereumAddressRef = useRef(user.blockchain)
+  // const ethereumAddressRef = useRef(user.blockchain)
+  const [ ethereumAddress, setEthereumAddress ] = useState(user.blockchain)
 
-  console.log(user)
   const handleEthereumAddress = () => {
-    const ethereum_address = ethereumAddressRef.current.value
-
-    if(!isValidEthereumAddress(ethereum_address)) {
+    if(!isValidEthereumAddress(ethereumAddress)) {
       showSnackbar({
         message: 'invalid ethereum address', 
         severity: 'warning', 
@@ -27,7 +25,7 @@ const EditProfile = ({ user, height, width, alt }) => {
     fetch('/api/payments/updateaddress', {
       method: 'POST',
       body: JSON.stringify({
-        'userAddress' : ethereum_address
+        'userAddress' : ethereumAddress
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -46,7 +44,7 @@ const EditProfile = ({ user, height, width, alt }) => {
           message: data.message, 
           severity: 'success', 
         })
-        user.address = ethereum_address
+        user.address = ethereumAddress
         setUser(user)
         localStorage.setItem('userInfo', JSON.stringify(user))
       }
@@ -56,7 +54,6 @@ const EditProfile = ({ user, height, width, alt }) => {
         message: `error occurred while parsing ${error.message}`, 
         severity: 'error', 
       })
-      console.log(error)
     })
   }
   return (
@@ -73,9 +70,14 @@ const EditProfile = ({ user, height, width, alt }) => {
         <p><span className='font-bold'>email: </span>{user.email}</p>
         <div className='w-full flex gap-1'>
           <Input 
+            placeholder='0x1a2b3c...' 
+            coverClass='w-full' 
+            value={ethereumAddress} 
+            onChange={(e) => setEthereumAddress(e.target.value)} />
+          {/* <Input 
             ref={ethereumAddressRef} 
             placeholder='0x1a2b3c...' 
-            coverClass='w-full' />
+            coverClass='w-full' /> */}
           <Button 
             text='' 
             type='text' 

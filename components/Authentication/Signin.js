@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { LoadingButton } from '@mui/lab'
 import { 
   FormControl, 
@@ -13,6 +13,7 @@ import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
 import { useSnackbar } from '../../context/SnackbarToast'
 
 const Signin = () => {
+  const router = useRouter()
   const { showSnackbar } = useSnackbar()
   const [ show, setShow ] = useState(false)
   const [ loader, setLoader ] = useState(false)
@@ -59,7 +60,7 @@ const Signin = () => {
           severity: "success", 
         })
         localStorage.setItem('userInfo', JSON.stringify(response))
-        Router.push('/chats')
+        router.push('/chats')
       }
     })
     .catch((err) => {
@@ -82,17 +83,17 @@ const Signin = () => {
             {...register("emailId")} 
             type="email" 
             id="email-id" 
-            autoComplete="true" />
+            autoComplete="email" />
         </FormControl>
         {/* -------password------- */}
         <div className='flex flex-row justify-between'>
           <FormControl required>
             <InputLabel htmlFor="password-id">password</InputLabel>
             <Input 
-              {...register('password')}
+              {...register('password')} 
               type= {show ? 'text' : 'password'}
               id="password-id"
-              autoComplete="true" />
+              autoComplete="password" />
           </FormControl>
           <Button variant="outlined" onClick={handleShow}>
             {show 

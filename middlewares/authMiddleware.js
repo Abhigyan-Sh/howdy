@@ -13,12 +13,19 @@ const AuthMiddleware = (handler) => {
         token = req.headers.authorization.split(' ')[1]
         // eslint-disable-next-line no-undef
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-        // console.log("decodeToken: " + decodedToken.payload);
-        req.user = await User.findById(decodedToken.payload).select('-password')
-        return handler(req, res)
+        // console.log("decodeToken: " + decodedToken.payload)
+        // req.user = await User.findById(decodedToken.payload).select('-password')
+        const decodedUser = await User.findById(decodedToken.payload).select('-password')
+        if(decodedUser.isVerified) {
+          req.user = decodedUser
+          return handler(req, res)
+        } else {
+          res.status(401)
+          throw new Error('user not verified, token failed !')
+        }
       } catch (err) {
         res.status(401)
-        throw new Error('not Authorized, token failed!')
+        throw new Error('Internal Server Error')
       }
     }
     // @dev:: seems to be issue below, maybe below line shouldn't be there

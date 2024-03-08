@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { LoadingButton } from '@mui/lab'
 import { 
   FormControl, 
@@ -17,6 +17,7 @@ const Signup = () => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 
+  const router = useRouter()
   const { showSnackbar } = useSnackbar()
 
   const [ showPass, setShowPass ] = useState(false)
@@ -101,13 +102,18 @@ const Signup = () => {
     })
     .then(data => data.json())
     .then(response => {
-      showSnackbar({
-        message: "Registration is successful !", 
-        severity: "success", 
-      })
-      localStorage.setItem('userInfo', JSON.stringify(response))
-      Router.push('/chats')
-      setLoader(false)
+      if(response.statusCode && [400, 500].includes(response.statusCode)) {
+        showSnackbar({
+          message: response.error, 
+          severity: 'error', 
+        })
+      } else if(response.statusCode === 201) {
+        showSnackbar({
+          message: response.message, 
+          severity: 'success', 
+        })
+        router.push('/checkYourMail')
+      }
     })
     .catch((error) => {
       showSnackbar({
@@ -131,7 +137,7 @@ const Signup = () => {
             // {...register('username', {required: true, minLength: 3})}
             type='text'
             id="username-id"
-            autoComplete="true" />
+            autoComplete="username" />
         </FormControl>
         {/* -------email------- */}
         <FormControl>
@@ -140,7 +146,7 @@ const Signup = () => {
             {...register('emailId')}
             type='email'
             id="email-id" 
-            autoComplete="true" 
+            autoComplete="email" 
             aria-describedby="helper-text-email" />
           <FormHelperText id="helper-text-email">We'll never share your email.</FormHelperText>
         </FormControl>
@@ -152,7 +158,7 @@ const Signup = () => {
               {...register('password')}
               type= {showPass ? 'text' : 'password'}
               id="password-id"
-              autoComplete="true" />
+              autoComplete="current-password" />
           </FormControl>
           <Button variant="outlined" onClick={handleShowPass}>
             {showPass 
@@ -168,7 +174,7 @@ const Signup = () => {
               {...register('confirmPassword')}
               type= {showConfirmPass ? 'text' : 'password'}
               id="confirmPassword-id" 
-              autoComplete="true" />
+              autoComplete="current-password" />
           </FormControl>
           <Button variant="outlined" onClick={handleShowConfirmPass}>
             {showConfirmPass 
@@ -194,7 +200,7 @@ const Signup = () => {
             accept= 'image/*'
             onChange = {e => postDetails(e.target.files[0])}
             // className=''
-            autoComplete="true" />
+            autoComplete="on" />
         </FormControl>
         {/* -------submit button------- */}
         <div className='mb-4'></div>

@@ -23,7 +23,7 @@ const allUsers = async (req, res) => {
       console.error('Error occurred while fetching users:', error)
       res.status(500).json({ 
         statusCode: 500, 
-        message: 'Internal server error' 
+        message: 'Internal Server Error' 
       })
   }
 }

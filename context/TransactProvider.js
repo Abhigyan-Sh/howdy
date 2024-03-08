@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext, useContext } from 'react'
 import { ethers } from 'ethers'
+import { useRouter } from 'next/router'
 import { contractABI, contractAddress } from '../utils/transactions/constants'
 import { useSnackbar } from './SnackbarToast'
 
@@ -9,6 +10,7 @@ const TransactionContext = createContext()
 const TransactProvider = ({ children }) => {
   // const ALCHEMY_API = process.env.NEXT_PUBLIC_ALCHEMY_API
   const { showSnackbar } = useSnackbar()
+  const router = useRouter()
   
   const [ userAccount, setUserAccount ] = useState('')
   const [ formData, setFormData ] = useState({ 
@@ -55,6 +57,7 @@ const TransactProvider = ({ children }) => {
         setTransactions(structured_transactions)
       }
       else {
+        if(router.pathname.split('/')[1] !== 'payments') return
         showSnackbar({
           message: 'no ethereum object !', 
           severity: 'warning', 
@@ -62,6 +65,7 @@ const TransactProvider = ({ children }) => {
       }
     }
     catch (error) {
+      if(router.pathname.split('/')[1] !== 'payments') return
       showSnackbar({
         message: `error while parsing: ${error?.message}`, 
         severity: 'error', 
@@ -71,12 +75,14 @@ const TransactProvider = ({ children }) => {
 
   const detectWallet = async () => {
     try {
-      if(!ethereum) 
+      if(!ethereum && router.pathname.split('/')[1] === 'payments') {
         return alert('please install metamask !')
+      }
       const accounts = await ethereum.request({ method: 'eth_accounts' })
       if (accounts.length) {
         setUserAccount(accounts[0])
       } else {
+        if(router.pathname.split('/')[1] !== 'payments') return
         showSnackbar({
           message: 'no account found', 
           severity: 'info', 
@@ -86,6 +92,7 @@ const TransactProvider = ({ children }) => {
       // getAllTxn()
     }
     catch (error) {
+      if(router.pathname.split('/')[1] !== 'payments') return
       showSnackbar({
         message: 'no ethereum object', 
         severity: 'error', 
@@ -95,7 +102,7 @@ const TransactProvider = ({ children }) => {
 
   const connectWallet = async () => {
     try {
-      if(!ethereum) 
+      if(!ethereum && router.pathname.split('/')[1] === 'payments') 
         return alert('please install metamask !')
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts'
@@ -103,6 +110,7 @@ const TransactProvider = ({ children }) => {
       setUserAccount(accounts[0])
     }
     catch (error) {
+      if(router.pathname.split('/')[1] !== 'payments') return
       showSnackbar({
         message: 'no ethereum object', 
         severity: 'error', 
@@ -112,7 +120,7 @@ const TransactProvider = ({ children }) => {
 
   const sendTransaction = async () => {
     try {
-      if(!ethereum) 
+      if(!ethereum && router.pathname.split('/')[1] === 'payments') 
         return alert('install metamask wallet !')
 
       setIsLoading(true)
@@ -157,6 +165,7 @@ const TransactProvider = ({ children }) => {
       setFormData({ addressTo: '', amount: '', keyword: '', message: '' })
       getAllTxn()
     } catch (error) {
+      if(router.pathname.split('/')[1] !== 'payments') return
       showSnackbar({
         message: 'no ethereum object !', 
         severity: 'error', 
@@ -173,6 +182,7 @@ const TransactProvider = ({ children }) => {
         window.localStorage.setItem('transactionCount', currentTransactionCount)
       }
     } catch (error) {
+      if(router.pathname.split('/')[1] !== 'payments') return
       showSnackbar({
         message: 'ethereum absent', 
         severity: 'error', 
