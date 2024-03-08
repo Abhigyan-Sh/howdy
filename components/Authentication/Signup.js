@@ -86,36 +86,38 @@ const Signup = () => {
       setLoader(false)
       return
     }
-    try {
-      fetch('/api/user/signup', {
-        method: 'POST',
-        body: JSON.stringify({
-          username: data.username, 
-          email: data.emailId, 
-          password: data.password, 
-          pic,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8'
-        }
-      })
-      .then(data => data.json())
-      .then(response => {
-        showSnackbar({
-          message: "Registration is successful !", 
-          severity: "success", 
-        })
-        localStorage.setItem('userInfo', JSON.stringify(response))
-        Router.push('/chats')
-        setLoader(false)
-      })
-    } catch (err) { 
+    
+    fetch('/api/user/signup', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: data.username, 
+        email: data.emailId, 
+        password: data.password, 
+        pic,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+    .then(data => data.json())
+    .then(response => {
       showSnackbar({
-        message: "Error Occurred !", 
+        message: "Registration is successful !", 
+        severity: "success", 
+      })
+      localStorage.setItem('userInfo', JSON.stringify(response))
+      Router.push('/chats')
+      setLoader(false)
+    })
+    .catch((error) => {
+      showSnackbar({
+        message: `error while parsing: ${error.message}`, 
         severity: "error", 
       })
+    })
+    .finally(() => {
       setLoader(false)
-    }
+    })
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
