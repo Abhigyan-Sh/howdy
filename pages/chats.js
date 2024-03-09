@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { chatState } from '../context/ChatProvider'
-import Navbar from '../components/layout/Navbar'
-import MyChats from '../components/MyChats'
-import ChatBox from '../components/ChatBox'
+import { chatState } from '@context/ChatProvider'
+import Navbar from '@components/layout/Navbar'
+import MyChats from '@components/MyChats'
+import ChatBox from '@components/ChatBox'
 
 const Chats = () => {
   const { user, selectedChat } = chatState()

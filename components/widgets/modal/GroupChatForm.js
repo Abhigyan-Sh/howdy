@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
-import { chatState } from '../../../context/ChatProvider'
-import { useSnackbar } from '../../../context/SnackbarToast'
-import { searchUser } from '../../../utils/searchUser'
-import { Input } from '../../elements/Input'
-import Button from '../../elements/Button'
-import UserListItem from '../../elements/list/UserListItem'
-import UserBadgeItem from '../../ui/UserBadgeItem'
-import ChatLoading from '../ChatLoading'
+import { chatState, useSnackbar } from '@context/index'
+import { searchUser } from '@utils/searchUser'
+import { Input, Button, UserListItem } from '@components/elements'
+import UserBadgeItem from '@components/ui/UserBadgeItem'
+import ChatLoading from '@components/widgets/ChatLoading'
 
 const GroupChatForm = ({ onClose }) => {
   const { showSnackbar } = useSnackbar()

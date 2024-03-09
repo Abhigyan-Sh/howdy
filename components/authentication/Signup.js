@@ -11,7 +11,7 @@ import {
   Button 
 } from '@mui/material'
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
-import { useSnackbar } from '../../context/SnackbarToast'
+import { useSnackbar } from '@context/index'
 
 const Signup = () => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET

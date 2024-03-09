@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { FaPlus } from 'react-icons/fa'
-import { chatState } from '../context/ChatProvider'
-import { useSnackbar } from '../context/SnackbarToast'
-import { removeUserInfoAndRedirect } from '../utils/removeUserInfoAndRedirect'
-import ChatLoading from './widgets/ChatLoading'
-import GroupChatForm from './widgets/modal/GroupChatForm'
-import GroupChatModal from './widgets/Modal'
-import ChatListItem from './elements/list/ChatListItem'
+import { chatState, useSnackbar } from '@context/index'
+import { removeUserInfoAndRedirect } from '@utils/removeUserInfoAndRedirect'
+import { ChatLoading, GroupChatForm } from '@components/widgets/index'
+import GroupChatModal from '@components/widgets/Modal'
+import { ChatListItem } from '@components/elements/index'
 
 const MyChats = ({ fetchAgain }) => {
   const router = useRouter()

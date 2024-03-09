@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
 import { RxUpdate } from 'react-icons/rx'
-import { chatState } from '../../../context/ChatProvider'
-import { useSnackbar } from '../../../context/SnackbarToast'
-import { isValidEthereumAddress } from '../../../utils/transactions/isValidEthereumAddress'
-import { Input } from '../../elements/Input'
-import Button from '../../elements/Button'
-import Avatar from '../../ui/Avatar'
+import { chatState, useSnackbar } from '@context/index'
+import { isValidEthereumAddress } from '@utils/transactions/isValidEthereumAddress'
+import { Input, Button } from '@components/elements/index'
+import Avatar from '@components/ui/Avatar'
 
 const EditProfile = ({ user, height, width, alt }) => {
   const { setUser } = chatState()
   const { showSnackbar } = useSnackbar()
-  // const ethereumAddressRef = useRef(user.blockchain)
-  const [ ethereumAddress, setEthereumAddress ] = useState(user.blockchain)
+  const [ ethereumAddress, setEthereumAddress ] = useState(user.address)
 
   const handleEthereumAddress = () => {
     if(!isValidEthereumAddress(ethereumAddress)) {

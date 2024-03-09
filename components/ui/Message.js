@@ -1,15 +1,13 @@
 import { IoCheckmarkDoneOutline } from 'react-icons/io5'
-import { formatUpdatedAt } from '../../utils/formatUpdatedAt'
+import { formatUpdatedAt } from '@utils/mongoDB/formatUpdatedAt'
 import { 
   getFileFormat, 
   validVideoFormats, 
   validImageFormats, 
   validAudioFormats 
-} from '../../utils/computeFileProps'
-import { readBy } from '../../utils/readBy'
-import NextCloudPlayer from '../widgets/NextCloudPlayer'
-import NextCloudImg from '../widgets/NextCloudImg'
-import AudioPlayer from '../widgets/AudioPlayer'
+} from '@utils/computeFileProps'
+import { readBy } from '@utils/chatLogics/readBy'
+import { NextCloudPlayer, NextCloudImg, AudioPlayer } from '@components/widgets/index'
 
 const Message = ({ 
   message, 

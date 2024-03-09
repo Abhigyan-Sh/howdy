@@ -1,4 +1,4 @@
-import connectToMongoDB from '../utils/connectMongo.js'
+import connectToMongoDB from '@utils/mongoDB/connectMongo.js'
 
 const withProtect = (handler) => {
   return async (req, res) => {

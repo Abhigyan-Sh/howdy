@@ -1,8 +1,8 @@
-import Chat from '../../../models/chats'
-import connectToMongo from '../../../utils/connectMongo'
+import Chat from '@models/chats'
+import connectToMongoDB from '@utils/mongoDB/connectMongo'
 
 const renameGroup = async (req, res) => {
-  connectToMongo()
+  connectToMongoDB()
   const {method, body} = req
   const { chatId, chatName } = body
   if (method === 'PUT') {

@@ -1,6 +1,6 @@
-import { transactionState } from '../../context/TransactProvider'
-import { TrimAddress } from '../../utils/transactions/TrimAddress'
-import { useFetch } from '../../utils/transactions/useFetch'
+import { transactionState } from '@context/TransactProvider'
+import { TrimAddress } from '@utils/transactions/TrimAddress'
+import { useFetch } from '@utils/transactions/useFetch'
 
 const TransactionCard = ({ 
   keyword, 

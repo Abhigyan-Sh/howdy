@@ -1,15 +1,12 @@
 import React, { useState } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
-import { chatState } from '../../../context/ChatProvider'
-import { useSnackbar } from '../../../context/SnackbarToast'
-import { isAdmin } from '../../../utils/isAdmin'
-import { searchUser } from '../../../utils/searchUser'
-import { extractIds } from '../../../utils/extractIds'
-import { Input } from '../../elements/Input'
-import Button from '../../elements/Button'
-import UserBadgeItem from '../../ui/UserBadgeItem'
-import UserListItem from '../../elements/list/UserListItem'
-import ChatLoading from '../ChatLoading'
+import { chatState, useSnackbar } from '@context/index'
+import { isAdmin } from '@utils/chatLogics/isAdmin'
+import { searchUser } from '@utils/searchUser'
+import { extractIds } from '@utils/mongoDB/extractIds'
+import { Input, Button, UserListItem } from '@components/elements/index'
+import UserBadgeItem from '@components/ui/UserBadgeItem'
+import ChatLoading from '@components/widgets/ChatLoading'
 
 const GroupChatInfo = ({ chatGroup, fetchAgain, setFetchAgain }) => {
   const numberOfBadgeItem = 9

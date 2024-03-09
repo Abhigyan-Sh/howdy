@@ -1,8 +1,8 @@
-import { computeFileSize } from '../../utils/computeFileProps'
-import { truncateFileName } from '../../utils/truncateFileName'
 import BeatLoader from 'react-spinners/BeatLoader'
+import { computeFileSize } from '@utils/computeFileProps'
+import { truncateFileName } from '@utils/truncateFileName'
 
-const OverlayRemoveButton = (onClick) => (
+const OverlayRemoveButton = ({ onClick }) => (
   <div 
     className='absolute inset-0 flex items-center justify-center opacity-0 bg-black transition duration-300 ease-in-out group-hover:opacity-50 cursor-pointer'
     onClick={onClick}>

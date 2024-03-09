@@ -10,7 +10,7 @@ import {
   Button 
 } from '@mui/material'
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
-import { useSnackbar } from '../../context/SnackbarToast'
+import { useSnackbar } from '@context/index'
 
 const Signin = () => {
   const router = useRouter()

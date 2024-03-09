@@ -1,8 +1,8 @@
-import AuthMiddleware from '../../../middlewares/authMiddleware'
-import connectToMongoDB from '../../../utils/connectMongo'
-import Message from '../../../models/messages'
-import User from '../../../models/users'
-import Chat from '../../../models/chats'
+import AuthMiddleware from '@middlewares/authMiddleware'
+import connectToMongoDB from '@utils/mongoDB/connectMongo'
+import Message from '@models/messages'
+import User from '@models/users'
+import Chat from '@models/chats'
 
 const sendMessage = async (req, res) => {
   connectToMongoDB()

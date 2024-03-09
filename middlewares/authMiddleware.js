@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import connectToMongoDB from '../utils/connectMongo.js'
-import User from '../models/users.js'
+import connectToMongoDB from '@utils/mongoDB/connectMongo.js'
+import User from '@models/users.js'
 
 const AuthMiddleware = (handler) => {
   return async (req, res) => {

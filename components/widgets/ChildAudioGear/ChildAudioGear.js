@@ -3,7 +3,7 @@ import { getTimeFormat } from './utils/getTimeFormat'
 import { getSongNameFromUrl } from './utils/getSongName'
 import { truncateString } from './utils/truncateString'
 
-export const ChildAudioPlayer = ({ audioSrc = '', darkMode }) => {  
+const ChildAudioPlayer = ({ audioSrc = '', darkMode }) => {  
   const [ isPlaying, setIsPlaying ] = useState(false)
   const [ currentTime, setCurrentTime ] = useState(0)
   const [ duration, setDuration ] = useState(0)

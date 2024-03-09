@@ -1,4 +1,4 @@
-import Message from '../../../models/messages'
+import Message from '@models/messages'
 
 const allMessages = async (req, res) => {
   const { method } = req

@@ -1,5 +1,5 @@
 import React from 'react'
-import Avatar from '../../ui/Avatar'
+import Avatar from '@components/ui/Avatar'
 
 const Profile = ({ user, height, width, alt }) => {
   return (

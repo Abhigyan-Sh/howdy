@@ -1,18 +1,16 @@
-import ErrorBoundary from '../components/ErrorBoundary'
-import ChatProvider from '../context/ChatProvider'
-import SnackbarProvider from '../context/SnackbarToast'
-import TransactProvider from '../context/TransactProvider'
-import '../styles/globals.css'
+import ErrorBoundary from '@components/ErrorBoundary'
+import { ChatProvider, SnackbarToast, TransactProvider } from '@context/index'
+import '@styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   return (
     <ErrorBoundary>
       <ChatProvider>
-        <SnackbarProvider>
+        <SnackbarToast>
           <TransactProvider>
             <Component {...pageProps}/>
           </TransactProvider>
-        </SnackbarProvider>
+        </SnackbarToast>
       </ChatProvider>
     </ErrorBoundary>
   )

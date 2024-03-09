@@ -1,6 +1,6 @@
-import User from '../../../models/users'
-import { isValidEthereumAddress } from '../../../utils/transactions/isValidEthereumAddress'
-import AuthMiddleware from '../../../middlewares/authMiddleware'
+import User from '@models/users'
+import { isValidEthereumAddress } from '@utils/transactions/isValidEthereumAddress'
+import AuthMiddleware from '@middlewares/authMiddleware'
 
 const updateAddress = async (req, res) => {
   try {

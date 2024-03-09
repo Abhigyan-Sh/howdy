@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { chatState } from '../../context/ChatProvider'
-import { useSnackbar } from '../../context/SnackbarToast'
-import { searchUser } from '../../utils/searchUser'
-import UserListItem from '../elements/list/UserListItem'
-import CustomSearch from '../elements/CustomSearch'
-import ChatLoading from '../widgets/ChatLoading'
+import { chatState, useSnackbar } from '@context/index'
+import { searchUser } from '@utils/searchUser'
+import { UserListItem, CustomSearch } from '@components/elements/index'
+import ChatLoading from '@components/widgets/ChatLoading'
 
 const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
   /* -------search------- */
@@ -49,7 +47,7 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
       })
       .then(data => data.json())
       .then(response => {
-        if(! chats?.find((chat) => {chat?._id === response?._id})) {
+        if(! chats?.find((chat) => (chat?._id === response?._id))) {
           setChats([response, ...chats])
         }
         setSelectedChat(response)
@@ -78,7 +76,7 @@ const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
           <ChatLoading count={4} />
         ) : (
           <div className="divide-y divide-dashed mt-6">
-            {searchResult?.map((searchedUser, index) => (
+            {searchResult?.map((searchedUser, _) => (
               <UserListItem 
                 key={searchedUser._id}
                 key_prop={searchedUser._id} 

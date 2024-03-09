@@ -11,19 +11,19 @@ import { MdOutlinePermMedia, MdPermMedia } from 'react-icons/md'
 import ClipLoader from 'react-spinners/ClipLoader'
 import SyncLoader from 'react-spinners/SyncLoader'
 import io from 'socket.io-client'
-import { chatState } from '../context/ChatProvider'
-import { useSnackbar } from '../context/SnackbarToast'
-import { getChatSender, getChatSenderFull, getChatSendersAddress } from '../utils/getChatSender'
-import { getFileFormat, isValidMediaType } from '../utils/computeFileProps'
-// import { isYouTubeLink } from '../utils/isYoutubeUrl'
-import ScrollableChat from './miscellaneous/ScrollableChat'
-import SelectedMedia from './widgets/SelectedMedia'
-import GroupChatInfo from './widgets/modal/GroupChatInfo'
-import Profile from './widgets/modal/Profile'
-import ChatInfoModal from './widgets/Modal'
-// import MetaData from './widgets/MetaData'
-import { Input } from './elements/Input'
-import Button from './elements/Button'
+import { chatState, useSnackbar } from '@context/index'
+import { 
+  getChatSender, 
+  getChatSenderFull, 
+  getChatSendersAddress
+} from '@utils/chatLogics/getChatSender'
+import { getFileFormat, isValidMediaType } from '@utils/computeFileProps'
+// import { isYouTubeLink } from '@utils/isYoutubeUrl'
+import { ScrollableChat } from '@components/miscellaneous/index'
+import { SelectedMedia, GroupChatInfo, Profile } from '@components/widgets/index'
+import ChatInfoModal from '@components/widgets/Modal'
+// import MetaData from '@components/widgets/MetaData'
+import { Input, Button } from '@components/elements/index'
 
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET

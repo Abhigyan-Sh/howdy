@@ -39,7 +39,8 @@ const Input = forwardRef(({ id, label, icon, coverClass, className, ...rest }, r
             : (rest?.type==="text" 
                 ? "Jane Doe" 
                 : rest?.type==="email" 
-                && "janedoe@gmail.com" )
+                ? "janedoe@gmail.com"
+                : '' )
           }
           {...rest} />
       </div>

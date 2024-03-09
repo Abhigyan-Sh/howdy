@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { IoMdPerson } from 'react-icons/io'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { chatState } from '../../context/ChatProvider'
-import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
-import ProfileModal from '../widgets/Modal'
-import EditProfile from '../widgets/modal/EditProfile'
+import { chatState } from '@context/index'
+import { removeUserInfoAndRedirect } from '@utils/removeUserInfoAndRedirect'
+import ProfileModal from '@components/widgets/Modal'
+import EditProfile from '@components/widgets/modal/EditProfile'
 
 const NavBarItem = ({ title }) => (
   <li className={`mx-2 cursor-pointer flex flex-col justify-center items-center text-lg hover:text-gray-50`}>

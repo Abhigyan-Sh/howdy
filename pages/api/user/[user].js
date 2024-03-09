@@ -1,5 +1,5 @@
-import User from '../../../models/users'
-import AuthMiddleware from '../../../middlewares/authMiddleware'
+import User from '@models/users'
+import AuthMiddleware from '@middlewares/authMiddleware'
 
 const allUsers = async (req, res) => {
   try {

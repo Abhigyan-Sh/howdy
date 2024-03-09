@@ -1,4 +1,4 @@
-import { chatState } from '../context/ChatProvider'
+import { chatState } from '@context/ChatProvider'
 
 const getChatSender = (users) => {
   const { user } = chatState()

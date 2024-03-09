@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import BarLoader from 'react-spinners/BarLoader'
 import { SiEthereum } from 'react-icons/si'
 import { BsInfoCircle } from 'react-icons/bs'
-import { transactionState } from '../../context/TransactProvider'
-import { TrimAddress } from '../../utils/transactions/TrimAddress'
-import { InputPay } from '../elements/Input'
+import { transactionState } from '@context/TransactProvider'
+import { TrimAddress } from '@utils/transactions/TrimAddress'
+import { InputPay } from '@components/elements/Input'
 
 const SendPayments = ({ address }) => {
   const { 

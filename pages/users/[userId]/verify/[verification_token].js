@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { PacmanLoader } from 'react-spinners'
-import { useSnackbar } from '../../../../context/SnackbarToast'
-import { getBaseUrl } from '../../../../utils/getBaseUrl'
+import { useSnackbar } from '@context/SnackbarToast'
+import { getBaseUrl } from '@utils/getBaseUrl'
 
 export default function verification_token ({ statusCode, error, ...user }) {
   const router = useRouter()
@@ -16,7 +16,7 @@ export default function verification_token ({ statusCode, error, ...user }) {
       })
     } else {
       showSnackbar({
-        message: `${user.username} you're verified 🙀; ⚡`, 
+        message: `${user.username} you're verified 🙀 ⚡`, 
         severity: 'success', 
       })
       localStorage.setItem('userInfo', JSON.stringify(user))

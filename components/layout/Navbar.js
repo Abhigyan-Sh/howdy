@@ -7,12 +7,12 @@ import {
   IoMdNotifications, 
   IoMdNotificationsOff 
 } from 'react-icons/io'
-import { chatState } from '../../context/ChatProvider'
-import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
-import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
-import SideDrawer from '../layout/SideDrawer'
-import ProfileModal from '../widgets/Modal'
-import EditProfile from '../widgets/modal/EditProfile'
+import { chatState } from '@context/index'
+import { removeUserInfoAndRedirect } from '@utils/removeUserInfoAndRedirect'
+import UserSearchAndSelect from '@components/miscellaneous/UserSearchAndSelect'
+import SideDrawer from '@components/layout/SideDrawer'
+import ProfileModal from '@components/widgets/Modal'
+import EditProfile from '@components/widgets/modal/EditProfile'
 
 const Navbar = () => {
   const router = useRouter()

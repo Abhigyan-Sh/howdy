@@ -1,8 +1,8 @@
 import { useEffect, useState, createContext, useContext } from 'react'
 import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
-import { contractABI, contractAddress } from '../utils/transactions/constants'
-import { useSnackbar } from './SnackbarToast'
+import { contractABI, contractAddress } from '@utils/transactions/constants'
+import { useSnackbar } from '@context/SnackbarToast'
 
 let ethereum
 const TransactionContext = createContext()

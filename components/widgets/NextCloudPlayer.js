@@ -1,6 +1,6 @@
 import { CldVideoPlayer } from 'next-cloudinary'
 import 'next-cloudinary/dist/cld-video-player.css'
-import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId'
+import { extractCloudinaryPublicId } from '@utils/extractCloudinaryPublicId'
 
 const NextCloudPlayer = ({ src }) => (
   <div className='w-32 sm:w-52 md:w-80 shadow-md'>

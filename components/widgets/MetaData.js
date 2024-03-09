@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { extractYouTubeMetadata } from '../../utils/scrapMetaData'
 import cheerio from 'cheerio'
+import { extractYouTubeMetadata } from '@utils/scrapMetaData'
 
 const MetaData = ({ url }) => {
     const [metadata, setMetadata] = useState(null)

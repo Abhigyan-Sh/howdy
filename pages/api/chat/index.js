@@ -1,7 +1,7 @@
-import Chat from '../../../models/chats'
-import User from '../../../models/users'
-import AuthMiddleware from '../../../middlewares/authMiddleware'
-import connectToMongoDB from '../../../utils/connectMongo'
+import Chat from '@models/chats'
+import User from '@models/users'
+import AuthMiddleware from '@middlewares/authMiddleware'
+import connectToMongoDB from '@utils/mongoDB/connectMongo.js'
 
 const GetChats = (req, res) => {
   const { method } = req

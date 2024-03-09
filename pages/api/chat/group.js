@@ -1,5 +1,5 @@
-import Chat from '../../../models/chats'
-import authMiddleware from '../../../middlewares/authMiddleware'
+import Chat from '@models/chats'
+import authMiddleware from '@middlewares/authMiddleware'
 
 const createGroupChat = async (req, res) => {
   console.log(req.user) // logged-in user

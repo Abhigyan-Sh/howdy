@@ -2,8 +2,8 @@
 import ChildAudioPlayer from './ChildAudioGear/ChildAudioGear'
 import { CloudinaryVideo } from '@cloudinary/url-gen'
 import { bitRate } from '@cloudinary/url-gen/actions/transcode'
-import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId'
-// import { getFileFormat } from '../../utils/computeFileProps'
+import { extractCloudinaryPublicId } from '@utils/extractCloudinaryPublicId'
+// import { getFileFormat } from '@utils/computeFileProps'
 
 const AudioPlayer = ({ src }) => {
   /* bitRateValue: this factor can be manipulated by taking into 

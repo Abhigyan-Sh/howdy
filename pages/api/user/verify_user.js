@@ -1,7 +1,7 @@
-import User from '../../../models/users.js'
-import Token from '../../../models/token.js'
-import connectToMongoDB from '../../../utils/connectMongo.js'
-import generateToken from '../../../utils/generateToken.js'
+import User from '@models/users.js'
+import Token from '@models/token.js'
+import connectToMongoDB from '@utils/mongoDB/connectMongo.js'
+import generateToken from '@utils/generateToken.js'
 
 const verify_user = async (req, res) => {
   connectToMongoDB()

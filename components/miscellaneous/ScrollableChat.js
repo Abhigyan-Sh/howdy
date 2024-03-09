@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader'
-import { chatState } from '../../context/ChatProvider'
-import { isSentByLoggedInUser, isConsecutiveSender } from '../../utils/chatLogics'
-import Message from '../ui/Message'
+import { chatState } from '@context/index'
+import { isSentByLoggedInUser, isConsecutiveSender } from '@utils/chatLogics/senderIs'
+import Message from '@components/ui/Message'
 
 const ScrollableChat = ({ fetchedMessages, isSpinner }) => {
     const cssOverride = {

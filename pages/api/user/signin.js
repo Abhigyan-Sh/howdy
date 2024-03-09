@@ -1,6 +1,6 @@
-import User from '../../../models/users.js'
-import generateToken from '../../../utils/generateToken.js'
-import connectToMongoDB from '../../../utils/connectMongo.js'
+import User from '@models/users.js'
+import generateToken from '@utils/generateToken.js'
+import connectToMongoDB from '@utils/mongoDB/connectMongo.js'
 
 const signin =  async (req, res) => {
   connectToMongoDB()

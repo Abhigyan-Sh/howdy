@@ -1,10 +1,10 @@
 import { randomBytes } from 'crypto'
-import withProtect from '../../../middlewares/withProtect.js'
-import User from '../../../models/users.js'
-import Token from '../../../models/token.js'
-import { sendEmail } from '../../../utils/sendEmail.js'
-import connectToMongoDB from '../../../utils/connectMongo.js'
-import { getBaseUrl } from '../../../utils/getBaseUrl.js'
+import withProtect from '@middlewares/withProtect.js'
+import User from '@models/users.js'
+import Token from '@models/token.js'
+import { sendEmail } from '@utils/sendEmail.js'
+import connectToMongoDB from '@utils/mongoDB/connectMongo.js'
+import { getBaseUrl } from '@utils/getBaseUrl.js'
 
 const signup =  async (req, res) => {
   connectToMongoDB()
