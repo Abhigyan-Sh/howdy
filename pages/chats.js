@@ -1,16 +1,65 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { chatState } from '@context/ChatProvider'
+import { chatState, useSnackbar } from '@context/index'
 import Navbar from '@components/layout/Navbar'
 import MyChats from '@components/MyChats'
 import ChatBox from '@components/ChatBox'
 
 const Chats = () => {
-  const { user, selectedChat } = chatState()
+  const { user, chats, selectedChat, setSelectedChat, notification, setNotification } = chatState()
+  const { showSnackbar } = useSnackbar()
   /* @dev:: value is made to toggle between true and false where a  
   toggle indicates that chats need to be fetched again from database */
   const [ fetchAgain, setFetchAgain ] = useState(false)
+
+  useEffect(() => {
+    if(!selectedChat || !user) return
+    const updateReadBy = async () => {
+      try {
+        const response = await fetch('/api/readBy/', {
+          method: 'POST',
+          body: JSON.stringify({
+            'messageId': selectedChat.latestMessage._id, 
+            'userId': user._id, 
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': `Bearer ${user.token}`
+          }
+        })
+        const data = await response.json()
+        if(data.statusCode && [400, 401, 404, 500].includes(data.statusCode)) {
+          showSnackbar({
+            message: `Error ${data.statusCode}: ${data?.error}`, 
+            severity: 'error', 
+          })
+        } else if (data.statusCode === 200) {
+          const updateSelectedChat = selectedChat
+          updateSelectedChat.latestMessage = data.message
+          setSelectedChat(updateSelectedChat)
+        }
+      } catch (error) {
+        showSnackbar({
+          message: `Error occurred while fetching notifications: ${error.message}`, 
+          severity: 'error', 
+        })
+      }
+    }
+    updateReadBy()
+  }, [selectedChat, user])
   
+  // console.log('notification: ', notification)
+  // console.log('selectedChat: ', selectedChat)
+  useEffect(() => {
+    if(!chats || !user) return
+    chats.map((chat) => {
+      if(!chat.latestMessage.readBy?.includes(user._id)) {
+        console.log(chat)
+        console.log(notification)
+        setNotification([ chat, ...notification ])
+      }
+    })
+  }, [chats, user])
   return (
     <div className='relative w-full h-screen overflow-auto no-scrollbar'>
       {user && <Navbar/>}

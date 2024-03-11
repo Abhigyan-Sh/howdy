@@ -32,7 +32,7 @@ const ChatProvider = ({ children }) => {
             selectedChat, 
             setSelectedChat, 
             notification, 
-            setNotification
+            setNotification, 
         }}>
             {children}
         </ChatContext.Provider>

@@ -4,19 +4,20 @@ import { Button, Menu, MenuItem } from '@mui/material'
 import { 
   IoIosSearch, 
   IoMdPerson, 
-  IoMdNotifications, 
-  IoMdNotificationsOff 
+  IoNotifications, 
+  IoNotificationsOff 
 } from 'react-icons/io'
 import { chatState } from '@context/index'
 import { removeUserInfoAndRedirect } from '@utils/removeUserInfoAndRedirect'
 import UserSearchAndSelect from '@components/miscellaneous/UserSearchAndSelect'
 import SideDrawer from '@components/layout/SideDrawer'
 import ProfileModal from '@components/widgets/Modal'
+import DropdownHover from '@components/widgets/DropdownHover'
 import EditProfile from '@components/widgets/modal/EditProfile'
 
 const Navbar = () => {
   const router = useRouter()
-  const { user } = chatState()
+  const { user, notification } = chatState()
   /* -------dropdown------- */ 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -58,7 +59,19 @@ const Navbar = () => {
         {/* Notification Bell and Profile Icon */}
         <div className='flex flex-row justify-between items-center gap-2'>
           {/* -------Notification Bell------- */}
-          notification bell
+          <DropdownHover items={notification} >
+            {notification.length 
+            ? (
+              <IconContext.Provider value={{ color: 'black', size: '24px' }} >
+                <IoNotifications />
+              </IconContext.Provider>
+            )
+            : (
+              <IconContext.Provider value={{ color: 'black', size: '24px' }} >
+                <IoNotificationsOff />
+              </IconContext.Provider>
+            )}
+          </DropdownHover>
           {/* -------Profile Icon------- */}
           <Button 
             id='basic-button'

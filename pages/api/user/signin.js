@@ -6,6 +6,7 @@ const signin =  async (req, res) => {
   connectToMongoDB()
   const { method, body } = req
   
+  
   if (method === 'POST') {
     const { email, password } = body
     const user = await User.findOne({ email })
