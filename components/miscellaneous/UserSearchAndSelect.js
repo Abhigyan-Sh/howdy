@@ -8,7 +8,7 @@ import ChatLoading from '../widgets/ChatLoading'
 
 const UserSearchAndSelect = ({ searchFocused, setIsOpen }) => {
   /* -------search------- */
-  const { user, chats, setChats, selectedChat, setSelectedChat } = chatState()
+  const { user, chats, setChats, setSelectedChat } = chatState()
   const [ search, setSearch ] = useState('')
   const [ searchResult, setSearchResult ] = useState([])
   const [ isLoading, setLoading ] = useState(false)

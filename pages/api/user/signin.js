@@ -5,9 +5,11 @@ import connectToMongoDB from '../../../utils/connectMongo.js'
 const signin =  async (req, res) => {
   connectToMongoDB()
   const { method, body } = req
+  
   if (method === 'POST') {
     const { email, password } = body
-    const user = await User.findOne({email})  
+    const user = await User.findOne({ email })
+
     if ( user && (await user.matchPassword(password))) {
       res.status(200).json({
         _id: user.id,

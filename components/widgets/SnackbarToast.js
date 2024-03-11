@@ -1,6 +1,6 @@
 import React from 'react'
 import { Snackbar, Alert, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+// import CloseIcon from '@mui/icons-material/Close'
 
 const action_1 = (onClose) => (
   <React.Fragment>
@@ -10,7 +10,7 @@ const action_1 = (onClose) => (
       color="inherit"
       onClick={onClose}
     >
-      <CloseIcon fontSize="small" />
+      {/* <CloseIcon fontSize="small" /> */}
     </IconButton>
   </React.Fragment>
 )

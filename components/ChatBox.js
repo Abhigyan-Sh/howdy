@@ -76,7 +76,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       })
       .catch(error => {
         setToastVisible({
-          _message: `Error occurred while updating group chat name: ${error.message}`, 
+          _message: `Error occurred while sending message: ${error.message}`, 
           _severity: "error", 
           setMessage: setToastMessage, 
           setSeverity: setSeverity, 

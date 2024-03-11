@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import SearchIcon from '@mui/icons-material/Search'
-import Person3Icon from '@mui/icons-material/Person3'
+// import SearchIcon from '@mui/icons-material/Search'
+// import Person3Icon from '@mui/icons-material/Person3'
 import { Button, Menu, MenuItem } from '@mui/material'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
+import { IconContext } from 'react-icons'
+import { IoNotifications, IoNotificationsOff } from 'react-icons/io5'
 import { chatState } from '../../context/ChatProvider'
 import { removeUserInfoAndRedirect } from '../../utils/removeUserInfoAndRedirect'
+import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
 import SideDrawer from '../layout/SideDrawer'
 import ProfileModal from '../widgets/Modal'
 import Profile from '../widgets/modal/Profile'
-import UserSearchAndSelect from '../miscellaneous/UserSearchAndSelect'
+import DropdownHover from '../widgets/DropdownHover'
 
 const Navbar = () => {
   const router = useRouter()
-  const { user } = chatState()
+  const { user, notification } = chatState()
   /* -------dropdown------- */ 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -43,7 +44,7 @@ const Navbar = () => {
           <button 
             className='flex flex-row bg-rose-80 justify-between items-center p-2 gap-2 border border-gray-400 rounded-lg font-bold text-neutral-700'
             onClick={handleDrawer}>
-              <SearchIcon />
+              {/* <SearchIcon /> */}
               <p>Search for a friend..</p>
           </button>
           {/* Application Name */}
@@ -52,7 +53,19 @@ const Navbar = () => {
         {/* Notification Bell and Profile Icon */}
         <div className='flex flex-row justify-between items-center gap-2'>
           {/* -------Notification Bell------- */}
-          notification bell
+          <DropdownHover items={notification} >
+            {notification.length 
+            ? (
+              <IconContext.Provider value={{ color: 'black', size: '24px' }} >
+                <IoNotifications />
+              </IconContext.Provider>
+            )
+            : (
+              <IconContext.Provider value={{ color: 'black', size: '24px' }} >
+                <IoNotificationsOff />
+              </IconContext.Provider>
+            )}
+          </DropdownHover>
           {/* -------Profile Icon------- */}
           <Button
             id="basic-button"
@@ -61,7 +74,7 @@ const Navbar = () => {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <Person3Icon className='text-black' />
+            {/* <Person3Icon className='text-black' /> */}
           </Button>
           <Menu
             id="basic-menu"

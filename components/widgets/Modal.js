@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import CloseIcon from '@mui/icons-material/Close'
+// import CloseIcon from '@mui/icons-material/Close'
 
 // const Modal = (props) => {
 const Modal = ({ children, onClose, header, modalOverlay, w, h, px }) => {
@@ -25,7 +25,7 @@ const Modal = ({ children, onClose, header, modalOverlay, w, h, px }) => {
                 className="bg-transparent border-0 text-2xl pointer-cursor"
                 onClick={onClose}
                 >
-                  <CloseIcon /> 
+                  {/* <CloseIcon />  */}
               </button>
           </div>
           <div className={`relative flex flex-col justify-between items-center gap-5 ${px} w-full h-full`}>

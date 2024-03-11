@@ -1,5 +1,5 @@
 import Chat from '../../../models/chats'
-import isValidObjectId from "../../../utils/isValidObjectId"
+import { isValidObjectId } from "../../../utils/isValidObjectId"
 
 const removeFromGroup = async (req, res) => {
   const { method, body } = req
