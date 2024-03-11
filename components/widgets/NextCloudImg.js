@@ -2,7 +2,7 @@
 // import 'next-cloudinary/dist/cld-video-player.css'
 // import { extractCloudinaryPublicId } from '../../utils/extractCloudinaryPublicId'
 
-const NextCloudPlayer = ({ src }) => (
+const NextCloudImage = ({ src }) => (
   <div className='max-w-64 max-h-64 overflow-hidden shadow-md'>
     {/* <div className='relative w-80 h-80 max-w-80 max-h-80 overflow-hidden'> */}
     {/* <CldImage 
@@ -18,4 +18,4 @@ const NextCloudPlayer = ({ src }) => (
   </div>
 )
 
-export default NextCloudPlayer
+export default NextCloudImage

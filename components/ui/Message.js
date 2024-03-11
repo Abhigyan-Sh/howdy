@@ -1,4 +1,5 @@
 import { IoCheckmarkDoneOutline } from 'react-icons/io5'
+import Image from 'next/image'
 import { formatUpdatedAt } from '@utils/mongoDB/formatUpdatedAt'
 import { 
   getFileFormat, 
@@ -22,8 +23,10 @@ const Message = ({
     <div className="flex items-start gap-2.5">
     {/* LEFT */}
     {(!isSentByLoggedInUser && !isConsecutiveSender) ? (
-      <img 
-        className="w-8 h-8 rounded-full" 
+      <Image 
+        height={32} 
+        width={32} 
+        className="rounded-full" 
         src={message.sender.pic} 
         alt={alt} />
     ) : (

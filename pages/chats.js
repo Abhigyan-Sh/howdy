@@ -16,7 +16,7 @@ const Chats = () => {
       {user && <Navbar/>}
       <div className='w-full h-[91.5vh] relative'>
         {/* -------background image------- */}
-        <Image
+        <Image 
           src='/assets/backgroundWallpaper.jpg' 
           alt='Background Image' 
           layout='fill' // fill entire parent container

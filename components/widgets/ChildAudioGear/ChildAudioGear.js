@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 import { getTimeFormat } from './utils/getTimeFormat'
 import { getSongNameFromUrl } from './utils/getSongName'
 import { truncateString } from './utils/truncateString'
@@ -53,7 +54,9 @@ const ChildAudioPlayer = ({ audioSrc = '', darkMode }) => {
           {truncateString(getSongNameFromUrl(audioSrc), 30)}
           {isPlaying && <div className='audio-gear-blinking-dot'></div>}
         </p>
-        <img 
+        <Image 
+          height={40} 
+          width={40} 
           src={!darkMode 
             ? 'https://utillities.netlify.app/react-audio-gear/musicPlayer-dark.svg' 
             : 'https://utillities.netlify.app/react-audio-gear/musicPlayer-light.svg'}
@@ -79,8 +82,16 @@ const ChildAudioPlayer = ({ audioSrc = '', darkMode }) => {
       {/* bottom sub-component */}
       <button className='audio-gear-button' onClick={handlePlayPause}>
         {!isPlaying 
-        ? <img src='https://utillities.netlify.app/react-audio-gear/play.svg' alt='play' style={{ width: '32px' }} />
-        : <img src='https://utillities.netlify.app/react-audio-gear/pause.svg' alt='pause' style={{ width: '32px' }} /> }
+        ? <Image 
+            width={32} 
+            height={32} 
+            src='https://utillities.netlify.app/react-audio-gear/play.svg' 
+            alt='play' />
+        : <Image 
+            width={32} 
+            height={32} 
+            src='https://utillities.netlify.app/react-audio-gear/pause.svg' 
+            alt='pause' /> }
       </button>
     </div>
   )

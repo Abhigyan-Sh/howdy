@@ -12,17 +12,31 @@ const signup =  async (req, res) => {
 
   if (method === 'POST') {
     try {
-      const { email } = body
+      const { email, username } = body
       /* check whether user exists already ? 
       even if user exists check whether if its verified ?, 
       if not then delete previous user document and create new */
+      const userNameExists = await User.findOne({ username })
       const userExists = await User.findOne({ email })
-      if(userExists) {
-        if(!userExists.isVerified) {
-          await User.findByIdAndDelete(userExists._id)
-          await Token.findOneAndDelete({ userId : userExists._id })
+
+      if(userExists || userNameExists) {
+        if(userExists && !userExists?.isVerified) {
+          await User.findByIdAndDelete(userExists?._id)
+          await Token.findOneAndDelete({ userId : userExists?._id })
+        } else if(userNameExists && !userNameExists?.isVerified) {
+          await User.findByIdAndDelete(userNameExists?._id)
+          await Token.findOneAndDelete({ userId : userNameExists?._id })
         } else {
-          return res.status(400).json({ statusCode: 400, error: 'user already exists !' })
+          const errorMessage = (userExists && userNameExists)
+          ? 'credentials already exists' 
+          : userExists 
+            ? `user with ${userExists?.email} already exists`
+            : `user with username: ${userNameExists?.username} already exists`
+          
+          return res.status(400).json({ 
+            statusCode: 400, 
+            error: errorMessage
+          })
         }
       }
       

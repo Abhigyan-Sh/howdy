@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import Link from 'next/link'
 import { IoMdPerson } from 'react-icons/io'
 import { Button, Menu, MenuItem } from '@mui/material'
@@ -38,7 +39,15 @@ const PaymentNavbar = () => {
         {/* route to home page */}
         <div className='flex flex-row items-center justify-between text-white'>
           <Link href='/chats'>
-            <img src='/logo.png' alt='logo' className='w-8 cursor-pointer' />
+            <a>
+              <Image 
+                src='/logo.png' 
+                alt='logo' 
+                height={32} 
+                width={32} 
+                className='cursor-pointer'
+              />
+            </a>
           </Link>
           <NavBarItem title='howdy' />
         </div>

@@ -1,4 +1,5 @@
 import BeatLoader from 'react-spinners/BeatLoader'
+import Image from 'next/image'
 import { computeFileSize } from '@utils/computeFileProps'
 import { truncateFileName } from '@utils/truncateFileName'
 
@@ -35,10 +36,12 @@ const SelectedMedia = ({ selectedFile, onClick, isLoading }) =>
     )}
     {selectedFile.type.startsWith('audio/') && (
       <div className='relative group w-fit'>
-        <img 
+        <Image 
+          height={112} 
+          width={112} 
           src='https://res.cloudinary.com/dfgh07xa9/image/upload/v1709244025/music-player-svgrepo-com_qzb6ex.svg' 
           alt='selected media' 
-          className='h-28 w-28 border-2 rounded-lg border-slate-100 bg-slate-300 object-cover' />
+          className='border-2 rounded-lg border-slate-100 bg-slate-300 object-cover' />
         <OverlayRemoveButton onClick={onClick} />
       </div>
     )}

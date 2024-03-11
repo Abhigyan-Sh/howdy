@@ -1,6 +1,5 @@
 import React from 'react'
-// import Image from 'next/image'
-import Link from 'next/link'
+import Image from 'next/image'
 import { LuTwitter, LuGithub, LuLinkedin } from 'react-icons/lu'
 
 const Footer = () => {
@@ -16,11 +15,12 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse'
           >
-            <img 
+            <Image 
               src={`https://res.cloudinary.com/${cloudName}/image/upload/${versionAndFolder}/sample_uxibnj.jpg`} 
               alt='Creators Pixelated-art Pic' 
               className='rounded-3xl'
               width={72} 
+              height={72}
             />
             <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>the Creator {' '}</span>
           </a>
