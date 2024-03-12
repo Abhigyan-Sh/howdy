@@ -224,7 +224,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
       ? selectedChat.users[1].address 
       : selectedChat.users[0].address
     )
-    console.log(payeeAddress)
+    // console.log(payeeAddress)
     if(!payeeAddress) {
       showSnackbar({
         message: `ethereum wallet address unavailable`, 
@@ -260,6 +260,9 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     setSelectedFile(null)
     setNewMessage('')
     setMedia('')
+    setNotification((prevState) => (
+      prevState.filter((notify) => (notify?._id !== selectedChat?._id))
+    ))
   }, [selectedChat])
   // -------initializing socket connection-------
   useEffect(() => {
@@ -292,9 +295,11 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     if(!socket || !selectedChat) return
 
     socket.on('message received', (newReceivedMessage) => {
-      if(selectedChat && (selectedChat._id !== newReceivedMessage.chat._id)) {
+      if(selectedChat && (selectedChat?._id !== newReceivedMessage?.chat?._id)) {
         if(!notification.includes(newReceivedMessage)) {
-          setNotification([newReceivedMessage, ...notification])
+          if(newReceivedMessage?.sender._id !== user?._id) {
+            setNotification([newReceivedMessage, ...notification])
+          }
           /* below function would, for a new sender it displays a new chat in MyChats, 
           for existing users it just simply topples the chat to top row */
           setFetchAgain(!fetchAgain)

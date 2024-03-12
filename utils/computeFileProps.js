@@ -11,6 +11,7 @@ const computeFileSize = fileSize => {
 }
 
 const getFileFormat = filename => {
+  if(!filename) return
   const pieces = filename.split('.')
   if (pieces.length === 1 || (pieces[0] === '' && pieces.length === 2)) {
     return ''

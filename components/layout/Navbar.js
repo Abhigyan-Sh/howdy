@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { 
-  IoIosSearch, 
-  IoMdPerson, 
-  IoNotifications, 
-  IoNotificationsOff 
-} from 'react-icons/io'
+import { IconContext } from 'react-icons'
+import { IoIosSearch, IoMdPerson } from 'react-icons/io'
+import { IoNotifications, IoNotificationsOff } from 'react-icons/io5'
 import { chatState } from '@context/index'
 import { removeUserInfoAndRedirect } from '@utils/removeUserInfoAndRedirect'
 import UserSearchAndSelect from '@components/miscellaneous/UserSearchAndSelect'
@@ -19,7 +16,7 @@ const Navbar = () => {
   const router = useRouter()
   const { user, notification } = chatState()
   /* -------dropdown------- */ 
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
   const handleClick = (event) => 

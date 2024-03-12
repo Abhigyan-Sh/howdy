@@ -1,5 +1,5 @@
 import Chat from '@models/chats'
-import isValidObjectId from '@utils/mongoDB/isValidObjectId'
+import { isValidObjectId } from '@utils/mongoDB/isValidObjectId'
 
 const addToGroup = async (req, res) => {
   const { method, body } = req

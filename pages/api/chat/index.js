@@ -80,16 +80,16 @@ const fetchChats = async (req, res) => {
       let chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } }})
         .populate('users', '-password')
         .populate('groupAdmin', '-password')
-        // @dev:: [why below part creates issue ??] 
-        // .populate({
-        //   path: 'latestMessage',
-        //   match: { $exists: true }, 
-        //   options: { 
-        //     // here specifying 'retainNullValues' to true to keep null/undefined values
-        //     retainNullValues: true 
-        //   }
-        // })
-        // .sort({ updatedAt: -1 })
+        // @dev:: [why below part creates issue ?? (at last changing DB worked !!)] 
+        .populate({
+          path: 'latestMessage',
+          match: { $exists: true }, 
+          options: { 
+            // here specifying 'retainNullValues' to true to keep null/undefined values
+            retainNullValues: true 
+          }
+        })
+        .sort({ updatedAt: -1 })
 
       // Populating the sender details in the 'latestMessage' field
       chats = await User.populate(chats, {

@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { chatState } from '../../context/ChatProvider'
-import { getChatSender } from '../../utils/getChatSender'
+import { chatState } from '@context/index'
+import NotificationItem from '@components/elements/list/NotificationItem'
 
 const DropdownHover = ({ children, items }) => {
   const { notification, setNotification, setSelectedChat } = chatState()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
-
-  console.log(notification)
-  console.log(items)
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen)
@@ -54,7 +51,7 @@ const DropdownHover = ({ children, items }) => {
       </button>
       {isOpen && (
         <div className="z-40 absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
-          <ul>
+          <ul className='divide-y divide-dashed'>
             {items.map((item, index) => (
               <li 
                 key={index}
@@ -63,13 +60,9 @@ const DropdownHover = ({ children, items }) => {
                   handleCloseDropdown(item) // Close the dropdown when an item is clicked
                 }}
               >
-                {console.log(item)}
+                {/* {console.log(item)} */}
                 {/* @dev:: causing trouble */}
-                {item?.isGroupChat ? (
-                  <p>{item?.chatName}</p>
-                ) : (
-                  <p>{getChatSender(item?.users)}</p>
-                )}
+                <NotificationItem notify={item} />
               </li>
             ))}
           </ul>

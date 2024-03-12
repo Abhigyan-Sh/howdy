@@ -1,6 +1,6 @@
-import Message from '../../models/messages'
-import authMiddleware from '../../middlewares/authMiddleware'
-import { isValidObjectId } from '../../utils/isValidObjectId'
+import Message from '@models/messages'
+import authMiddleware from '@middlewares/authMiddleware'
+import { isValidObjectId } from '@utils/mongoDB/isValidObjectId'
 
 const readBy = async (req, res) => {
   const { method, body } = req
@@ -21,8 +21,7 @@ const readBy = async (req, res) => {
       if (!message) {
         return res.status(404).json({ statusCode: 404, error: 'message not found' })
       }
-      return res.status(200)
-      .json({ statusCode: 200, message })
+      return res.status(200).json({ statusCode: 200, message })
     } catch (error) {
       return res.status(500).json({ statusCode: 500, error: 'server error'})
     }

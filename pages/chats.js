@@ -6,7 +6,7 @@ import MyChats from '@components/MyChats'
 import ChatBox from '@components/ChatBox'
 
 const Chats = () => {
-  const { user, chats, selectedChat, setSelectedChat, notification, setNotification } = chatState()
+  const { user, chats, selectedChat, setSelectedChat, setNotification } = chatState()
   const { showSnackbar } = useSnackbar()
   /* @dev:: value is made to toggle between true and false where a  
   toggle indicates that chats need to be fetched again from database */
@@ -19,8 +19,10 @@ const Chats = () => {
         const response = await fetch('/api/readBy/', {
           method: 'POST',
           body: JSON.stringify({
-            'messageId': selectedChat.latestMessage._id, 
-            'userId': user._id, 
+            // @dev:: retrieve back below line when .populating() latestMessage
+            'messageId': selectedChat?.latestMessage?._id, 
+            // 'messageId': selectedChat.latestMessage, 
+            'userId': user?._id, 
           }),
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -48,15 +50,11 @@ const Chats = () => {
     updateReadBy()
   }, [selectedChat, user])
   
-  // console.log('notification: ', notification)
-  // console.log('selectedChat: ', selectedChat)
   useEffect(() => {
     if(!chats || !user) return
     chats.map((chat) => {
-      if(!chat.latestMessage.readBy?.includes(user._id)) {
-        console.log(chat)
-        console.log(notification)
-        setNotification([ chat, ...notification ])
+      if(!chat?.latestMessage?.readBy?.includes(user._id)) {
+        setNotification([chat])
       }
     })
   }, [chats, user])
