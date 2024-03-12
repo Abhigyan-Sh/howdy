@@ -23,38 +23,42 @@ npm run dev
 
 ## Features
 
-1. Real-time Communication - Utilizes WebSocket
+**1. Real-time Communication** - Utilizes WebSocket
 
-2. User Authentication and Authorization
+**2. User Authentication and Authorization**
    - Implements secure authentication mechanisms to verify user identities.
    - Ensures that only authorized users can access chats and data within the application.
 
-3. Supports both One-to-One chat and group chats.
+**3. Supports both One-to-One chat and group chats**
 
-4. Message Sending and Retrieval
+**4. Message Sending and Retrieval**
    - Allows users to send messages within chats.
    - Endpoints for fetching message history for a given chat.
 
-5. User Search
+**5. User Search**
    - Users can create new chats by finding new users via their usernames (as each user has their unique username), find existing ones, and chat with them in Real-time
 
-6. Group Chat Administration
+**6. Group Chat Administration**
    - Administrators have been granted some special rights for administration purposes in groups. This includes, 
    - renaming Group Chat, adding and removing members from group chats, giving administrators control over to other members on admin's leaving from group.
 
-7. Features
-- create one-to-one chats or group chats.
-- Admin can rename group, add or remove members, leave group.
-- Also any member in group can leave chat any moment.
-- Users can find other users by their usernames and initiate chat.
-- Real-time conversation via socket.io
-- Secured routes via authentication
-- Users get to know if messages has been seen or not and if seen then by how what members
-- Users get to know whether if someones on the other end typing a message
-- Users receive notifications if they get a message so never missing on important conversations
-- Send and Receive blockchain payments on Ethereum
+**7. Features**
+- create **one-to-one** chats or **group chats**.
+- Admin can **rename group**, **add** or **remove members**, **leave group**.
+- Also any member in group can **leave chat any moment**.
+- **send or recieve any media type** including photos, videos, audio (images are loaded via `progressive image loading` while videos are `streamed`)
+- Users can **find other users** by their usernames or emails and initiate chat.
+- **Real-time** conversation via socket.io
+- Secured routes via **authentication (verification of user email**)
+- **blue tick**: Users get to know their message has been seen or not and if seen then by what members
+- Users get to know whether if someones on the other end **typing..** a message
+- **push notifications:** Users receive notifications if they get a message so never missing on important conversations
+- Send and Receive 🔃 **blockchain payments** on Ethereum on any device 💻📲
+- all features including ethereum payments can work on **any device**
 
-8. Steps to reproduce smartContract interaction
+✨ Using an npm package deployed by me, named **react-audio-gear** ( weekly downloads: 26⬇️)
+
+### 8. Steps to reproduce smartContract interaction
 ### Understanding what we need to achieve: 
 application needs `abi` and the `address` to which smartContract is deployed to on blockchain alongwith passing in a `signer`. So having these three i.e. `abi`, `address` and `signer` in our client code we will be able to interact with smartContract which has been deployed on blockchain and so both read and write changes on blockchain itself from frontend
 
@@ -96,4 +100,8 @@ npx hardhat run scripts/deploy.js --network sepolia
 ```
 
 9. Technology Stack used
-   - Nextjs, Socket.io, tailwindcss, mongoose, Ethereum blockchain, hardhat, alchemy and blockchain explorer
+   - Nextjs (12.2), Socket.io, tailwindcss, mongoose
+   - Ethereum blockchain, hardhat, alchemy and blockchain explorer
+   - web-scrapping
+   - cloudinary, MUI (use limited to 2/3 elements only)
+   - react-audio-gear (npm package deployed by myself) having weekly 26 downloads
