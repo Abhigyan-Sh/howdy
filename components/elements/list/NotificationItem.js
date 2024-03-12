@@ -10,8 +10,8 @@ const NotificationItem = ({ notify }) => {
       <div className='relative text-xs text-slate-800'>
         <p className='absolute -top-3 -left-7 font-bold bg-white border-2 border-zinc-400 px-[4px] py-[0.5px] rounded-lg'>
           {!notify?.isGroupChat 
-          ? getChatSender(notify?.users)
-          : notify?.chatName + '/' + getChatSender(notify?.users)}
+            ? getChatSender(notify?.users)
+            : notify?.chatName + '/' + notify?.latestMessage?.sender?.username}
         </p>
         <p className='text-sm pt-2'>
           {truncateFileName(notify?.latestMessage.content, 14)}

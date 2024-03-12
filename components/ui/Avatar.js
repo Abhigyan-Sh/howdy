@@ -3,8 +3,8 @@ import Image from 'next/image'
 
 const Avatar = ({ src, width, height, alt, className_ring, className_img }) => {
   return (
-    <div className={`w-fit h-fit border-4 rounded-full border-slate-600 flex justify-center items-center ${className_ring}`}>
-      <Image
+    <div className={`w-fit h-fit rounded-full border-slate-600 flex justify-center items-center ${className_ring ? className_ring : 'border-4'}`}>
+      <Image 
         src={src} 
         width={width || 40} 
         height={height || 40} 
@@ -13,7 +13,7 @@ const Avatar = ({ src, width, height, alt, className_ring, className_img }) => {
         alt={alt || "your profile pic"}
       />
     </div>
-  );
-};
+  )
+}
 
 export default Avatar

@@ -13,7 +13,7 @@ const Chats = () => {
   const [ fetchAgain, setFetchAgain ] = useState(false)
 
   useEffect(() => {
-    if(!selectedChat || !user) return
+    if(!selectedChat?.latestMessage || !user) return
     const updateReadBy = async () => {
       try {
         const response = await fetch('/api/readBy/', {
@@ -53,8 +53,10 @@ const Chats = () => {
   useEffect(() => {
     if(!chats || !user) return
     chats.map((chat) => {
-      if(!chat?.latestMessage?.readBy?.includes(user._id)) {
-        setNotification([chat])
+      if(chat.latestMessage 
+        && !chat.latestMessage.readBy.includes(user._id)
+      ) {
+        setNotification(prevNotification => [chat, ...prevNotification])
       }
     })
   }, [chats, user])

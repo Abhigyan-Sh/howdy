@@ -19,6 +19,8 @@ import {
 } from '@utils/chatLogics/getChatSender'
 import { getFileFormat, isValidMediaType } from '@utils/computeFileProps'
 // import { isYouTubeLink } from '@utils/isYoutubeUrl'
+import { sendNotification } from '@utils/sendNotification'
+import { getBaseUrl } from '@utils/getBaseUrl'
 import { ScrollableChat } from '@components/miscellaneous/index'
 import { SelectedMedia, GroupChatInfo, Profile } from '@components/widgets/index'
 import ChatInfoModal from '@components/widgets/Modal'
@@ -285,30 +287,44 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   }, [selectedChat, socket])
 
   useEffect(() => {
-    /* socket would have been set by now as useEffect() executes 
+    /* @dev::socket would have been set by now as useEffect() executes 
     in the order of useEffect() hooks placed in code but since I had 
     to use selectedChat and so if selectedChat is not set yet so hook 
     should not get rendered rather when it gets set hook should execute 
     then only (such behavior has been ensured by adding in []) and then 
     since it also uses socket so its existence is ensured and placed in 
     dependency array both done to ensure good practice */
-    if(!socket || !selectedChat) return
+    if(!socket) return
 
     socket.on('message received', (newReceivedMessage) => {
-      if(selectedChat && (selectedChat?._id !== newReceivedMessage?.chat?._id)) {
-        if(!notification.includes(newReceivedMessage)) {
-          if(newReceivedMessage?.sender._id !== user?._id) {
-            setNotification([newReceivedMessage, ...notification])
-          }
-          /* below function would, for a new sender it displays a new chat in MyChats, 
-          for existing users it just simply topples the chat to top row */
-          setFetchAgain(!fetchAgain)
+      if(
+        (!selectedChat || (selectedChat?._id !== newReceivedMessage?.chat?._id)) 
+        // @dev::below is just an addition and can be removed
+        && newReceivedMessage?.sender._id !== user?._id
+      ) {
+        // @dev::on-app notification :bell:
+        setNotification([newReceivedMessage.chat, ...notification])
+        // @dev::send a push notification :bellhop_bell:
+        const baseUrl = `${window.location.protocol}/${window.location.host}`
+        if(baseUrl !== getBaseUrl()) {
+          sendNotification({
+            title: newReceivedMessage?.chat?.isGroupChat 
+            ? newReceivedMessage?.chat?.chatName
+            : newReceivedMessage?.sender?.username, 
+            config: {
+              body: newReceivedMessage?.content, 
+              icon: '../logo.png', 
+            }
+          })
         }
       } else {
         setFetchedMessages([...fetchedMessages, newReceivedMessage])
       }
+      /* @dev::below function for a new sender would display a new chat in MyChats, 
+      for existing users it just simply topples the chat to top row */
+      setFetchAgain(!fetchAgain)
     })
-  }, [selectedChat, socket, fetchedMessages])
+  }, [socket, fetchedMessages])
 
   useEffect(() => {
     if(!socket) return

@@ -16,7 +16,10 @@ const readBy = async (req, res) => {
         return res.status(401).json({ statusCode: 401, error: 'Invalid message id' })
       }
       const message = await Message
-      .findByIdAndUpdate(messageId, { $addToSet: { readBy: userId } })
+      .findByIdAndUpdate(messageId, 
+        { $addToSet: { readBy: userId } }, 
+        { new : true}
+      ).populate('readBy')
 
       if (!message) {
         return res.status(404).json({ statusCode: 404, error: 'message not found' })

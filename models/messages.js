@@ -32,6 +32,7 @@ const messageSchema = mongoose.Schema(
     },
     readBy: [{ 
       type: mongoose.Schema.Types.ObjectId, 
+      default: [], 
       ref: 'users' 
     }],
     contentType: {

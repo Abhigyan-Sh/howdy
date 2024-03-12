@@ -9,6 +9,7 @@ const allMessages = async (req, res) => {
       let messages = await Message.find({ chat: chatId })
         .populate("sender", "username pic email")
         .populate("chat")
+        .populate("readBy", "username pic")
       if (!messages) {
         return res.status(404).json({ statusCode: 404, error: 'Messages not found' })
       }
